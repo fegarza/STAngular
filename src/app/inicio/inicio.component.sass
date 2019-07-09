@@ -1,0 +1,154 @@
+@import "../../styles.sass"
+
+
+.ok
+     animation: 1s bounce  forwards 
+
+nav
+    background: $darkColor 
+    height: 80px
+    display: flex
+    justify-content: center
+    padding:10px
+    box-sizing: border-box
+    .cont
+         display: flex
+         justify-content: space-between
+         align-items: center
+    .logo
+        color: white
+        font-size: 25px
+        font-weight: 900
+        display: flex
+        align-items: center
+        cursor: pointer
+        &:hover
+            >.img
+                background: url(/assets/img/logoBlue.svg)  center no-repeat /130px 130px
+            >p
+                color: #65C6C4
+        .img
+            background: url(/assets/img/logoWhite.svg)  center no-repeat /130px 130px  
+            width: 65px
+            height: 90px
+            margin-right: 10px
+    .menu
+        width: 200px
+        height: 100%
+        ul
+            display: flex
+            justify-content: center
+            align-items: center
+            list-style: none
+            height: 100%
+            li
+                color: white
+                list-style: none
+                width: 100%
+                display: flex
+                justify-content: center
+                align-items: center
+                cursor: pointer
+                height: 100%
+                font-weight: bold
+                i
+                    margin-right: 10px
+                    margin-left: -10px
+                &:hover
+                    color: #65C6C4
+                
+header
+    height: 700px
+    background: url(/assets/img/header.png) no-repeat left 80px bottom 200px  /450px, url(/assets/img/white-wave.svg) no-repeat right bottom -2px  $mainColor
+    position: relative
+    display: flex
+    justify-content: center
+    .cont
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        height: 500px
+        position: relative
+        img
+            position: absolute
+            right: 0px
+            bottom: -200px
+            width: 650px
+    .welcome
+        width: 700px
+        h1 
+            font-size: 85px
+            color: white
+            font-weight: 900
+            cursor: pointer
+        button
+            margin-top: 40px
+            width: 300px
+            &:focus
+                animation: 0.8s rubberBand forwards
+
+section
+    display: flex
+    justify-content: center
+    &.Tutorias
+        padding-bottom: 40px
+        margin-top: 40px
+        width: 100%
+        height: 100%
+        background: url(/assets/img/float-boxes.svg)  no-repeat , url(/assets/img/pc.png) right 0px bottom no-repeat
+        .cont
+            display: flex
+            align-items: center
+            flex-direction: column
+            .title
+                width: 200px
+            .boxes
+                width: 100%
+                display: flex
+                justify-content: center
+                align-items: flex-start
+                flex-direction: column
+                margin-top: 80px
+                .textBox
+                    margin-bottom: 40px
+    &.objective
+        height: 450px
+        background: $bgColor2
+        .cont
+            display: flex
+            align-items: center
+            justify-content: flex-start
+            background: url(/assets/img/objectives.png) right 0px bottom no-repeat
+            .left
+                height: 100%
+                width:630px
+                display: flex
+                align-items: center
+                background: $bgColor2
+                .textBox
+                    width: 100%
+                    padding-left: 0px
+                    p
+                        padding-top: 20px
+                .title
+                    border:0px
+                    color: $mainColor
+    &.creditos
+        height: 600px
+        .cont
+            background: url(/assets/img/creditos.png) right center no-repeat
+            display: flex
+            justify-content: flex-start
+            align-items: center
+            .boxes
+                .textBox
+                    width: 500px
+                    margin-top: 20px
+            .title
+                color: $mainColor
+                border:0px
+                text-align: left
+
+footer
+    background: url(/assets/img/logoBlue.svg)  right  bottom no-repeat /contain  ,$mainColor
+    height: 300px
