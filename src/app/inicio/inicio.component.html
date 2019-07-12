@@ -1,122 +1,133 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>ST | Inicio</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="/assets/css/all.min.css">
-  <link rel="stylesheet" href="/assets/css/animate.css">
-  <link rel="stylesheet" href="/assets/css/normalize.css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <nav>
-        <div class="cont">
-               <div class="logo">
-                    <div class="img"> 
-                        
-                    </div>   
-                     <p>ITNL</p>
-               </div>
-               <div class="menu">
-                   <ul>
-                       <li (click)="Redireccionar('/login')">
-                            <i class="fas fa-user"></i>Login
-                        </li>
-                       <li (click)="Redireccionar('http://www.itnuevolaredo.edu.mx/index.php?option=com_content&view=category&layout=blog&id=44&Itemid=50')">
-                        <i class="fas fa-times-circle"></i>Salir
-                        </li> 
-                   </ul>
-               </div>
-        </div>
-    </nav>
-    <header>
-      <div class="cont">
-           <div class="welcome">
-               <h1>BIENVENIDO AL SISTEMA DE TUTORÍAS</h1>
-               <button class="btn float-dark" (click)="Redireccionar('/login')" >
-                    <i class="fas fa-sign-in-alt"></i><p>INICIAR SESIÓN</p>
-               </button>
-           </div>
-               <img src='/assets/img/device.png'  class="animated forwards bounceInRight fast"/>
-       </div>
-    </header>
-    <section class="Tutorias">
-        <div class="cont">
-            <h1 class="title">TUTORÍAS</h1>
-            <div class="boxes">
-                <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft">
-                    <h1><i class="fas fa-flag"></i>¿Qué son las tutorías?</h1>
-                    <p>
-                            La Tutoría se define como: “un proceso de acompañamiento, grupal o individual, que le brindan al estudiante profesores-tutores, durante su estancia en el Instituto Tecnológico, con el propósito de contribuir a su formación integral”.
-                     </p>
-                 </div>
-                <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft" >
-                    <h1><i class="fas fa-flag"></i>¿Funciones del tutor?</h1>
-                    <p>
-                            Identificar sus necesidades personales que requieren de la atención tutorial.
-                            Asistir puntualmente a las reuniones a que sea convocado por el tutor, a la hora y fecha indicada.
-                            Reportar en caso que no pudiera asistir a la sesión al tutor, y reportar el motivo que impida la asistencia.
-                            Recurrir al tutor para efectos de solicitar atención tutorial.
-                            Aportar la información que le sean sugeridas por el tutor para la satisfacción de sus necesidades.
-                            Asumir una actitud responsable orientada hacia la autoayuda.
-                            Participar en las evaluaciones.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="objective" >
-            <div class="cont">
-                    <div class="left" >
-                        <div class="textBox simpleBlue">
-                            <h1><i class="fas fa-flag"></i>OBJETIVOS ESPECIFICOS DEL PROGRAMA DE TUTORÍA EN EL ITNL</h1>
-                            <p>
-                                    Brindar tutoría a todos los alumnos desde el primer semestre; desarrollar las potencialidades del estudiante para que alcance un mejor nivel de aprovechamiento a lo largo de su vida escolar; apoyar al estudiante en la adquisición de habilidades de autoaprendizaje necesarias para que resuelva
-                                    sus problemas de tipo académico mediante la toma de decisiones autónomas, a fin de consolidar el aprendizaje de por vida; identificar y apoyar al estudiante en riesgo de no alcanzar los objetivos propuestos y/o el perfil profesional y proponer estrategias de apoyo a su formación; promover en el estudiante el desarrollo de valores humanos, sociales, ecológicos, así como actitudes positivas hacia el aprendizaje y los propios de la formación profesional; crear espacios y ambientes educativos de confianza que ayuden al alumno en su desarrollo académico y personal; contribuir a la disminución de los índices de reprobación y deserción, a través del incremento en el rendimiento académico de los estudiantes; incrementar el índice de eficiencia terminal en todas las carreras del ITNL.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-    </section>
-    <section class="creditos">
-            <div class="cont">
-                    <div class="hideOnInit boxes" animateOnScroll animationName="animated forwards flipInX">
-                            <h1 class="title">CRÉDITOS  </h1>
-                            <div class="textBox lineBlue">
-                                <h1><i class="fas fa-user-circle"></i>Juan Felipe Garza Sánchez</h1>
-                                <p>
-                                    Programador, enmaquetador y diseñador web    
-                                </p>
-                             </div>
-                              <div class="textBox lineBlue ">
-                                <h1><i class="fas fa-user-circle"></i>Jessica Janet Grajeda Castellanos</h1>
-                                <p>
-                                    Diseñadora gráfica y administradora de contenidos  
-                                </p>
-                             </div>
-                              <div class="textBox lineBlue ">
-                                <h1><i class="fas fa-user-circle"></i>Emanuel Villanueva</h1>
-                                <p>
-                                    Administrador de la base de datos
-                                </p>
-                             </div>
-                             <div class="textBox lineBlue ">
-                                    <h1><i class="fas fa-user-circle"></i>Oswaldo Rodriguez Mendoza</h1>
-                                    <p>
-                                       Tester
-                                    </p>
-                                 </div>
-                    </div>
-            </div>
-    </section>
-    <footer>
-        <div class="cont">
-            <h2 (click)="Mensaje('xd')">ST CMS By: Juan Felipe Garza Sánchez</h2>
-        </div>
-       
-    </footer>
-</body>
-</html>
+<nav>
+  <div class="cont">
+    <div class="logo">
+      <div class="img">
+
+      </div>
+      <p>ITNL</p>
+    </div>
+    <div class="menu">
+      <ul>
+        <li (click)="Redireccionar('/login')">
+          <i class="fas fa-user"></i>Login
+        </li>
+        <li
+          (click)="Redireccionar('http://www.itnuevolaredo.edu.mx/index.php?option=com_content&view=category&layout=blog&id=44&Itemid=50')">
+          <i class="fas fa-times-circle"></i>Salir
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header>
+  <div class="cont">
+    <div class="welcome">
+      <h1>BIENVENIDO AL SISTEMA DE TUTORÍAS</h1>
+      <button class="btn float-dark" routerLink="/login">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>INICIAR SESIÓN</p>
+      </button>
+    </div>
+    <img src='/assets/img/device.png' class="animated forwards bounceInRight fast" />
+  </div>
+</header>
+<section class="Tutorias">
+  <div class="cont">
+    <h1 class="title">TUTORÍAS</h1>
+    <div class="boxes">
+      <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft">
+        <h1><i class="fas fa-flag"></i>¿Qué son las tutorías?</h1>
+        <p>
+          La Tutoría se define como: “un proceso de acompañamiento, grupal o individual, que le brindan al estudiante
+          profesores-tutores, durante su estancia en el Instituto Tecnológico, con el propósito de contribuir a su
+          formación integral”.
+        </p>
+      </div>
+      <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft">
+        <h1><i class="fas fa-flag"></i>¿Funciones del tutor?</h1>
+        <p>
+          Identificar sus necesidades personales que requieren de la atención tutorial.
+          Asistir puntualmente a las reuniones a que sea convocado por el tutor, a la hora y fecha indicada.
+          Reportar en caso que no pudiera asistir a la sesión al tutor, y reportar el motivo que impida la asistencia.
+          Recurrir al tutor para efectos de solicitar atención tutorial.
+          Aportar la información que le sean sugeridas por el tutor para la satisfacción de sus necesidades.
+          Asumir una actitud responsable orientada hacia la autoayuda.
+          Participar en las evaluaciones.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="objective">
+  <div class="cont">
+    <div class="left">
+      <div class="textBox simpleBlue">
+        <h1><i class="fas fa-flag"></i>Objetivos</h1>
+        <p>
+          Brindar tutoría a todos los alumnos desde el primer semestre; desarrollar las potencialidades del estudiante
+          para que alcance un mejor nivel de aprovechamiento a lo largo de su vida escolar; apoyar al estudiante en la
+          adquisición de habilidades de autoaprendizaje necesarias para que resuelva
+          sus problemas de tipo académico mediante la toma de decisiones autónomas, a fin de consolidar el aprendizaje
+          de por vida; identificar y apoyar al estudiante en riesgo de no alcanzar los objetivos propuestos y/o el
+          perfil profesional y proponer estrategias de apoyo a su formación; promover en el estudiante el desarrollo
+          de valores humanos, sociales, ecológicos, así como actitudes positivas hacia el aprendizaje y los propios de
+          la formación profesional; crear espacios y ambientes educativos de confianza que ayuden al alumno en su
+          desarrollo académico y personal; contribuir a la disminución de los índices de reprobación y deserción, a
+          través del incremento en el rendimiento académico de los estudiantes; incrementar el índice de eficiencia
+          terminal en todas las carreras del ITNL.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="creditos">
+  <div class="cont">
+    <div class="hideOnInit boxes" animateOnScroll animationName="animated forwards flipInX">
+      <h1 class="title">CRÉDITOS </h1>
+      <div class="textBox lineBlue">
+        <h1><i class="fas fa-user-circle"></i>Juan Felipe Garza Sánchez</h1>
+        <p>
+          Programador, enmaquetador y diseñador web
+        </p>
+      </div>
+      <div class="textBox lineBlue ">
+        <h1><i class="fas fa-user-circle"></i>Jessica Janet Grajeda Castellanos</h1>
+        <p>
+          Diseñadora gráfica y administradora de contenidos
+        </p>
+      </div>
+      <div class="textBox lineBlue ">
+        <h1><i class="fas fa-user-circle"></i>Emanuel Villanueva</h1>
+        <p>
+          Administrador de la base de datos
+        </p>
+      </div>
+      <div class="textBox lineBlue ">
+        <h1><i class="fas fa-user-circle"></i>Oswaldo Rodriguez Mendoza</h1>
+        <p>
+          Tester
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="cont">
+    <div class="textBox simpleWhite">
+      <h1>
+        <i class="fas fa-briefcase"></i>COORDINADOR INSTITUCIONAL DE TUTORÍAS
+      </h1>
+      <p>Mantiene una vinculación entre el Comité Promotor y todos los departamentos que ofrecen un servicio al
+        estudiante; así como de dar seguimiento al buen desarrollo de la acción tutorial del ITNL.</p>
+    </div>
+    <div class="textBox simpleWhite">
+      <h1><i class="fas fa-building"></i>UBICACIÓN DE LA COORDINACIÓN INSTITUCIONAL DE TUTORÍAS
+      </h1>
+      <p>Edificio Rojo del ITNL<br />
+        HORARIO 8:00 – 15:00 horas.</p>
+    </div>
+  </div>
+  <div class="footer">
+    <h2>ST CMS By: Juan Felipe Garza Sánchez</h2>
+  </div>
+</footer>

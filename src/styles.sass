@@ -1,3 +1,5 @@
+//    COLORS    
+
 $fontColor : #707070
 $blackColor : #333333
 $darkColor : #113F67
@@ -7,22 +9,54 @@ $auxiliarColor2 : #65C6C4
 $bgColor : white 
 $bgColor2 : #F6F6F6
 $bgColor3 : #F0F0F0
-$font :  'Nunito Sans', sans-serif
 
-   
-    
+
+//    FONTS    
+ 
+$font :  'Nunito Sans', sans-serif
+        
+
+//    MEDIA CONFIG    
+ 
+$laptop-width: 1200px
+$tablet-width: 800px
+$movil-width: 400px
+
+@mixin laptop
+    @media (max-width: #{$laptop-width}) 
+        @content
+
+@mixin tablet
+    @media (max-width: #{$tablet-width}) 
+        @content
+
+@mixin movil
+    @media (max-width: #{$movil-width}) 
+        @content
+
+
+//    GENERAL STYLES    
+
 *
     margin:0px
     padding:0px
     font-family: $font
     user-select: none
- 
+html
+    overflow-x: hidden
 body
     background: $bgColor
 .cont
     width: 100%
     height: 100%
-    max-width: 1200px    
+    max-width: 1200px   
+    @include laptop
+        max-width: #{$tablet-width}
+    @include tablet
+        max-width: 100%
+        padding:0px 20px
+    @include movil
+        
     
 .btn
     font-size:20px
@@ -31,7 +65,6 @@ body
     font-family: $font
     font-weight: bold
     height: 60px
-    width:200px
     margin-bottom: 5px
     font-weight: bold
     cursor: pointer
@@ -41,6 +74,7 @@ body
     justify-content: center
     align-items: center
     padding:0px
+    transition: 0.2s background
     i
         margin-right: 10px
         margin-left: -10px
@@ -49,34 +83,20 @@ body
         color: white
         border: 0px
         &:hover
-            &::after
-                content:  " "
-                position: absolute
-                width: 100%
-                height: 100%
-                background: #ffffff1c
-                left: 0px
-                top:0px
+            background: lighten($mainColor, 5%)
     &.float-dark
         background: $darkColor
         color: white
         border: 0px
         &:hover
-            &::after
-                content:  " "
-                position: absolute
-                width: 100%
-                height: 100%
-                background: #ffffff1c
-                left: 0px
-                top:0px
+            background: lighten($darkColor, 5%)
     &.float-white
         background: white
         color: $darkColor
         border: 2px solid $darkColor
         transition:0.2s background
         &:hover
-            background: $mainColor
+            background: $darkColor
             color: white
     &.push
         box-sizing: content-box
@@ -121,16 +141,21 @@ body
             border-bottom: 7px solid $darkColor
 
 .textBox
-    padding: 20px 20px
-    width: 500px
+    padding: 20px  0px 
     box-sizing: border-box
+    font-size: 16px
+    @include laptop
+        font-size: 14px
+    @include movil
+        font-size: 12px
+        padding: 0px
     h1
-        font-size: 20px
+        font-size: 1.5em
         i
             padding-right: 20px
             padding-bottom: 10px
     p
-        font-size: 18px
+        font-size: 1em
         color: $fontColor
         text-align: justify
         font-weight: 300
@@ -140,30 +165,28 @@ body
         h1
             color: $auxiliarColor2
             margin-top: -10px
-            font-size: 35px
         p
             color: white
-            font-size: 16px
     &.white
         padding: 40px
         background: white
         h1
             color: $mainColor
             margin-top: -10px
-            font-size: 35px
         p
             color: $fontColor
-            font-size: 16px
     &.black
         padding: 40px
         background: $blackColor
         h1
             color: $auxiliarColor2
             margin-top: -10px
-            font-size: 35px
         p
             color: white
-            font-size: 16px
+    &.simpleWhite
+        color: white
+        p
+            color: white
     &.simpleBlue
         color: $mainColor
     &.simpleDark
@@ -171,29 +194,49 @@ body
     &.simpleBlack
         color: $blackColor
     &.lineBlue
+        padding: 20px  20px 
         background: white
         border-left: 6px solid $mainColor
+        @include movil
+            padding: 20px 10px
+            border-left: 3px solid $mainColor
         h1
             color: $mainColor
         p 
             margin-left: 40px
+            @include movil
+                margin-left: 0px
+                margin-top: 15px
 
     &.lineDark
+        padding: 20px  20px 
         background: white
         border-left: 6px solid $darkColor
+        @include movil
+            padding: 20px 10px
+            border-left: 3px solid $mainColor
         h1
             color: $darkColor
         p 
             margin-left: 40px
+            @include movil
+                margin-left: 0px
+                margin-top: 15px
     &.lineBlack
+        padding: 20px  20px 
         background: white
         border-left: 6px solid $blackColor
+        @include movil
+            padding: 20px 10px
+            border-left: 3px solid $mainColor
         h1
             color: $blackColor
         p 
             margin-left: 40px
+            @include movil
+                margin-left: 0px
+                margin-top: 15px
         
-
 .title
     font-size: 34px
     color: $blackColor
@@ -201,10 +244,9 @@ body
     padding-bottom: 7px
     text-align: center
 
-
-
-
 .hideOnInit
     visibility: hidden
 .animated
     visibility: visible !important
+
+
