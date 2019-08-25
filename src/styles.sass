@@ -1,3 +1,6 @@
+
+
+    
 //    COLORS    
 
 $fontColor : #707070
@@ -9,6 +12,7 @@ $auxiliarColor2 : #65C6C4
 $bgColor : white 
 $bgColor2 : #F6F6F6
 $bgColor3 : #F0F0F0
+$shadow: 0px 0px 10px #0000001a
 
 
 //    FONTS    
@@ -16,12 +20,54 @@ $bgColor3 : #F0F0F0
 $font :  'Nunito Sans', sans-serif
         
 
-//    MEDIA CONFIG    
- 
+//    MEDIA CONFIG 
+$panel-min: 1550px
+$min-width: 1200px  
 $laptop-width: 1200px
 $tablet-width: 800px
 $movil-width: 400px
 
+
+// MATERIAL
+@import '~@angular/material/theming'
+
+
+
+@include mat-core()
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$candy-app-primary: mat-palette($mat-indigo)
+$candy-app-accent:  mat-palette($mat-light-blue, A200, A100, A400)
+
+// The warn palette is optional (defaults to red).
+$candy-app-warn:    mat-palette($mat-blue)
+
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn)
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($candy-app-theme)
+
+
+
+
+
+
+
+
+
+input, button
+    &:focus
+        outline-width: 0
+        outline: none
+
+@mixin panel
+    @media (max-width: #{$panel-min}) 
+        @content
 @mixin laptop
     @media (max-width: #{$laptop-width}) 
         @content
@@ -41,7 +87,7 @@ $movil-width: 400px
     margin:0px
     padding:0px
     font-family: $font
-    user-select: none
+    //user-select: none
 html
     overflow-x: hidden
 body
@@ -59,13 +105,11 @@ body
         
     
 .btn
-    font-size:20px
+    font-size: 1em
     box-sizing: border-box
     border-radius: 5px
     font-family: $font
     font-weight: bold
-    height: 60px
-    margin-bottom: 5px
     font-weight: bold
     cursor: pointer
     position: relative
@@ -73,102 +117,123 @@ body
     display: flex
     justify-content: center
     align-items: center
-    padding:0px
+    padding: 0.6em 1.3em
     transition: 0.2s background
     i
         margin-right: 10px
-        margin-left: -10px
     &.float
         background: $mainColor
-        color: white
+        p
+            color: white
+            font-weight: bold
+        i
+            color: white
         border: 0px
         &:hover
             background: lighten($mainColor, 5%)
     &.float-dark
         background: $darkColor
-        color: white
+        p
+            color: white
+            font-weight: bold
+        i
+            color: white
         border: 0px
         &:hover
             background: lighten($darkColor, 5%)
     &.float-white
         background: white
-        color: $darkColor
+        p
+            color: $darkColor
+            font-weight: bold
+        i
+            color: $darkColor
         border: 2px solid $darkColor
         transition:0.2s background
-        &:hover
-            background: $darkColor
-            color: white
+         
     &.push
-        box-sizing: content-box
-        height: 50px
         background: $mainColor
         border-bottom: 10px solid $darkColor
         border-top: 0px
         border-left: 0px
         border-right:0px
-        color: white
-        padding-top: 3px
+        p
+            color: white
+            font-weight: bold
+        i
+            color: white
         &:hover
-            margin-top:3px
+            margin-top: 3px !important
             border-bottom: 7px solid $darkColor
     &.push-dark   
-        box-sizing: content-box
-        height: 50px
         background: $darkColor
         border-bottom: 10px solid $auxiliarColor
         border-top: 0px
         border-left: 0px
         border-right:0px
-        color: white
-        padding-top: 3px
+        p
+            color: white
+            font-weight: bold
+        i
+            color: white
         &:hover
-            margin-top:3px
+            margin-top: 3px !important
             border-bottom: 7px solid $auxiliarColor
     
     &.push-white
-        box-sizing: content-box
-        height: 50px
         background: white
         border-bottom: 10px solid $darkColor
         border-top: 2px solid $darkColor
         border-left: 2px solid $darkColor
         border-right:2px solid $darkColor
-        color: $darkColor
+        p
+            color: $darkColor
+            font-weight: bold
+        i
+            color: $darkColor
         
-        padding-top: 3px
         &:hover
-            margin-top:3px
+            margin-top: 3px !important
             border-bottom: 7px solid $darkColor
 
 .textBox
     padding: 20px  0px 
     box-sizing: border-box
-    font-size: 16px
-    @include laptop
-        font-size: 14px
-    @include movil
-        font-size: 12px
-        padding: 0px
+    font-size: 1em
+    line-height: 1.7em
+    letter-spacing: .2pt
     h1
-        font-size: 1.5em
-        i
-            padding-right: 20px
-            padding-bottom: 10px
-    p
         font-size: 1em
+        font-weight: 800
+    i
+        padding-right: 20px
+        padding-right: .4em
+        font-weight: 800
+    p
+        font-size: .8em
         color: $fontColor
         text-align: justify
         font-weight: 300
+        line-height: 1.5em
+        margin-top: 0.6em
     &.dark
-        padding: 40px
+        padding: 2em
         background: $darkColor
         h1
             color: $auxiliarColor2
             margin-top: -10px
         p
             color: white
+    &.blue
+        padding: 2em
+        background: $mainColor
+        h1
+            color: white
+            margin-top: -10px
+        p
+            color: white
     &.white
-        padding: 40px
+        padding: 2em
         background: white
         h1
             color: $mainColor
@@ -176,7 +241,7 @@ body
         p
             color: $fontColor
     &.black
-        padding: 40px
+        padding: 2em
         background: $blackColor
         h1
             color: $auxiliarColor2
@@ -194,59 +259,187 @@ body
     &.simpleBlack
         color: $blackColor
     &.lineBlue
-        padding: 20px  20px 
+        padding: 1.4em
         background: white
-        border-left: 6px solid $mainColor
-        @include movil
-            padding: 20px 10px
-            border-left: 3px solid $mainColor
+        border-left: .4em solid $mainColor
         h1
             color: $mainColor
-        p 
-            margin-left: 40px
-            @include movil
-                margin-left: 0px
-                margin-top: 15px
 
     &.lineDark
-        padding: 20px  20px 
+        padding: 1.4em
         background: white
-        border-left: 6px solid $darkColor
-        @include movil
-            padding: 20px 10px
-            border-left: 3px solid $mainColor
+        border-left: .4em solid $darkColor
         h1
             color: $darkColor
-        p 
-            margin-left: 40px
-            @include movil
-                margin-left: 0px
-                margin-top: 15px
+ 
     &.lineBlack
-        padding: 20px  20px 
+        padding: 1.4em
         background: white
-        border-left: 6px solid $blackColor
-        @include movil
-            padding: 20px 10px
-            border-left: 3px solid $mainColor
+        border-left: .4em solid $blackColor
         h1
             color: $blackColor
-        p 
-            margin-left: 40px
-            @include movil
-                margin-left: 0px
-                margin-top: 15px
+  
         
-.title
-    font-size: 34px
-    color: $blackColor
-    border-bottom: 3px solid $mainColor
-    padding-bottom: 7px
-    text-align: center
 
+.input
+    &.normal
+        display: flex
+        font-size: 1em
+        cursor:  pointer
+        overflow: hidden
+        border-radius: 5px
+        border: 1px solid #ccc
+        i
+            color: white
+            background: $mainColor
+            height: 100%
+            padding: .8em
+            display: flex
+            justify-content: center
+            align-items: center
+            font-size: 1em
+            box-sizing: border-box
+        input
+            border: 0px
+            padding-left: .8em
+            font-size: 1em
+            width: 100%
+    &.simple
+        display: flex
+        font-size: 1em
+        cursor:  pointer
+        overflow: hidden
+        border-radius: 5px
+        border: 1px solid #ccc
+        i
+            color: $blackColor
+            height: 100%
+            padding: .8em
+            display: flex
+            justify-content: center
+            align-items: center
+            font-size: 1em
+        input
+            border: 0px
+            padding-left: 0px
+            font-size: 1em
+            width: 100%
+     
+
+
+
+.title
+    font-size: 1em
+    color: $blackColor
+    display: flex
+    letter-spacing: 0.12em
+    i, h1
+        font-size: 1em
+        font-weight: 900
+    &.leftBlue
+        border-left: .2em solid $mainColor
+        padding-left: .2em
+        i
+            padding-right: .5em
+    &.leftDark
+        border-left: .2em solid $darkColor
+        padding-left: .2em
+        i
+            padding-right: .5em
+    &.lineBlue
+        border-bottom: .2em solid $mainColor
+        padding-bottom: .2em
+        justify-content: center
+        i
+            padding-right: .5em
+    &.lineDark
+        border-bottom: .2em solid $darkColor
+        padding-bottom: .2em
+        justify-content: center
+        i
+            padding-right: .5em
+    &.solidBlue
+        align-items: center
+        background: $mainColor
+        i
+            padding: 1em
+            color: white
+            background: $darkColor
+        h1
+            padding-left: 1em
+            color: white
+    &.solidDark
+        align-items: center
+        background: $darkColor
+        i
+            padding: 1em
+            color: white
+            background: $mainColor
+        h1
+            padding-left: 1em
+            color: white
+
+    &.simple
+        i
+            padding-right: 0.5em
+
+        
 .hideOnInit
     visibility: hidden
 .animated
     visibility: visible !important
 
 
+.advice
+    font-size: 1em
+    display: flex
+    justify-content: center
+    align-items: center
+    color: white
+    padding: 1em
+    
+    i
+        font-size: 2em
+    .info
+        font-size: 1em
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
+        h1
+            font-size: 1em
+            font-weight: 900
+        p
+            font-size: .8em
+            font-weight: 300
+    &.blue
+        background: $mainColor
+    &.horizontal
+        flex-direction: row
+        .info
+            padding-left: 1em
+    &.vertical
+        flex-direction: column
+        .info
+            padding-top: 1em
+          
+
+.shadow
+    box-shadow: $shadow
+
+.box
+    .boxCont
+       padding: .8em
+       background: white
+       font-size: .85em
+    p
+        line-height: 1.5em
+        
+        
+        
+
+
+.baner
+    width: 100%
+    background: $mainColor
+    color: white

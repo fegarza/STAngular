@@ -1,0 +1,51 @@
+@import "../../../styles.sass"
+
+
+.container
+    background: url("/assets/img/float-boxes.svg") left /cover no-repeat, $mainColor
+    height: 100%
+    width: 100%
+    position:  absolute
+    left: 0px
+    top: 0px
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    font-size: 100px
+    box-sizing: border-box
+    padding-left: 80px
+    padding-top: 30px
+    h1
+        color: white
+        font-size:1em
+   
+    .pop
+        background: $darkColor
+        border-radius: 70px
+        margin-top: 20px
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        font-size: 30px
+        padding: 50px
+        position: relative
+        h2
+            color: white
+            font-size: 1em
+            margin-bottom: 20px
+        img
+            position: absolute
+            left: -80px
+            bottom: -6px
+            width: 150px
+        button
+            font-size: .8em
+            position: absolute
+            bottom: -30px
+            height: 60px
+            width: 300px
+            border: 0px
+            &:hover
+                cursor: pointer

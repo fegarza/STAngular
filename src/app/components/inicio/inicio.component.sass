@@ -1,12 +1,27 @@
-@import "../../styles.sass"
+@import "../../../styles.sass"
+.boxlogin
+    z-index: 100 
+
+// MENU LOGIC
+$navHeight: 70px
 
 
-.ok
-     animation: 1s bounce  forwards 
+//FONTS SIZING
+nav, header, section, footer
+    font-size: 18px
+    @include tablet
+        font-size: 15px
+    @include movil
+        font-size: 13px
+    .title
+        font-size: 1.4em
+
+
+
 
 nav
     background: $darkColor 
-    height: 80px
+    height: $navHeight
     display: flex
     justify-content: center
     padding:10px
@@ -27,6 +42,7 @@ nav
         @include tablet
             max-width: 100%
             width: 100%
+            padding: 0px
             justify-content: space-between
     .logo
         color: white
@@ -38,14 +54,14 @@ nav
         &:hover
             >.img
                 background: url(/assets/img/logoBlue.svg)  center no-repeat 
-                background-size: 150px
+                background-size: $navHeight + 30
             >p
                 color: #65C6C4
         .img
             background: url(/assets/img/logoWhite.svg)  center no-repeat 
-            background-size: 150px   
-            width: 90px
-            height: 90px
+            background-size: $navHeight + 30
+            width: $navHeight
+            height: $navHeight
             margin-right: 10px
         @include tablet
             &:hover
@@ -59,13 +75,12 @@ nav
                 margin-right: 0px
                 width: 80px
             p 
-                font-size: 18px
                 margin-left: -10px
     .menu
         width: 200px
         height: 100%
         @include movil
-            width: 120px
+            width: 150px
         ul
             display: flex
             justify-content: center
@@ -82,8 +97,6 @@ nav
                 cursor: pointer
                 height: 100%
                 font-weight: bold
-                @include movil
-                    font-size: 12px
                 i
                     margin-right: 10px
                     margin-left: -10px
@@ -91,27 +104,25 @@ nav
                     color: #65C6C4
                 
 header
-    height: 700px
-    background: url(/assets/img/header.png) no-repeat left 80px bottom 200px  /450px, url(/assets/img/white-wave.svg) no-repeat right bottom -2px /100%  $mainColor
+    height: 640px
+    background:  url(/assets/img/inicio/headerBg.svg)  center bottom /cover  no-repeat
     position: relative
     display: flex
     justify-content: center
+    align-items: center
     @include laptop
-        background: url(/assets/img/header.png) no-repeat left 80px bottom 200px  /450px, url(/assets/img/white-wave2.svg) no-repeat right bottom -2px  $mainColor
-        height: 500px
-    @include tablet
-        background: url(/assets/img/header.png) no-repeat left 0px bottom 40px  /450px, url(/assets/img/white-wave3.svg) no-repeat bottom -400px center /100%  $mainColor
+        height: 640px
     @include movil
         height: 300px
-        margin-top: 60px
+        margin-top: 60px       
     .cont
         display: flex
         justify-content: flex-start
         align-items: center
-        height: 500px
         position: relative
         @include laptop
             flex-direction: column
+            align-items: center
         @include movil
             height: 100%
             justify-content: center
@@ -121,45 +132,54 @@ header
             padding: 0px
         img
             position: absolute
-            right: 0px
-            bottom: -200px
+            right: -30px
+            bottom: 0px
             width: 650px
             @include laptop
                 position: relative
-                bottom: -25px 
                 width: 400px
+                right: 0px
+                margin-top: 20px
             @include movil
                 display: none
-    .welcome
-        width: 700px
-        @include laptop
-            width: 100%
-            display: flex
-            justify-content: center
-            flex-direction: column
-            align-items: center
-            margin-top: 40px
-        @include movil
-            margin: 0px
-        h1 
-            font-size: 85px
-            color: white
-            font-weight: 900
-            cursor: pointer
+        .welcome
+            width: 586px
             @include laptop
-                font-size: 60px
-                text-align: center
-            @include tablet
-                font-size: 50px
+                width: 100%
+                display: flex
+                justify-content: center
+                flex-direction: column
+                align-items: center
+                margin-top: 40px
             @include movil
-                font-size:40px
-        button
-            margin-top: 40px
-            width: 300px
-            &:focus
-                animation: 0.8s rubberBand forwards
-            @include movil
-                width: 95% 
+                margin: 0px
+            .txt
+                color: #d0eaff
+                font-size: 1.2em
+                font-weight: 300
+                word-spacing: .1em
+                margin-top: 20px
+                margin-bottom: 20px
+                @include tablet
+                    padding: 10px
+            h1 
+                line-height: 100px
+                font-size: 4.7em
+                color: white
+                font-weight: 900
+                cursor: pointer
+                @include laptop
+                    font-size: 3.3em
+                    text-align: center
+                @include tablet
+                    font-size: 50px
+                @include movil
+                    font-size:3em
+                    padding: 0px 20px
+            button
+                font-size: 1.4em
+                &:focus
+                    animation: 0.8s rubberBand forwards
         
 
 section
@@ -167,17 +187,15 @@ section
     justify-content: center
     &.Tutorias
         padding-bottom: 40px
-        margin-top: 40px
+        padding-top: 100px
+        width: 100%
+        height: 600px
+        background: url(/assets/img/float-boxes.svg) no-repeat, url(/assets/img/pc.png) right -5vw bottom /67vw no-repeat
         @include laptop
                 background: url(/assets/img/float-boxes.svg)  no-repeat , white
-                margin-top: 200px
                 height: auto
         @include movil
-            background: url(/assets/img/float-boxes.svg)  no-repeat , white
-            margin-top: 30px
-        width: 100%
-        height: 800px
-        background: url(/assets/img/float-boxes.svg)  no-repeat , url(/assets/img/pc.png) right 0px bottom no-repeat
+            background:  white
         .cont
             display: flex
             align-items: center
@@ -200,22 +218,35 @@ section
                     margin-bottom: 30px
                     @include laptop
                         width: 100%
+                        p
+                            margin-right: 0px
+                    @include movil
+                        border: 0px
+                       
                     &:nth-child(2)
                         margin-bottom: 0px
     &.objective
+        font-size: 1.3em
         height: auto
-        background: $bgColor2
+        background: url(/assets/img/objectives.png) right 10% center /40vw no-repeat ,$bgColor2
+        @include laptop
+            background: url(/assets/img/objectives.png) center /cover no-repeat , $bgColor2
+        @include movil
+            font-size: .8em
         .cont
+            padding-bottom: 40px
+            padding-top: 40px
             display: flex
             align-items: center
             justify-content: flex-start
-            background: url(/assets/img/objectives.png) right 0px bottom no-repeat
             background-size: contain
             @include laptop
                 justify-content: center
-                background: url(/assets/img/objectives.png) center center no-repeat
+                padding-top: 0px
+                padding-bottom: 0px
             @include tablet
                 background: $bgColor2
+                
             .left
                 height: 100%
                 width:630px
@@ -230,19 +261,25 @@ section
                     padding-bottom: 20px 
                 .textBox
                     width: 100%
-                .title
-                    border:0px
-                    color: $mainColor
+                    padding-right: 1em
+                    @include laptop
+                        padding: 1em
+                
     &.creditos
-        height: 600px
+        .title
+            width: 200px
+        height: auto
+        padding-bottom: 40px
+        padding-top: 40px
         @include tablet
             height: auto
             padding:  40px 10px
+
         .cont
-            background: url(/assets/img/creditos.png) right center no-repeat
             display: flex
             justify-content: flex-start
             align-items: center
+            flex-direction: column
             @include laptop
                 background: white
             @include movil
@@ -251,25 +288,19 @@ section
                         width: 100%
                         text-align: center
             .boxes
+                display: flex
+                width: 100%
+                justify-content: space-between
                 @include laptop
                         width: 100%
+                        flex-direction: column
                 .textBox
-                    width: 500px
+                    width: 280px
                     margin-top: 20px
+                    border-radius: 4px
                     @include laptop
                         width: 100%
-                    @include movil
-                        padding: 0px
-                        border-left:0px
-                        h1
-                            font-size: 15px
-                        p 
-                            font-size: 14px
-            .title
-                color: $mainColor
-                border:0px
-                text-align: left
-                
+                 
 
 footer
     background: $mainColor
@@ -280,10 +311,17 @@ footer
     .cont
         .textBox
             width: 100%
-            padding: 20px    
+            padding: 20px   0px
+            h1
+                font-size: 1
+                font-weight: 800
+            p
+                font-size: .8em
+                font-weight: 200
             &:nth-child(2)
                 border-top: 1px solid white
-          
+            @include laptop
+                padding: 20px
     .footer
         width: 100%
         h2
@@ -292,5 +330,5 @@ footer
             color: white
             text-align: center
             cursor: pointer
-            font-size: 20px
-            color: $auxiliarColor2
+            font-size: 1em
+          

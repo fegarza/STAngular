@@ -1,0 +1,89 @@
+@import "../../../styles.sass"
+.main
+    z-index: 200 !important
+    position: fixed
+    left: 0px
+    top: 0px
+    width: 100%
+    height: 100%
+    display: flex
+    justify-content:  center
+    align-items: center
+    background: #113f67b8
+    
+    .cont
+        display: flex
+        justify-content: center
+        align-items: center
+
+.login
+    z-index: 2
+    width: 500px
+    @include tablet
+        width: 95%
+    
+    height: auto
+    display: flex   
+    .left
+        display: flex
+        flex-direction: column
+        width: 100%
+        justify-content: center
+        align-items: center
+        padding: 25px
+        border-radius: 15px
+        height: 100%
+        box-sizing: border-box
+        overflow: hidden
+        background: white
+        @include movil
+            .textBox
+                display: none
+        form
+            width:100%
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            font-size: 30px
+            @include movil
+                font-size: 20px
+            h1
+                font-size: 1em
+                color: $blackColor
+                margin-bottom: 20px
+                margin-top: -20px
+                @include movil
+                    display: none
+        img
+            margin-top: -20px
+            height: 200px
+            @include movil
+                height: 150px
+        .input
+            width: 100%
+            margin-bottom: 20px
+            font-size: .6em
+        .buttons
+            width: 100%
+            display: flex
+            font-size: .6em
+            @include movil
+                flex-direction: column
+            button
+                width: 100%
+                font-size: 1em
+                @include movil
+                    font-size: 1.2em
+                &:nth-child(1)
+                    @include movil
+                        margin-bottom: 10px
+                &:nth-child(2)
+                    width: 200px
+                    margin-left: 20px
+                    @include movil
+                        margin: 0px
+                        width: 100%
+  
+
+        

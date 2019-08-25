@@ -8,35 +8,45 @@
     </div>
     <div class="menu">
       <ul>
-        <li (click)="Redireccionar('/login')">
+        <li (click)="AbrirLogin()">
           <i class="fas fa-user"></i>Login
         </li>
         <li
-          (click)="Redireccionar('http://www.itnuevolaredo.edu.mx/index.php?option=com_content&view=category&layout=blog&id=44&Itemid=50')">
+          (click)="Redirect('http://www.itnuevolaredo.edu.mx/index.php?option=com_content&view=category&layout=blog&id=44&Itemid=50')">
           <i class="fas fa-times-circle"></i>Salir
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+
+
 <header>
   <div class="cont">
     <div class="welcome">
-      <h1>BIENVENIDO AL SISTEMA DE TUTORÍAS</h1>
-      <button class="btn float-dark" routerLink="/login">
+      <h1>¡BIENVENIDO!</h1>
+      <p class="txt">Bienvenido al sistema de tutorías, obten todas las herramientas en un solo lugar y con la mayor
+        facilidad posible.</p>
+      <button class="btn float-dark" (click)="AbrirLogin()">
         <i class="fas fa-sign-in-alt"></i>
         <p>INICIAR SESIÓN</p>
       </button>
     </div>
-    <img src='/assets/img/device.png' class="animated forwards bounceInRight fast" />
+    <img src='/assets/img/inicio/laptop.png' class="animated forwards bounceInRight fast" />
   </div>
 </header>
+
+
 <section class="Tutorias">
   <div class="cont">
-    <h1 class="title">TUTORÍAS</h1>
+    <div class="title lineBlue">
+
+      <h1>TUTORÍAS</h1>
+    </div>
     <div class="boxes">
       <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft">
-        <h1><i class="fas fa-flag"></i>¿Qué son las tutorías?</h1>
+        <h1><i class="fas fa-question-circle"></i>¿QUÉ SON LAS TUTORÍAS?</h1>
         <p>
           La Tutoría se define como: “un proceso de acompañamiento, grupal o individual, que le brindan al estudiante
           profesores-tutores, durante su estancia en el Instituto Tecnológico, con el propósito de contribuir a su
@@ -44,7 +54,7 @@
         </p>
       </div>
       <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft">
-        <h1><i class="fas fa-flag"></i>¿Funciones del tutor?</h1>
+        <h1><i class="fas fa-chalkboard-teacher"></i>FUNCIONES DEL TUTOR</h1>
         <p>
           Identificar sus necesidades personales que requieren de la atención tutorial.
           Asistir puntualmente a las reuniones a que sea convocado por el tutor, a la hora y fecha indicada.
@@ -62,7 +72,7 @@
   <div class="cont">
     <div class="left">
       <div class="textBox simpleBlue">
-        <h1><i class="fas fa-flag"></i>Objetivos</h1>
+        <h1> OBJETIVOS</h1>
         <p>
           Brindar tutoría a todos los alumnos desde el primer semestre; desarrollar las potencialidades del estudiante
           para que alcance un mejor nivel de aprovechamiento a lo largo de su vida escolar; apoyar al estudiante en la
@@ -82,31 +92,28 @@
 </section>
 <section class="creditos">
   <div class="cont">
-    <div class="hideOnInit boxes" animateOnScroll animationName="animated forwards flipInX">
-      <h1 class="title">CRÉDITOS </h1>
-      <div class="textBox lineBlue">
+
+    <div class="title lineBlue">
+      <h1>CRÉDITOS</h1>
+    </div>
+
+    <div class="boxes">
+      <div class="textBox blue">
         <h1><i class="fas fa-user-circle"></i>Juan Felipe Garza Sánchez</h1>
-        <p>
-          Programador, enmaquetador y diseñador web
-        </p>
+        <p> Programador, enmaquetador y diseñador web </p>
       </div>
-      <div class="textBox lineBlue ">
-        <h1><i class="fas fa-user-circle"></i>Jessica Janet Grajeda Castellanos</h1>
-        <p>
-          Diseñadora gráfica y administradora de contenidos
-        </p>
+      <div class="textBox blue">
+        <h1><i class="fas fa-user-circle"></i>Jessica Janet Grajeda
+          Castellanos</h1>
+        <p> Diseñadora gráfica y administradora de contenidos </p>
       </div>
-      <div class="textBox lineBlue ">
+      <div class="textBox blue ">
         <h1><i class="fas fa-user-circle"></i>Emanuel Villanueva</h1>
-        <p>
-          Administrador de la base de datos
-        </p>
+        <p> Administrador de la base de datos </p>
       </div>
-      <div class="textBox lineBlue ">
+      <div class="textBox blue">
         <h1><i class="fas fa-user-circle"></i>Oswaldo Rodriguez Mendoza</h1>
-        <p>
-          Tester
-        </p>
+        <p> Tester </p>
       </div>
     </div>
   </div>
@@ -131,3 +138,6 @@
     <h2>ST CMS By: Juan Felipe Garza Sánchez</h2>
   </div>
 </footer>
+<app-login *ngIf="Login" (CloseEvent)="Login=$event" #login>
+
+</app-login>
