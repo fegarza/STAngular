@@ -10,7 +10,11 @@ import {
   MatRadioModule,
   MatDividerModule,
   MatTabsModule,
-  MatSliderModule
+  MatSliderModule,
+  MatSortModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSlideToggleModule
 } from '@angular/material';  
  
 const Componentes =  [
@@ -23,7 +27,11 @@ const Componentes =  [
   MatRadioModule,
   MatSliderModule,
   MatDividerModule,
-  MatTabsModule
+  MatTabsModule,
+  MatSortModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSlideToggleModule
 ];
 
 

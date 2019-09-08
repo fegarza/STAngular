@@ -14,15 +14,11 @@ export class AuthGuard implements   CanActivate{
    
   }
 
-   
-
   canActivate(){
-
+    //obtenemos el token
     var token: string = localStorage.getItem("token");
     if(token != null){
-
        return this.authService.comprobarToken(token).pipe(
-
         map(r => {
           if(r.code == 200){
             return true;
@@ -31,17 +27,11 @@ export class AuthGuard implements   CanActivate{
             this.router.navigate(['/']);
             return false;
           }
-
         },
-        error=>{
+        error => {
           this.router.navigate(['/']);
           return false;
-        })
-        
-
-      );
-
-    
+        }));
     }else{
       this.router.navigate(['/']);
       return false;

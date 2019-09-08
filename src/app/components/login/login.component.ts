@@ -1,9 +1,11 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component,  EventEmitter, Output } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth-service.service';
 import Swal from 'sweetalert2';
-import { Usuario } from '../../models/models';
+import { Usuario, Estudiante, Personal } from '../../models/models';
+ 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,50 +13,41 @@ import { Usuario } from '../../models/models';
 })
 
 
-export class LoginComponent implements OnInit {
+export class LoginComponent  {
 
   loginForm: FormGroup;
 
   @Output() public CloseEvent = new EventEmitter();
 
   constructor(private authService: AuthService, private router: Router) { 
-     
-    this.loginForm = this.CreateFormGroup();
-  }
-
-  Close(){
-    this.CloseEvent.emit(false);
-  }
-  ngOnInit() {
-
-  }
-
-  CreateFormGroup(){
-    return new FormGroup({
+    this.loginForm = new FormGroup({
       user: new FormControl(),
       password: new FormControl()
     });
   }
 
-  onSubmit(){
+  Close(){
+    this.CloseEvent.emit(false);
+  }
 
-    var miUsuario: Usuario;
+  onSubmit(){
+    var miUsuario : Usuario;
     var miCode: number;
     var mensaje: string = "";
     var user = this.loginForm.controls.user.value;
     var pw = this.loginForm.controls.password.value;
     
     
-    this.authService.entrar(user, pw)
-        .subscribe(
+    this.authService.entrar(user, pw).subscribe(
           r => {
             miCode = r.code;
             mensaje = r.mensaje;
             if (miCode == 200){
               miUsuario = r.data as Usuario;
               localStorage.setItem("token" , miUsuario.token);  
-              localStorage.setItem("user", JSON.stringify(miUsuario));
-              this.router.navigate(['/panel']);
+              localStorage.setItem("usuario" , JSON.stringify(miUsuario)); 
+              localStorage.setItem("id", this.authService.mostrarIdentificador(miUsuario.token));
+             this.router.navigate(['/panel']);
             }else{
                Swal.fire(
                 'Acerca del error:',
@@ -63,7 +56,7 @@ export class LoginComponent implements OnInit {
               )
             }
           },
-        );
+    );
     
 
     

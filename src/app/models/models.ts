@@ -1,41 +1,65 @@
- export class Usuario{
+export class Grupo{
     id: number;
+    salon: string;
+    tutor: Personal;
+    estudiantes: Array<Estudiante>;
+}
+
+export class Usuario{
+    id: number;
+    nombreCompleto: string;
     nombre: string;
     apellidoPaterno: string;
     apellidoMaterno: string;
-    correo: string;
+    email: string;
     genero: string;
     token: string;
     tipo: string;
+    clave: string;
+}
+export class Estudiante{
+    id:number;
+    usuario: Usuario;
+    numeroDeControl: string;
+    curp: string;
+    datosClinicos: DatoClinico;
+    datosGenerales: DatoGeneral;
+    grupo: Grupo;
+    sesiones: number;
+    creditos: number;
+    canalizaciones: number;
+    semestre: number;
+    //Modificaciones
+    grupoId: number;
 }
 
-class Persona{
-    nombre: string;
-    apellidos: string;
+
+export class Accion{
+    id: number;
+    personalId:number;
+    titulo: string;
+    contenido: string;
+    fecha: string;
 }
 
-class Parent extends Persona{
-    vive: boolean;
-    trabajo: string;
-    telefono: string;
+export class Departamento{
+    id: number;
+    titulo : string;
+}
+export class Cargo{
+    tipo: string;
+    titulo: string;
 }
 
 export class Personal {
-    id: number;
-    clave: "";
-    rango: number;
-}
-
-export class Estudiante {
-    id: number;
-    numeroDeControl: string =  "";
-    correo: string = "";
-    datosClinicos: DatoClinico;
-    datosGenerales: DatoGeneral;
-    usuario : Usuario;
-    ObtenerSemestre(){
-        return "Quinto semestre";
-    }
+    usuario: Usuario;
+    departamentoId: number;
+    cargo: string;
+    tutorados: number;
+    canalizaciones: number;
+    posts: number;
+    grupoId: number;
+   cve: string;
 }
 
 export class Carrera{
@@ -44,6 +68,31 @@ export class Carrera{
     clave:string = ""; 
 }
 
+
+export class Sesion{
+    id: number;
+    accionTutorialId: number;
+    departamentoId: number;
+    fecha: string;
+}
+
+
+
+
+
+
+
+//FORMULARIO DE CONFIG
+
+class Persona{
+    nombre: string;
+    apellidos: string;
+}
+class Parent extends Persona{
+    vive: boolean;
+    trabajo: string;
+    telefono: string;
+}
 class DatoGeneral{
     //Parents
     Madre: Parent;
