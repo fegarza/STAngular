@@ -7,7 +7,7 @@
 
                                         </div>
                                         <h1>
-                                                {{ miEstudiante.nombreCompleto | titlecase  }}
+                                                {{ miEstudiante.usuario.nombreCompleto | titlecase  }}
                                         </h1>
                                 </div>
                         </div>
@@ -45,8 +45,16 @@
                         </div>
                 </div>
         </section>
-        
-        <div class="box simple shadow">
+        <div class="box simple shadow" *ngIf="tipo == 'A' || tipo == 'J' || tipo == 'D'">
+                        <div class="title solidBlue ">
+                                <i class="fas fa-flag"></i>
+                                <h1>Datos</h1>
+                        </div>
+                        <div class="boxCont">
+                                
+                        </div>
+                </div>
+        <div class="box simple shadow" *ngIf="tipo == 'A' || tipo == 'J' || tipo == 'D'">
                 <div class="title solidBlue ">
                         <i class="fas fa-flag"></i>
                         <h1>Acciones</h1>
@@ -57,7 +65,14 @@
                                 <p>Asignar grupo</p>
                         </button>
                         <br>
-                        <button class="btn float">
+                        <button class="btn float-dark" (click)="asignarSesiones()">
+                                        <i class="fas fa-flag"></i>
+                                        <p>Establecer sesiones iniciales</p>
+                                </button>
+                                <br>
+
+                        
+                        <button class="btn float" (click)="canalizar()">
                                 <i class="fas fa-flag"></i>
                                 <p>Canalizar</p>
                         </button>

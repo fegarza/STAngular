@@ -3,12 +3,12 @@
     z-index: 100 
 
 // MENU LOGIC
-$navHeight: 70px
+$navHeight: 50px
 
 
 //FONTS SIZING
 nav, header, section, footer
-    font-size: 18px
+    font-size: 17px
     @include tablet
         font-size: 15px
     @include movil
@@ -104,7 +104,7 @@ nav
                     color: #65C6C4
                 
 header
-    height: 640px
+    height: 500px
     background:  url(/assets/img/inicio/headerBg.svg)  center bottom /cover  no-repeat
     position: relative
     display: flex
@@ -133,12 +133,13 @@ header
         img
             position: absolute
             right: -30px
-            bottom: 0px
+            bottom: -82px
             width: 650px
             @include laptop
                 position: relative
                 width: 400px
                 right: 0px
+                bottom: 0px
                 margin-top: 20px
             @include movil
                 display: none

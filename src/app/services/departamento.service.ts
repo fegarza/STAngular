@@ -18,6 +18,9 @@ export class DepartamentoService {
   get(id: string){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/"+id );
   }
+  showAcciones(id: string){
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/"+id+"/AccionesTutoriales");
+  }
 
 
 }

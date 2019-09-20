@@ -21,4 +21,5 @@ export class AccionService {
   showAll(){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Acciones/");
   }
+  
 }

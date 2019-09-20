@@ -14,7 +14,7 @@ export class PersonalesComponent implements OnInit {
 
   personales: Array<Personal> = new Array<Personal>();
   dataSource = new MatTableDataSource(this.personales);
-  displayedColumns: string[] = ['nombre', 'cargo', 'tutorados', 'ver'];
+  displayedColumns: string[] = ['nombre', 'cargo', 'tutorados', 'departamento', 'ver'];
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 

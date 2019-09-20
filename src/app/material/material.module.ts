@@ -14,7 +14,8 @@ import {
   MatSortModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatCheckboxModule
 } from '@angular/material';  
  
 const Componentes =  [
@@ -31,7 +32,8 @@ const Componentes =  [
   MatSortModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatCheckboxModule
 ];
 
 

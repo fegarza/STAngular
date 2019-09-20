@@ -43,10 +43,13 @@ import { ConstantsService } from './services/constants.service';
 import { EstudianteService } from './services/estudiante.service';
 import { PersonalService } from './services/personal.service';
 import { GrupoService } from './services/grupo.service';
+import { TituloService } from './services/titulo.service';
 import { PersonalesComponent } from './components/panel-components/personales/personales.component';
 import { EstudiantesComponent } from './components/panel-components/estudiantes/estudiantes.component';
 import { GruposComponent } from './components/panel-components/grupos/grupos.component';
 import { CanalizacionesComponent } from './components/panel-components/canalizaciones/canalizaciones.component';
+import { AtencionService } from './services/atencion.service';
+import { CanalizacionService } from './services/canalizacion.service';
 
 
 @NgModule({
@@ -83,7 +86,10 @@ import { CanalizacionesComponent } from './components/panel-components/canalizac
     ConstantsService,
     EstudianteService,
     PersonalService,
+    TituloService,
     GrupoService,
+    AtencionService,
+    CanalizacionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

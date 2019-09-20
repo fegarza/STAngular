@@ -32,6 +32,18 @@ export class EstudianteService {
     return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/",  JSON.stringify(registro),   { headers: headers } );
    }
 
+   asignarSesiones(numeroDeControl: string, sesiones: number){
+    var estudianteEditar : Estudiante = new Estudiante();
+        
+    estudianteEditar.numeroDeControl = numeroDeControl;
+    estudianteEditar.sesionesIniciales = sesiones;
+
+   
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');    
+     return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/",  JSON.stringify(estudianteEditar),   { headers: headers } );
+   }
    asignarGrupo(numeroDeControl: string, grupoId: number){
     var estudianteEditar : Estudiante = new Estudiante();
         

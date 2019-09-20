@@ -6,7 +6,7 @@
                                         <div class="profImg">
 
                                         </div>
-                                        <h1>{{ miPersonal.nombreCompleto | titlecase }}</h1>
+                                        <h1>{{ miPersonal.usuario.nombreCompleto | titlecase }}</h1>
                                 </div>
                         </div>
 
@@ -39,8 +39,14 @@
         <div class="textBox lineBlue">
                 <h1><i class="fas fa-flag"></i>Datos</h1>
                 <p>
-                        Email: {{ miPersonal.correo }} <br>
-                        Genero: {{ miPersonal.genero == "M" ? "mujer" : "hombre" }} <br>
+                        Cargo:  {{miPersonal.cargo == "A" ? "Administrador" : ""}}
+                                {{miPersonal.cargo == "C" ? "Coordinador" : ""}}
+                                {{miPersonal.cargo == "D" ? "Jefe de departamento" : ""}}
+                                {{miPersonal.cargo == "J" ? "Jefe de tutorias" : ""}}
+                                {{miPersonal.cargo == "T" ? "Tutor" : ""}}<br>
+                        Email: {{ miPersonal.usuario.email }} <br>
+                        Genero: {{ miPersonal.usuario.genero == "M" ? "Mujer" : "Hombre" }} <br>
+                        Departamento: {{ miPersonal.departamento.titulo | titlecase }} <br>
                 </p>
         </div>
         <div class="box simple shadow" *ngIf="miPersonal.cargo != 'A'">

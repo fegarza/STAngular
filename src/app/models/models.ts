@@ -1,10 +1,3 @@
-export class Grupo{
-    id: number;
-    salon: string;
-    tutor: Personal;
-    estudiantes: Array<Estudiante>;
-}
-
 export class Usuario{
     id: number;
     nombreCompleto: string;
@@ -19,7 +12,7 @@ export class Usuario{
 }
 export class Estudiante{
     id:number;
-    usuario: Usuario;
+    usuario: Usuario = new Usuario();
     numeroDeControl: string;
     curp: string;
     datosClinicos: DatoClinico;
@@ -31,15 +24,14 @@ export class Estudiante{
     semestre: number;
     //Modificaciones
     grupoId: number;
+    sesionesIniciales: number;
+    presente: boolean = false;
 }
 
 
-export class Accion{
+export class Titulo{
     id: number;
-    personalId:number;
     titulo: string;
-    contenido: string;
-    fecha: string;
 }
 
 export class Departamento{
@@ -52,28 +44,64 @@ export class Cargo{
 }
 
 export class Personal {
-    usuario: Usuario;
+    usuario: Usuario = new Usuario();
+    departamento: Departamento = new Departamento();
     departamentoId: number;
     cargo: string;
     tutorados: number;
     canalizaciones: number;
     posts: number;
     grupoId: number;
-   cve: string;
+    cve: string;
+    tituloId: number;
+    titulo: Titulo;
 }
-
-export class Carrera{
-    id: number;
-    nombre:string = "";
-    clave:string = ""; 
-}
-
 
 export class Sesion{
     id: number;
     accionTutorialId: number;
     departamentoId: number;
     fecha: string;
+    asistencia: Array<Estudiante>
+}
+export class Grupo{
+    id: number;
+    salon: string;
+    tutor: Personal = new Personal();
+    estudiantes: Array<Estudiante>;
+    sesiones: Array<Sesion>;
+}
+
+export class Accion{
+    id: number;
+    personalId:number;
+    titulo: string;
+    contenido: string;
+    fecha: string;
+    obligatorio: boolean;
+}
+
+export class Atencion{
+    id: number;
+    areaId: number;
+    titulo: string;
+}
+
+export class Canalizacion{
+    id: number;
+    personalId: number;
+    estudianteId: number;
+    atencionId: number;
+    descripcion: string;
+    fecha: string;
+    estado: string;
+}
+
+
+export class Carrera{
+    id: number;
+    nombre:string = "";
+    clave:string = ""; 
 }
 
 
@@ -152,3 +180,4 @@ class DatoClinico{
     eTartamuedo: number;
     eMiedo: number;
 }
+

@@ -554,6 +554,14 @@
               <input matInput placeholder="Clave" formControlName="password"  value="">
             </mat-form-field>
             <mat-form-field>
+              <mat-label>Titulo</mat-label>
+              <mat-select formControlName="titulo">
+                <mat-option *ngFor="let d of titulos" [value]="d.id">
+                  {{d.titulo}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
               <mat-label>Departamento</mat-label>
               <mat-select formControlName="departamento">
                 <mat-option *ngFor="let d of departamentos" [value]="d.id">
@@ -576,11 +584,16 @@
                 <mat-radio-button value="M">Mujer</mat-radio-button>
               </mat-radio-group>
           </div>
-            <button  class="btn float">
+            <button  class="btn float-dark">
               <i class="fas fa-sign-in-alt"></i>
               <p>GUARDAR CAMBIOS</p>
             </button>
-
+            <br>
+            <button  [routerLink]="['/panel/personales']" class="btn float">
+                <i class="fas fa-sign-in-alt"></i>
+                <p>MOSTRAR PERSONAL</p>
+            </button>
+            
           </form>
 
         </mat-tab>
@@ -635,7 +648,7 @@
             </div>
             <mat-form-field>
               <mat-label>Departamento</mat-label>
-              <mat-select formControlName="departamento">
+              <mat-select formControlName="departamento"  (ngModelChange)="cargarAcciones($event)">
                 <mat-option *ngFor="let d of departamentos" [value]="d.id">
                   {{d.titulo}}
                 </mat-option>
