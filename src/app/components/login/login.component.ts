@@ -3,7 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth-service.service';
 import Swal from 'sweetalert2';
-import { Usuario, Estudiante, Personal } from '../../models/models';
+import { Usuario } from '../../models/models';
  
 
 @Component({
@@ -15,6 +15,7 @@ import { Usuario, Estudiante, Personal } from '../../models/models';
 
 export class LoginComponent  {
 
+  public loading: boolean = false;
   loginForm: FormGroup;
 
   @Output() public CloseEvent = new EventEmitter();
@@ -31,6 +32,7 @@ export class LoginComponent  {
   }
 
   onSubmit(){
+    this.loading = true;
     var miUsuario : Usuario;
     var miCode: number;
     var mensaje: string = "";
@@ -43,12 +45,17 @@ export class LoginComponent  {
             miCode = r.code;
             mensaje = r.mensaje;
             if (miCode == 200){
+              this.loading = false;
               miUsuario = r.data as Usuario;
-              localStorage.setItem("token" , miUsuario.token);  
+              if(miUsuario.estudiante == null){
+                miUsuario.tipo = "P"
+              }else{
+                miUsuario.tipo = "E"
+              }
               localStorage.setItem("usuario" , JSON.stringify(miUsuario)); 
-              localStorage.setItem("id", this.authService.mostrarIdentificador(miUsuario.token));
-             this.router.navigate(['/panel']);
+              this.router.navigate(['/panel']);
             }else{
+              this.loading = false;
                Swal.fire(
                 'Acerca del error:',
                 mensaje,

@@ -1,0 +1,275 @@
+@import "src/styles.sass"
+
+$margin : 1em
+$menuWidth: 300px
+
+ 
+.poster
+    background: url(/assets/img/panel/header.png) center /contain no-repeat
+    width: 100%
+    height: 500px
+
+.avisos
+    margin-bottom:20px
+    .cont
+        display: grid
+        grid-template-rows: 300px
+        grid-template-columns: 1fr 1fr 1fr
+        grid-column-gap: 10px
+        .aviso
+            align-self: stretch
+            display: flex
+            flex-direction: column
+            .top
+                background: $mainColor
+                display: flex
+                justify-content: center
+                align-items: center
+                height: 100%
+                i
+                    color: white
+                    font-size: 7em
+            .bottom
+                background: white
+                box-sizing: border-box
+                min-height: 120px
+                padding:20px
+                h1
+                    font-size: 1.3em
+                    color: $blackColor
+                    margin-bottom:6px
+                p
+                    font-size: 1m
+                    font-weight: 200
+                    color: $blackColor
+
+table, section
+    width:100%
+    max-width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+a
+    color: $blackColor
+    text-decoration: none
+    &:hover
+        color: $mainColor
+        cursor: pointer
+ 
+
+nav
+    height: 50px
+    min-height: 50px
+    width: 100%
+    position: fixed
+    left: 0px 
+    top: 0px
+    background: $mainColor
+    display: flex
+    z-index: 20
+    .left
+        min-width: $menuWidth
+        width: $menuWidth
+        @include laptop
+            width: 200px
+            min-width: 200px
+        @include tablet
+            display: none
+        background: $darkColor
+        height: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        .logo
+            color: white
+            font-size: 1em
+            font-weight: 900
+            display: flex
+            align-items: center
+            cursor: pointer
+            &:hover
+                >.img
+                    background: url(/assets/img/logoBlue.svg)  center no-repeat 
+                    background-size: 5em
+                >p
+                    color: #65C6C4
+            .img
+                background: url(/assets/img/logoWhite.svg)  center no-repeat 
+                background-size: 5em 
+                width: 60px
+                height: 40px
+    .right
+        width: 100%
+        height: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        .cont
+            display: flex
+            justify-content: space-between 
+            align-items: center
+            .prof
+                display: flex
+                align-items: center
+                .profImg
+                    background: url( /assets/img/panel/perfil.png) center /cover, $mainColor
+                    width:30px 
+                    height: 30px
+                    border-radius: 50%
+                h3
+                    font-size: 1em
+                    color: white
+                    font-weight: 700
+                    margin-left: 20px
+            .menu
+                background: none
+                height: 100%
+                width: auto
+                min-width: auto
+                box-shadow: none
+                font-size: 1em
+                ul
+                    height: 100%
+                    width: 100%
+                    justify-content: space-between
+                    margin: 0px
+                    list-style: none
+                    display: flex
+                    align-items: center
+                    flex-direction: row
+                    li
+                        color: white
+                        padding: 10px
+                        font-size: 1em
+
+
+.panel
+    font-size: 15px
+    position: absolute
+    left: 0px
+    top: 0px
+    width: 100%
+    height: 100%
+    max-height: 100%
+    max-width: 100%
+    background: $bgColor3
+    .menu
+        width: $menuWidth
+        min-width: $menuWidth
+        @include laptop
+            width: 200px
+            min-width: 200px
+        @include tablet
+            display: none
+        height: 100%
+        background: white
+        display: flex
+        flex-direction: column
+        align-items: center
+        box-shadow:  $shadow
+        .profImg
+            margin-top: $margin
+            margin-bottom: $margin
+            background: url(/assets/img/panel/perfil.png) center /cover, $mainColor
+            width:160px 
+            height: 160px
+            min-height: 160px
+            border-radius: 50%
+            @include laptop
+                width: 100px
+                height: 100px
+                min-height: 100px
+        ul
+            display: flex
+            flex-direction: column
+            list-style: none
+            width: 100%
+            li
+                padding: 15px 40px
+                cursor: pointer
+                font-size: 1em
+                display: flex
+                justify-content: flex-start
+                align-items: center
+                color: #474C58
+                font-weight: 750px 
+                &.selected
+                    background: #E5ECF2
+                    color: darken(#474C58, 100%)
+                i
+                    margin-right: 15px
+                ul
+                    padding:0px 40px
+                    li
+                        font-size:.85em
+    @include panel
+        font-size: 13px
+    @include laptop
+        font-size: 12px
+.panelCont
+    width: 100%
+    height: calc(100% - 50px) 
+    display: flex
+    margin-top: 50px
+
+
+.container
+    position: relative
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    overflow: auto
+    box-sizing: border-box
+    .cont
+        height: 100%
+        max-height: 100%
+        //GENERAL PANEL CONT FONT-SIZE
+        font-size: 1em
+        
+.menuMovil
+    height: 100% 
+    padding: 10px 
+    box-sizing: border-box 
+    display: none 
+    justify-content: center 
+    align-items: center 
+    color: white 
+    font-size: 1.9em 
+    cursor: pointer 
+    z-index: 100
+    @include tablet
+        display: flex
+.menuMovilCont
+    background: $darkColor
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 20
+    h1
+        margin: 0.67em 0
+        font-size: 1.4em
+        padding: 8px 0px
+        color: white
+        cursor: pointer
+    .btnClose
+        font-size: 2em
+        position: absolute
+        z-index: 21
+        top: 0
+        right: 0
+        color: white
+        padding: 15px
+        cursor: pointer
+        &:hover
+            color: auxiliarColor2
+
+       
+    

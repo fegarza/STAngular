@@ -1,0 +1,66 @@
+<header>
+        <div class="cont">
+                <div class="profImg">
+
+                </div>
+                <div class="info">
+                        <h1>
+                                {{ miEstudiante.usuario.nombreCompleto | titlecase  }}
+                        </h1>
+                        <p>Estudiante</p>
+                </div>
+                <div class="settings" [matMenuTriggerFor]="appMenu" *ngIf="permisoDeModificar">
+                        <mat-menu #appMenu="matMenu">
+                                <button mat-menu-item (click)="asignarGrupo()">
+                                        <i class="fas fa-flag"></i>
+                                        <p>Asignar grupo</p>
+                                </button>
+                                <button mat-menu-item (click)="asignarSesiones()">
+                                        <i class="fas fa-flag"></i>
+                                        <p>Establecer sesiones iniciales</p>
+                                </button>
+                                <button mat-menu-item (click)="canalizar()">
+                                        <i class="fas fa-flag"></i>
+                                        <p>Canalizar</p>
+                                </button>
+
+                        </mat-menu>
+
+                        <i class="fas fa-ellipsis-h"></i>
+                </div>
+        </div>
+</header>
+
+<section>
+        <div class="cont advices">
+                <div class="advice blue horizontal">
+                        <i class="fas fa-trophy"></i>
+                        <div class="info">
+                                <h1> {{ miEstudiante.creditos   }}</h1>
+                                <p>Créditos</p>
+                        </div>
+                </div>
+                <div class="advice blue horizontal">
+                        <i class="fas fa-clipboard-check"></i>
+                        <div class="info">
+                                <h1> {{ miEstudiante.sesiones  }}</h1>
+                                <p>Sesiones</p>
+                        </div>
+                </div>
+                <div class="advice blue horizontal">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div class="info">
+                                <h1> {{ miEstudiante.semestre   }}</h1>
+                                <p>Semestre</p>
+                        </div>
+                </div>
+                <div class="advice blue horizontal">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div class="info">
+                                <h1> {{ miEstudiante.canalizaciones   }}</h1>
+                                <p>Canalizaciones</p>
+                        </div>
+                </div>
+        </div>
+
+</section>

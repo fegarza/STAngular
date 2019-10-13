@@ -1,0 +1,244 @@
+@import "src/styles.sass"
+
+
+
+/*
+    GENERICO
+    */
+.mat-table
+    box-shadow: 0px 0px 0px white
+
+
+
+nav
+    height: 65px
+    min-height: 65px
+    width: 100%
+    position: fixed
+    left: 0px 
+    top: 0px
+    background: white
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 20
+    .left
+        width: 65px
+        height: 100%
+        min-width: 65px
+        background: $auxiliarColor
+        box-sizing: border-box
+        display: flex
+        justify-content: center
+        align-items: center
+        color: white
+        font-size: 1.4em
+        cursor: pointer
+        transition: min-width 0.3s  
+    .right
+        width:100%
+        display: flex
+        justify-content: space-between 
+        align-items: center
+        box-sizing: border-box
+        padding: 0px 20px
+        .prof
+            display: flex
+            align-items: center
+            cursor: pointer
+            .profImg
+                background: url( /assets/img/panel/perfil.png) center /cover, $mainColor
+                width:30px 
+                height: 30px
+                border-radius: 50%
+            h3
+                font-size: 1em
+                color: $darkColor
+                font-weight: 700
+                margin-left: 20px       
+
+
+
+
+
+section
+    display: flex
+    justify-content: center
+    align-items: center
+ 
+.mat-accordion
+    table
+        box-shadow: none
+        border: 1px solid #e0e0e0
+
+table
+    width:100%
+a
+    color: $blackColor
+    text-decoration: none
+    &:hover
+        color: $mainColor
+        cursor: pointer
+
+.container
+    .cont
+        width: 100%
+        max-width: 1200px
+        box-sizing: border-box
+        @include laptop
+            max-width: 1000px
+        @include tablet    
+            max-width: 600px
+        @include movil    
+            max-width: 100% 
+
+.panel
+    font-size: 15px
+    position: absolute
+    left: 0px
+    top: 0px
+    width: 100%
+    height: 100%
+    max-height: 100%
+    max-width: 100%
+    background: $bgColor3
+    display: flex
+    box-sizing: border-box
+    padding-top: 65px
+    @include panel
+        font-size: 13px
+    @include laptop
+        font-size: 12px
+    .left
+        width: 65px
+        min-width: 65px
+        height: 100%
+        display: flex
+        flex-direction: column
+        background: $darkColor
+        overflow: hidden
+        transition: min-width 0.3s  
+        ul
+            display: flex
+            flex-direction: column
+            li
+                box-sizing: border-box
+                cursor: pointer
+                height: 65px
+                display: flex
+                align-items: center
+                font-weight: 700
+                color: white
+                &:hover
+                    color: $auxiliarColor2
+                    
+                i 
+                    width: 65px
+                    min-width: 65px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                p
+                    font-size: .9em
+    .right
+        width:100%
+        height:100%
+        .panelCont
+            width: 100%
+            height: 100%
+            overflow-y: scroll
+
+ 
+ 
+.menuMovil
+    font-size: 1em
+    position: fixed
+    left: 0
+    top: 0
+    height: 100%
+    width: 250px
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 200
+    padding-top: 65px
+    box-sizing: border-box
+    .cont
+        box-shadow: $shadow
+        width: 100%
+        background: white
+        height: 90%
+        overflow: hidden
+        border-radius: 0px 20px 20px 0px
+        padding:0px !important
+        .bottom
+            display: flex
+            flex-direction: column
+            align-items: center
+            .profImg
+                background: url( /assets/img/panel/perfil.png) center /cover, $mainColor
+                width:150px 
+                height: 150px
+                border-radius: 50%
+                margin-top: 20px
+                margin-bottom: 20px
+            .opciones
+                width: 100%
+                ul
+                    display: flex
+                    flex-direction: column
+                    li
+                        padding: 25px 
+                        box-sizing: border-box
+                        cursor: pointer
+                        height: 30px
+                        display: flex
+                        align-items: center
+                        font-weight: 200
+                         
+                        &:hover
+                            background: #ebebeb
+                        i 
+                            width: 40px
+                        
+
+        .top
+            height: 50px
+            display: flex
+            .right
+                width: 50px
+                min-width: 40px
+                height: 50px
+                background: $darkColor
+                cursor: pointer
+                color: white
+                display: flex
+                justify-content: center
+                align-items:  center
+            .left
+                width: 100%
+                background: $mainColor
+                display: flex
+                justify-content: center
+                align-items: center
+                .logo
+                    color: white
+                    font-size: 1em
+                    font-weight: 900
+                    display: flex
+                    align-items: center
+                    cursor: pointer
+                    &:hover
+                        >.img
+                            background: url(/assets/img/logoBlue.svg)  center no-repeat 
+                            background-size: 5em
+                        >p
+                            color: #65C6C4
+                    .img
+                        background: url(/assets/img/logoWhite.svg)  center no-repeat 
+                        background-size: 5em 
+                        width: 60px
+                        height: 40px
+
+       
+    

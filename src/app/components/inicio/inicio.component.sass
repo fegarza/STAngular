@@ -3,7 +3,7 @@
     z-index: 100 
 
 // MENU LOGIC
-$navHeight: 50px
+$navHeight: 65px
 
 
 //FONTS SIZING
@@ -17,6 +17,24 @@ nav, header, section, footer
         font-size: 1.4em
 
 
+.frame
+    position: absolute
+    right: 42px
+    bottom: 109px
+    z-index: 200
+    width: 500px
+    height: 310px
+    overflow: hidden
+    border-radius: 5px
+    @include laptop
+        position: relative
+        width: 311px
+        right: 0px
+        bottom: 0px
+        margin-top: -308px
+        height: 190px
+        @include movil
+            display: none
 
 
 nav
@@ -299,6 +317,8 @@ section
                     width: 280px
                     margin-top: 20px
                     border-radius: 4px
+                    p
+                        text-align: left
                     @include laptop
                         width: 100%
                  

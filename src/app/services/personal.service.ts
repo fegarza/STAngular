@@ -15,13 +15,19 @@ export class PersonalService {
   get(id: string){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Personales/"+id );
    }
+   getPage(cant: number, pag: number ){
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Personales?cant="+cant+"&pag="+pag );
+   }
    showAll(){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Personales/" );
    }
    showAllTec(){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Personales/Tec" );
    }
-    
+  showGrupo(id: string){
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Personales/"+id+"/grupo" );
+
+  }
     
 
    add(personal: Personal){

@@ -16,6 +16,9 @@ export class EstudianteService {
    get(numeroControl: string){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/"+numeroControl );
    }
+   getPage(cant: number, pag: number ){
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes?cant="+cant+"&pag="+pag );
+   }
 
    add(miEstudiante: Estudiante){
      const headers = new HttpHeaders()

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { IRespuesta } from '../models/respuesta';
-import { Usuario, Estudiante, Personal } from '../models/models';
+import { Usuario } from '../models/models';
 import { ConstantsService } from './constants.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
 
@@ -13,15 +13,29 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 
 export class AuthService {
   
-  constructor(private http: HttpClient,private constants: ConstantsService) {
+  constructor(private http: HttpClient,private constants: ConstantsService ) {
 
   }
+  isAuthorized(allowedRoles: string[]): boolean {
+    // check if the list of allowed roles is empty, if empty, authorize the user to access the page
+    if (allowedRoles == null || allowedRoles.length === 0) {
+      return true;
+    }
 
-
-  //TOKENS
-  traerToken() {
-    var token = localStorage.getItem("token");
-    return token;
+    
+    // get token from local storage or state management
+   const token = this.traerUsuario().token;
+  
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+  
+  // check if it was decoded successfully, if not the token is not valid, deny access
+    if (!decodedToken) {
+      console.log('Invalid token');
+      return false;
+    }
+  // check if the user roles is in the list of allowed roles, return true if allowed and false if not allowed
+    return allowedRoles.includes(decodedToken['rol']);
   }
 
   mostrarInformacionToken(token: string){
@@ -35,70 +49,11 @@ export class AuthService {
     console.log("Fecha de expiracion: "+ expirationDate );
     console.log("Esta expirado? : "+ isExpired );
   }
-
-  mostrarTipo(): string{
-    var token = localStorage.getItem("token");
-    if(token != null){
-      const helper = new JwtHelperService();
-      const decodedToken = helper.decodeToken(token);
-      return decodedToken["rol"];
-    }else{
-      return null;
-    }
-  }
-  isEstudiante(): boolean{
-    if(this.mostrarTipo() == "E"){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  isAdmin(): boolean{
-    if(this.mostrarTipo() == "A"){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  isTutor(): boolean{
-    if(this.mostrarTipo() == "T"){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  isJefeTutor(): boolean{
-    if(this.mostrarTipo() == "J"){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  isJefeDepartamento(): boolean{
-    if(this.mostrarTipo() == "D"){
-      return true;
-    }else{
-      return false;
-    }
-  }
-
-  
-  mostrarIdentificador(token: string): string{
-    if(localStorage.getItem("token") != null){
-      const helper = new JwtHelperService();
-      const decodedToken = helper.decodeToken(token);
-      return decodedToken["identificador"];
-    }else{
-      return null;
-    }
-  }
-
   comprobarToken(token: string) {
     const params2 = new HttpParams()
       .set('token', token);
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Usuarios/type", { params: params2 });
   }
-  
   traerUsuario() : Usuario{
     if(localStorage.getItem("usuario") != null){
       return JSON.parse(localStorage.getItem("usuario")) as Usuario;
@@ -106,7 +61,6 @@ export class AuthService {
       return null;
     }
   }
- 
   //LOGIN
   entrar(user: string, pw: string) {
     const params = new HttpParams()
@@ -114,18 +68,11 @@ export class AuthService {
                       .set('clave', pw);
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Usuarios/Login", { params });
   }
-
   //LOGOUT
   salir(){
     if(localStorage.getItem("usuario") != null){
       localStorage.removeItem("usuario");
       
-    }
-    if(localStorage.getItem("token") != null){
-      localStorage.removeItem("token");
-    }
-    if(localStorage.getItem("id") != null){
-      localStorage.removeItem("id");
     }
   }
 }

@@ -7,7 +7,7 @@ import { Usuario, Estudiante } from "../../models/models";
 import { EstudianteService } from "src/app/services/estudiante.service";
 
 @Component({
-  selector: "app-registro",
+  selector: "app-registro", 
   templateUrl: "./registro.component.html",
   styleUrls: ["./registro.component.sass"]
 })
@@ -16,7 +16,7 @@ export class RegistroComponent implements OnInit {
   public registroForm: FormGroup;
   public nuevoEstudiante: Estudiante = new Estudiante();
   public disponible: boolean = true;
-
+  public loading: boolean = false;
   constructor(
     private estudianteService: EstudianteService,
     private authService: AuthService,
@@ -35,7 +35,9 @@ export class RegistroComponent implements OnInit {
   onSubmit() {
     if (this.disponible) {
       this.disponible = false;
+      this.loading = true;
       this.nuevoEstudiante.numeroDeControl = this.registroForm.controls.numeroControl.value;
+      this.nuevoEstudiante.usuario = new Usuario();
       this.nuevoEstudiante.usuario.email = this.registroForm.controls.email.value;
       this.nuevoEstudiante.curp = this.registroForm.controls.curp.value;
       this.nuevoEstudiante.usuario.clave = this.registroForm.controls.clave.value;
@@ -47,14 +49,13 @@ export class RegistroComponent implements OnInit {
             .entrar(this.nuevoEstudiante.usuario.email, this.nuevoEstudiante.usuario.clave)
             .subscribe(r => {
               if (r.code == 200) {
+                this.loading = false;
                 var usuario: Usuario = r.data as Usuario;
                 localStorage.setItem("usuario", JSON.stringify(usuario));
                 Swal.fire("Exito", "¡Se ha registrado con exito!", "success");
-                localStorage.setItem("token", usuario.token);
-                localStorage.setItem("id", this.authService.mostrarIdentificador(usuario.token));
-
                 this.router.navigate(["/panel"]);
               } else {
+                this.loading = false;
                 Swal.fire(
                   r.mensaje.toLocaleUpperCase(),
                   "error al iniciar sesion",
@@ -63,12 +64,12 @@ export class RegistroComponent implements OnInit {
               }
             });
         } else {
+          this.loading = false;
           var ContenidoErrores: string = "";
           var errores: Array<string> = r.data as Array<string>;
           errores.forEach(element => {
             ContenidoErrores += element + "<br>";
           });
-
           Swal.fire(r.mensaje.toLocaleUpperCase(), ContenidoErrores, "error");
         }
       });

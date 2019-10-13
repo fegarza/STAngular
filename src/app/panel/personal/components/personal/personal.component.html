@@ -1,0 +1,78 @@
+<header>
+        <div class="box">
+                <div class="boxCont">
+                        <div class="profCont">
+                                <div class="profImg">
+
+                                </div>
+                                <h1>
+                                        {{ miPersonal.usuario.nombreCompleto | titlecase }}
+                                </h1>
+                        </div>
+                </div>
+
+        </div>
+</header>
+
+<section  *ngIf="miPersonal.cargo != 'A'" >
+        <div class="cont advices">
+                <div class="advice blue horizontal">
+                        <i class="fas fa-trophy"></i>
+                        <div class="info">
+                                <h1>{{ miPersonal.tutorados }}</h1>
+                                <p>Tutorados</p>
+                        </div>
+                </div>
+                <div class="advice blue horizontal">
+                        <i class="fas fa-clipboard-check"></i>
+                        <div class="info">
+                                <h1>{{ miPersonal.canalizaciones }}</h1>
+                                <p>Canalizaciones</p>
+                        </div>
+                </div>
+                <div class="advice blue horizontal">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div class="info">
+                                <h1>{{ miPersonal.posts }}</h1>
+                                <p>Posts</p>
+                        </div>
+                </div>
+        </div>
+
+</section>
+<section class="info">
+        <div class="cont">
+                <div class="textBox lineBlue">
+                        <h1><i class="fas fa-flag"></i>Datos</h1>
+                        <p>
+                                Cargo: {{miPersonal.cargo == "A" ? "Administrador" : ""}}
+                                {{miPersonal.cargo == "C" ? "Coordinador" : ""}}
+                                {{miPersonal.cargo == "D" ? "Jefe de departamento" : ""}}
+                                {{miPersonal.cargo == "J" ? "Jefe de tutorias" : ""}}
+                                {{miPersonal.cargo == "T" ? "Tutor" : ""}}<br>
+                                Email: {{ miPersonal.usuario.email }} <br>
+                                Genero: {{ miPersonal.usuario.genero == "M" ? "Mujer" : "Hombre" }} <br>
+                                Departamento:
+                                {{ miPersonal.departamento != null ? ( miPersonal.departamento.titulo | titlecase) : 'cargando' }}
+                                <br>
+                        </p>
+                </div>
+        </div>
+</section>
+<section class="acciones">
+        <div class="cont">
+                <div class="box simple shadow" *ngIf="miPersonal.cargo != 'A'">
+                        <div class="title solidBlue ">
+                                <i class="fas fa-flag"></i>
+                                <h1>Acciones</h1>
+                        </div>
+                        <div class="boxCont">
+                                <button class=" btn float-dark" [routerLink]="['./grupo']">
+                                        <i class="fas fa-flag"></i>
+                                        <p>Mostrar grupo</p>
+                                </button>
+                                <br>
+                        </div>
+                </div>
+        </div>
+</section>

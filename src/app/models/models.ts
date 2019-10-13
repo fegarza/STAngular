@@ -9,44 +9,37 @@ export class Usuario{
     token: string;
     tipo: string;
     clave: string;
+    publica: string;
+    estudianteId: number;
+    personalId:number;  
+    estudiante: Estudiante;
+    personal: Personal; 
 }
 export class Estudiante{
     id:number;
-    usuario: Usuario = new Usuario();
-    numeroDeControl: string;
-    curp: string;
-    datosClinicos: DatoClinico;
-    datosGenerales: DatoGeneral;
-    grupo: Grupo;
-    sesiones: number;
-    creditos: number;
-    canalizaciones: number;
-    semestre: number;
-    //Modificaciones
+    usuarioId: number;
     grupoId: number;
+    carreraId: number;
+    numeroDeControl: string;
     sesionesIniciales: number;
+    sesiones: number;
+    semestre: number;
+    carrera: Carrera;
+    grupo: Grupo;
+    usuario: Usuario = new Usuario();
+    estudianteDatos: EstudianteDatos;
+    canalizaciones: number;
+    canalizacionesLista: Array<Canalizacion> = new Array<Canalizacion>();
+    curp: string;
+    creditos: number;
     presente: boolean = false;
 }
-
-
-export class Titulo{
-    id: number;
-    titulo: string;
-}
-
-export class Departamento{
-    id: number;
-    titulo : string;
-}
-export class Cargo{
-    tipo: string;
-    titulo: string;
-}
-
 export class Personal {
+    id: number;
+    usuarioId: number;
     usuario: Usuario = new Usuario();
-    departamento: Departamento = new Departamento();
     departamentoId: number;
+    departamento: Departamento;
     cargo: string;
     tutorados: number;
     canalizaciones: number;
@@ -56,6 +49,19 @@ export class Personal {
     tituloId: number;
     titulo: Titulo;
 }
+export class Titulo{
+    id: number;
+    titulo: string;
+}
+export class Departamento{
+    id: number;
+    titulo : string;
+}
+export class Cargo{
+    tipo: string;
+    titulo: string;
+}
+
 
 export class Sesion{
     id: number;
@@ -64,10 +70,12 @@ export class Sesion{
     fecha: string;
     asistencia: Array<Estudiante>
 }
+
 export class Grupo{
     id: number;
     salon: string;
-    tutor: Personal = new Personal();
+    personalId: number;
+    personal: Personal = new Personal();
     estudiantes: Array<Estudiante>;
     sesiones: Array<Sesion>;
 }
@@ -97,35 +105,20 @@ export class Canalizacion{
     estado: string;
 }
 
-
 export class Carrera{
     id: number;
     nombre:string = "";
     clave:string = ""; 
 }
 
-
-
-
-
-
-
-//FORMULARIO DE CONFIG
-
-class Persona{
-    nombre: string;
-    apellidos: string;
-}
-class Parent extends Persona{
-    vive: boolean;
-    trabajo: string;
-    telefono: string;
-}
-class DatoGeneral{
+class EstudianteDatos{
     //Parents
-    Madre: Parent;
-    Padre: Parent;
-
+    madreVive: boolean;
+    madreTrabajo: string;
+    madreTelefono: string;
+    padreVive: boolean;
+    padreTrabajo: string;
+    padreTelefono: string;
     //Personales
     fechaNacimiento: string;
     estadoCivil: string;
@@ -148,10 +141,6 @@ class DatoGeneral{
     nombreEmpresa: string;
     horarioEmpresa: string;
     telefonoDomicilio: string;
-    
-}
-
-class DatoClinico{
     //Deficiencias
     dVista: boolean;
     dOido: boolean;
@@ -180,4 +169,3 @@ class DatoClinico{
     eTartamuedo: number;
     eMiedo: number;
 }
-

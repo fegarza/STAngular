@@ -11,7 +11,7 @@ export class InicioComponent implements OnInit {
  
   //Properties 
   Login: boolean = false;
-
+  loading: boolean = false;
   //Constructor
   constructor(){
 

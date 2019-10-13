@@ -1,13 +1,12 @@
 /*
   Local Modules
 */
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-
-
+ import { GestureConfig } from '@angular/material';
 /*
   External Modules
 */
@@ -19,11 +18,13 @@ import { AnimateOnScrollModule } from 'ng2-animate-on-scroll';
 /*
   Components
 */
-import { LayoutsComponent } from './layouts/layouts.component';
-import { AppComponent } from './app.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { LoginComponent } from './components/login/login.component';
 import { Error404Component } from './components/error404/error404.component';
+import { AppComponent } from './app.component';
+import { RegistroComponent } from './components/registro/registro.component';
+
+/*
 import { PanelComponent } from './components/panel-components/panel/panel.component';
 import { PanelInicioComponent } from './components/panel-components/panel-inicio/panel-inicio.component';
 import { PanelAjustesComponent } from './components/panel-components/panel-ajustes/panel-ajustes.component';
@@ -31,15 +32,15 @@ import { PanelDocumentosComponent } from './components/panel-components/panel-do
 import { PanelPersonalComponent } from './components/panel-components/panel-personal/panel-personal.component';
 import { PanelGrupoComponent } from './components/panel-components/panel-grupo/panel-grupo.component';
 import { PanelEstudianteComponent } from './components/panel-components/panel-estudiante/panel-estudiante.component';
-
-
+*/
 /*
   Services
-*/
-import { AuthService } from './services/auth-service.service';
-import { RegistroComponent } from './components/registro/registro.component';
-import { TokenInterceptorService } from './services/token-interceptor.service';
-import { ConstantsService } from './services/constants.service';
+  */
+ import { ConstantsService } from './services/constants.service';
+ import { TokenInterceptorService } from './services/token-interceptor.service';
+ //import { AuthService } from './services/auth-service.service';
+/*
+
 import { EstudianteService } from './services/estudiante.service';
 import { PersonalService } from './services/personal.service';
 import { GrupoService } from './services/grupo.service';
@@ -50,27 +51,15 @@ import { GruposComponent } from './components/panel-components/grupos/grupos.com
 import { CanalizacionesComponent } from './components/panel-components/canalizaciones/canalizaciones.component';
 import { AtencionService } from './services/atencion.service';
 import { CanalizacionService } from './services/canalizacion.service';
-
+ */
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutsComponent,
     InicioComponent,
     LoginComponent,
     Error404Component,
-    PanelComponent,
-    PanelInicioComponent,
-    PanelAjustesComponent,
-    PanelDocumentosComponent,
-    RegistroComponent,
-    PanelPersonalComponent,
-    PanelGrupoComponent,
-    PanelEstudianteComponent,
-    PersonalesComponent,
-    EstudiantesComponent,
-    GruposComponent,
-    CanalizacionesComponent,
+    RegistroComponent
   ],
   imports: [
     BrowserModule,
@@ -78,18 +67,25 @@ import { CanalizacionService } from './services/canalizacion.service';
     AnimateOnScrollModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MaterialModule
+    BrowserAnimationsModule
+    
   ],
   providers: [
-    AuthService,
-    ConstantsService,
-    EstudianteService,
+    //AuthService,
+    /*EstudianteService,
     PersonalService,
-    TituloService,
     GrupoService,
+    TituloService,
+    PersonalesComponent,
+    EstudiantesComponent,
+    GruposComponent,
+    CanalizacionesComponent,
     AtencionService,
-    CanalizacionService,
+    CanalizacionService,*/
+    
+      {provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig},
+    
+    ConstantsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

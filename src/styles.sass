@@ -1,6 +1,3 @@
-
-
-    
 //    COLORS    
 
 $fontColor : #707070
@@ -56,9 +53,52 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
 
 
 
+.loader
+    position: fixed
+    left: 0px
+    top: 0px
+    width: 100%
+    z-index: 5000
+    height: 100%
+    background: #113f67eb
+    display: flex
+    justify-content: center
+    align-items: center
+    .img
+        position: absolute
+        width: 400px
+        height: 400px
+        background: url(/assets/img/logoWhite.svg) center /400px no-repeat
+    .lds-dual-ring 
+        display: inline-block
+        width: 400px
+        height: 400px
+        &:after 
+            content: " "
+            display: block
+            width: 100%
+            height: 100%
+            margin: 1px
+            border-radius: 50%
+            border: 5px solid #fff
+            border-color: #fff transparent #fff transparent
+            animation: lds-dual-ring 1.2s linear infinite
+       
+@keyframes lds-dual-ring 
+    0% 
+        transform: rotate(0deg)
+
+    100% 
+        transform: rotate(360deg)
+ 
 
 
-
+a
+    color: $blackColor
+    text-decoration: none
+    &:hover
+        color: $mainColor
+        cursor: pointer
 
 input, button
     &:focus
@@ -204,7 +244,7 @@ body
     letter-spacing: .2pt
     h1
         font-size: 1em
-        font-weight: 800
+        font-weight: 500
     i
         padding-right: 20px
         padding-right: .4em

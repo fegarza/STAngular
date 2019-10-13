@@ -1,0 +1,109 @@
+<!--TOP MENU-->
+<nav>
+  <div class="left" (click)="mostrarMenu()"  [style.minWidth]="menu == false ? '65px': '290px'">
+    <i class="fas fa-bars"></i>
+  </div>
+  <div class="right">
+    <div *ngIf="usuario.personal != null" [routerLink]="['./personales',usuario.personal.id]" class="prof">
+      <div class="profImg"></div>
+      <h3>{{ usuario.nombreCompleto | titlecase }}</h3>
+    </div>
+    <div *ngIf="usuario.estudiante != null" [routerLink]="['./estudiantes/'+usuario.estudiante.numeroDeControl]"
+      class="prof">
+      <div class="profImg"></div>
+      <h3>{{ usuario.nombreCompleto | titlecase }}</h3>
+    </div>
+  </div>
+</nav>
+<!--MENU MOVIL-->
+<div class="menuMovil animated forwards fadeInLeft" *ngIf="menuMovil == true">
+  <div class="cont">
+    <div class="top">
+      <div class="left">
+        <div class="logo">
+          <div class="img">
+
+          </div>
+          <p>ITNL</p>
+        </div>
+      </div>
+      <div class="right" (click)="showMenu()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="profImg"></div>
+      <div class="opciones">
+        <ul>
+          <li [routerLink]="['/panel']"> <i class="fas fa-home"> </i>
+            <p routerLinkActive="router-link-active">Inicio</p>
+          </li>
+          <li [routerLink]="['/panel/personales']"
+            *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+            <i class="fas fa-user-friends"></i>
+            <p>Personal</p>
+          </li>
+          <li [routerLink]="['/panel/estudiantes']"
+            *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+            <i class="fas fa-user-graduate"></i>
+            <p>Estudiantes</p>
+          </li>
+          <li [routerLink]="['/panel/departamentos']"
+            *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+            <i class="fas fa-building"></i>
+            <p>Departamentos</p>
+          </li>
+          <li> <i class="fas fa-file-pdf"></i>
+            <p (click)="showDocumentos()">Documentos</p>
+          </li>
+          <li [routerLink]="['/panel/ajustes']"> <i class="fas fa-tools"> </i>
+            <p>Ajustes</p>
+          </li>
+          <li (click)="cerrarSesion()"> <i class="fas fa-times"></i>
+            <p>Salir</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--TODO LO DEL PANEL-->
+<div class="panel">
+  <div class="left" [style.minWidth]="menu == false ? '65px': '290px'">
+    <ul>
+      <li [routerLink]="['/panel']"> <i class="fas fa-home"> </i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Inicio</p>
+      </li>
+      <li [routerLink]="['/panel/personales']"
+        *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+        <i class="fas fa-user-friends"></i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Personal</p>
+      </li>
+      <li [routerLink]="['/panel/estudiantes']"
+        *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+        <i class="fas fa-user-graduate"></i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Estudiantes</p>
+      </li>
+      <li [routerLink]="['/panel/departamentos']"
+        *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+        <i class="fas fa-building"></i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Departamentos</p>
+      </li>
+      <li> <i class="fas fa-file-pdf"></i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Documentos</p>
+      </li>
+      <li [routerLink]="['/panel/ajustes']"> <i class="fas fa-tools"> </i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Ajustes</p>
+      </li>
+      <li (click)="cerrarSesion()"> <i class="fas fa-times"></i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Salir</p>
+      </li>
+    </ul>
+  </div>
+  <div class="right">
+    <div class="panelCont">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

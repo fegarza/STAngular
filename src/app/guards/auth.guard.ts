@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, CanActivateChild } from '@angular/router';
 import { AuthService } from '../services/auth-service.service';
 import { map } from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 
-export class AuthGuard implements   CanActivate{
+export class AuthGuard implements   CanActivate, CanActivateChild{
     
   constructor(private authService: AuthService, private router: Router){
    
@@ -16,7 +16,8 @@ export class AuthGuard implements   CanActivate{
 
   canActivate(){
     //obtenemos el token
-    var token: string = localStorage.getItem("token");
+    if(this.authService.traerUsuario() != null){
+    var token: string = this.authService.traerUsuario().token;
     if(token != null){
        return this.authService.comprobarToken(token).pipe(
         map(r => {
@@ -36,6 +37,38 @@ export class AuthGuard implements   CanActivate{
       this.router.navigate(['/']);
       return false;
     }
+  }else{
+    this.router.navigate(['/']);
+    return false;
   }
-  
+
+  }
+  canActivateChild(){
+     //obtenemos el token
+     if(this.authService.traerUsuario() != null){
+      var token: string = this.authService.traerUsuario().token;
+      if(token != null){
+         return this.authService.comprobarToken(token).pipe(
+          map(r => {
+            if(r.code == 200){
+              return true;
+            }
+            else{
+              this.router.navigate(['/']);
+              return false;
+            }
+          },
+          error => {
+            this.router.navigate(['/']);
+            return false;
+          }));
+      }else{
+        this.router.navigate(['/']);
+        return false;
+      }
+    }else{
+      this.router.navigate(['/']);
+      return false;
+    }
+  }
 }

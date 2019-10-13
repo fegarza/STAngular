@@ -1,4 +1,11 @@
- <div class="main animated bounceInDown slow" >
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring">
+        <div class="img">
+
+          </div>
+    </div>
+</div>
+<div class="main animated bounceInDown slow" >
    <div class="cont">
      <div class="login">
        <div class="left">
@@ -28,9 +35,11 @@
          </form>
          <div class="textBox simpleBlue">
            <h1><i class="fas fa-question-circle"></i>¿No tienes cuenta?</h1>
-           <p routerLink="/registro">
-             Haz click aqui para registrarte
-            </p>
+           
+            <p routerLink="/registro">
+              Haz click aqui para registrarte
+             </p>
+          
          </div>
        </div>
      </div>

@@ -1,0 +1,53 @@
+@import "../../../components/panel/panel.component.sass"
+
+
+ 
+header
+    background:  url(/assets/img/panel/personalHeader.jpeg)  center /cover no-repeat 
+    height: 28em
+    width: 100%
+    display: flex
+    align-items: flex-end
+    margin-bottom: 20px
+    .box
+        width: 100%
+        background: white
+        margin-top:0px
+        height: 11em
+        .profCont
+            width: 100%
+            display: flex
+            justify-content: center
+            flex-direction: column
+            align-items: center
+            .profImg
+                width: 14em
+                height: 14em
+                margin-top: -8em
+                background: url(/assets/img/panel/perfil.png)  center /cover no-repeat $mainColor
+                border-radius: 50%
+            h1
+                font-size: 2em   
+                font-weight: 300
+                margin-top: .7em  
+
+.advices
+    font-size: 1.4em
+    display: flex
+    justify-content: center
+    align-items: center
+    overflow: hidden
+    margin-bottom: 20px
+    .advice
+        width: 100%
+        font-size: 1em
+        box-shadow: $shadow
+    .advice:nth-child(1), .advice:nth-child(2)
+        margin-right: 20px
+        @include tablet
+            margin-bottom: 20px
+    @include tablet
+        flex-direction: column    
+
+.info, .acciones
+    margin-bottom: 20px
