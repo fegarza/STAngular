@@ -540,7 +540,7 @@
                   
                     
                     <mat-form-field>
-                      <mat-label>Personal</mat-label>
+                      <mat-label>Empleados</mat-label>
                       <mat-select formControlName="departamento"  formControlName="cve" >
                         <mat-option *ngFor="let p of personales" [value]="p.cve">
                           {{p.usuario.nombre + ' ' + p.usuario.apellidoPaterno + ' ' + p.usuario.apellidoMaterno}}
@@ -553,7 +553,7 @@
                     </mat-form-field>
         
                     <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Clave" formControlName="password"  value="">
+                      <input matInput placeholder="Constraseña" formControlName="password"  value="">
                     </mat-form-field>
                     <mat-form-field>
                       <mat-label>Titulo</mat-label>

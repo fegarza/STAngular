@@ -12,6 +12,8 @@ export class InicioComponent implements OnInit {
   //Properties 
   Login: boolean = false;
   loading: boolean = false;
+  public tab: string =  'home';
+  
   //Constructor
   constructor(){
 
@@ -22,6 +24,12 @@ export class InicioComponent implements OnInit {
   //Methods
   ngOnInit() {
   }
+
+  changeTab(_new: string){
+    this.tab =  _new;
+  }
+
+
   Mensaje(_tipo, _titulo:string ,_str:string, _footer:string){
     Swal.fire({
       type: _tipo,
@@ -33,5 +41,9 @@ export class InicioComponent implements OnInit {
   AbrirLogin(){
     this.Login ? this.Login = false : this.Login = true;  
   }
-   
+  
+  AbrirRegistro(){
+    this.tab = "registro";
+    this.Login = false;
+  }
 } 

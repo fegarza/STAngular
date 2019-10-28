@@ -41,7 +41,7 @@
           <li [routerLink]="['/panel/personales']"
             *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
             <i class="fas fa-user-friends"></i>
-            <p>Personal</p>
+            <p>Empleados</p>
           </li>
           <li [routerLink]="['/panel/estudiantes']"
             *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
@@ -78,7 +78,7 @@
       <li [routerLink]="['/panel/personales']"
         *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
         <i class="fas fa-user-friends"></i>
-        <p *ngIf="menu" class="animated forwards fadeInRight fast">Personal</p>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">Empleados</p>
       </li>
       <li [routerLink]="['/panel/estudiantes']"
         *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">

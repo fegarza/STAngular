@@ -1,1 +1,85 @@
-<p>departamento works!</p>
+<section>
+        <h1>{{departamento.titulo | titlecase}}</h1>
+</section>
+<section class='personales'>
+        <div class="cont">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+                        <ng-container matColumnDef="nombre">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre </th>
+                                <td mat-cell *matCellDef="let element">
+                                        <a [routerLink]="['/panel/personales', element.id]">
+                                                {{element.usuario.nombreCompleto | titlecase}}
+                                        </a>
+                                </td>
+                        </ng-container>
+                        <ng-container matColumnDef="cargo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo </th>
+                                <td mat-cell *matCellDef="let element">
+                                        {{ element.cargo == 'A' ? 'Administrador' : ''}}
+                                        {{ element.cargo == 'J' ? 'Jefe de tutorias' : ''}}
+                                        {{ element.cargo == 'D' ? 'Jefe de departamento' : ''}}
+                                        {{ element.cargo == 'C' ? 'Coordinador' : ''}}
+                                        {{ element.cargo == 'T' ? 'Tutor' : ''}}
+                                </td>
+                        </ng-container>
+                        <ng-container matColumnDef="departamento">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
+                                <td mat-cell *matCellDef="let element"> {{element.departamento.titulo | titlecase}}
+                                </td>
+                        </ng-container>
+                        <ng-container matColumnDef="tutorados">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutorados </th>
+                                <td mat-cell *matCellDef="let element"> {{element.tutorados}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+        </div>
+</section>
+<section>
+        <div class="cont">
+                <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                        (page)="pageEvent = mostrarPersonales($event)">
+
+                </mat-paginator>
+
+        </div>
+</section>
+<section>
+        <h1>Canalizaciones</h1>
+</section>
+<section>
+        <div class="cont">
+                <table mat-table [dataSource]="dataSource2" matSort class="mat-elevation-z8">
+
+                        <ng-container matColumnDef="tutor">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tutor </th>
+                                <td mat-cell *matCellDef="let element">
+                                        <a>
+                                                {{element.personal.usuario.nombreCompleto | titlecase}}
+                                        </a>
+                                </td>
+                        </ng-container>
+                        <ng-container matColumnDef="estudiante">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estudiante </th>
+                                <td mat-cell *matCellDef="let element">
+                                        <a>
+                                                {{element.estudiante.usuario.nombreCompleto | titlecase}}
+                                        </a>
+                                </td>
+                        </ng-container>
+                        <ng-container matColumnDef="atencion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Asunto </th>
+                                <td mat-cell *matCellDef="let element">
+                                        <a>
+                                                {{element.atencion.titulo | titlecase}}
+                                        </a>
+                                </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                </table>
+        </div>
+</section>

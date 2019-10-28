@@ -19,7 +19,7 @@ export class LoginComponent  {
   loginForm: FormGroup;
 
   @Output() public CloseEvent = new EventEmitter();
-
+ 
   constructor(private authService: AuthService, private router: Router) { 
     this.loginForm = new FormGroup({
       user: new FormControl(),
@@ -30,6 +30,7 @@ export class LoginComponent  {
   Close(){
     this.CloseEvent.emit(false);
   }
+ 
 
   onSubmit(){
     this.loading = true;

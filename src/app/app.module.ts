@@ -38,7 +38,7 @@ import { PanelEstudianteComponent } from './components/panel-components/panel-es
   */
  import { ConstantsService } from './services/constants.service';
  import { TokenInterceptorService } from './services/token-interceptor.service';
- //import { AuthService } from './services/auth-service.service';
+  //import { AuthService } from './services/auth-service.service';
 /*
 
 import { EstudianteService } from './services/estudiante.service';

@@ -44,6 +44,7 @@ export class EstudianteComponent implements OnInit {
     if(this.miUsuario.tipo == 'P'){
       if(
          this.miUsuario.personal.cargo == 'A' || 
+         this.miUsuario.personal.cargo == 'J' || 
          (this.miUsuario.personal.cargo == 'D' && this.miUsuario.personal.departamentoId == this.miEstudiante.grupo.personal.departamentoId)){
         this.permisoDeModificar = true;
       }
@@ -127,7 +128,7 @@ export class EstudianteComponent implements OnInit {
         if (formValues) {
           console.log(formValues);
           var canalizacion : Canalizacion = new Canalizacion();
-          canalizacion.personalId = parseInt(localStorage.getItem("id"));
+          canalizacion.personalId = parseInt(this.miUsuario.personal.id);
           canalizacion.atencionId = parseInt(formValues[0].value);
           canalizacion.estudianteId = this.miEstudiante.id;
           canalizacion.descripcion = formValues[1].value;

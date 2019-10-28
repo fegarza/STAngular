@@ -12,7 +12,7 @@ export class EstudiantesComponent implements OnInit {
 
     estudiantes: Array<Estudiante> = new Array<Estudiante>();
     dataSource = new MatTableDataSource(this.estudiantes);
-    displayedColumns: string[] = ['nombre', 'numeroDeControl'];
+    displayedColumns: string[] = ['nombre', 'numeroDeControl', 'semestre', 'sesiones', 'tutor'];
     // MatPaginator Inputs
     length = 100;
     pageSize = 10;

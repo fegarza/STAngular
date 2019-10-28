@@ -36,9 +36,12 @@
         box-sizing: border-box
         overflow: hidden
         background: white
-        @include movil
-            .textBox
-                display: none
+        .textBox
+            p
+                cursor: pointer
+                &:hover
+                    color: $mainColor
+                    
         form
             width:100%
             display: flex
@@ -48,6 +51,9 @@
             font-size: 30px
             @include movil
                 font-size: 20px
+            input
+                font-weight: bold
+                color: black
             h1
                 font-size: 1em
                 color: $blackColor

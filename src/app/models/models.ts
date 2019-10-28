@@ -103,6 +103,9 @@ export class Canalizacion{
     descripcion: string;
     fecha: string;
     estado: string;
+    personal: Personal;
+    atencion: Atencion;
+    estudiante: Estudiante;
 }
 
 export class Carrera{

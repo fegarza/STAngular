@@ -59,7 +59,7 @@
         </p>
       </div>
       <div class="textBox lineBlue hideOnInit" animateOnScroll animationName="animated forwards bounceInLeft">
-        <h1><i class="fas fa-chalkboard-teacher"></i>FUNCIONES DEL TUTOR</h1>
+        <h1><i class="fas fa-chalkboard-teacher"></i>FUNCIONES DEL TUTORADO</h1>
         <p>
           Identificar sus necesidades personales que requieren de la atención tutorial.
           Asistir puntualmente a las reuniones a que sea convocado por el tutor, a la hora y fecha indicada.
@@ -113,21 +113,21 @@
         <p> Diseñadora gráfica y administradora de contenidos </p>
       </div>
       <div class="textBox blue ">
-        <h1><i class="fas fa-user-circle"></i>Emanuel Villanueva</h1>
+        <h1><i class="fas fa-user-circle"></i>Emmanuel Villanueva Rivera</h1>
         <p> Administrador de la base de datos </p>
       </div>
       <div class="textBox blue">
-        <h1><i class="fas fa-user-circle"></i>Oswaldo Rodriguez Mendoza</h1>
+        <h1><i class="fas fa-user-circle"></i>Martín Oswaldo Medina Rodríguez</h1>
         <p> Tester </p>
       </div>
     </div>
   </div>
 </section>
-<footer>
+ <footer>
   <div class="cont">
     <div class="textBox simpleWhite">
       <h1>
-        <i class="fas fa-briefcase"></i>COORDINADOR INSTITUCIONAL DE TUTORÍAS
+        <i class="fas fa-briefcase"></i>COORDINADORA INSTITUCIONAL DE TUTORÍAS
       </h1>
       <p>Mantiene una vinculación entre el Comité Promotor y todos los departamentos que ofrecen un servicio al
         estudiante; así como de dar seguimiento al buen desarrollo de la acción tutorial del ITNL.</p>
@@ -143,6 +143,6 @@
     <h2>ST CMS By: Juan Felipe Garza Sánchez</h2>
   </div>
 </footer>
-<app-login *ngIf="Login" (CloseEvent)="Login=$event" #login>
+<app-login *ngIf="Login" (CloseEvent)="Login=$event" (RegistroEvent)="AbrirRegistro()"  #login>
 
 </app-login>
