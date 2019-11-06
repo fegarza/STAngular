@@ -23,15 +23,25 @@ a
         display: flex
         justify-content: center
         box-shadow: $shadow
+        @include tablet
+            box-shadow: none
+            padding: 0px 20px
+            box-sizing: border-box
         .left
             background: white
             width: 500px
             padding: 15px
+            @include tablet
+                width: 100%
             form
                 .input
                     margin-bottom: 2em
                 h1
                     margin-bottom: 1em
+                .btn
+                    width: 100%
         .right
             width: 100%
             background: url(/assets/img/registro/1.png) right bottom /contain no-repeat, $mainColor
+            @include tablet
+                display: none

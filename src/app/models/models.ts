@@ -68,7 +68,9 @@ export class Sesion{
     accionTutorialId: number;
     departamentoId: number;
     fecha: string;
-    asistencia: Array<Estudiante>
+    asistencia: Array<Estudiante>;
+    accionTutorial: Accion = new Accion();
+    departamento: Departamento = new Departamento();
 }
 
 export class Grupo{
@@ -114,7 +116,7 @@ export class Carrera{
     clave:string = ""; 
 }
 
-class EstudianteDatos{
+export class EstudianteDatos{
     //Parents
     madreVive: boolean;
     madreTrabajo: string;

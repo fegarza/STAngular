@@ -128,7 +128,7 @@ export class EstudianteComponent implements OnInit {
         if (formValues) {
           console.log(formValues);
           var canalizacion : Canalizacion = new Canalizacion();
-          canalizacion.personalId = parseInt(this.miUsuario.personal.id);
+          canalizacion.personalId = this.miUsuario.personal.id;
           canalizacion.atencionId = parseInt(formValues[0].value);
           canalizacion.estudianteId = this.miEstudiante.id;
           canalizacion.descripcion = formValues[1].value;

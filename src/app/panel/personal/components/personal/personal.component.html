@@ -1,4 +1,89 @@
+<div class="formAlert" *ngIf="formAlert == 'correo'" >
+        <div class="cont">
+                <form [formGroup]="correoFormGroup" (ngSubmit)="onSubmitCorreo()">
+                        <h1>Nuevo correo</h1>
+                        <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Nuevo correo" formControlName="correo" value="">
+                        </mat-form-field>
+                        <button type="submit" class="btn float-dark">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <p>GUARDAR CAMBIOS</p>
+                        </button>
+                        <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <p>SALIR</p>
+                        </button>
+                </form>
+        </div>
+
+</div>
+<div class="formAlert" *ngIf="formAlert == 'clave'" >
+        <div class="cont">
+                <form [formGroup]="claveFormGroup" (ngSubmit)="onSubmitClave()">
+                        <h1>Nueva contraseña</h1>
+                        <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Nueva contraseña" formControlName="clave" value="">
+                        </mat-form-field>
+                        <button type="submit" class="btn float-dark">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <p>GUARDAR CAMBIOS</p>
+                        </button>
+                        <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <p>SALIR</p>
+                        </button>
+                </form>
+        </div>
+
+</div>
+<div class="formAlert" *ngIf="formAlert == 'cargo'" >
+        <div class="cont">
+                <form [formGroup]="cargoFormGroup" (ngSubmit)="onSubmitCargo()">
+                        <mat-form-field>
+                                <mat-label>Seleccione el nuevo cargo</mat-label>
+                                <mat-select formControlName="cargo">
+                                        <mat-option *ngFor="let c of cargos" [value]="c.tipo">
+                                                {{c.titulo}}
+                                        </mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                        <button  class="btn float-dark">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <p>GUARDAR CAMBIOS</p>
+                        </button>
+                        <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <p>SALIR</p>
+                        </button>
+                </form>
+        </div>
+
+</div>
+
 <header>
+        <div class="settings" [matMenuTriggerFor]="appMenu" *ngIf="permisoDeModificar">
+                <mat-menu #appMenu="matMenu">
+                        <button type="button" mat-menu-item [routerLink]="['./grupo']">
+                                <i class="fas fa-flag"></i>
+                                <p>Mostrar grupo</p>
+                        </button>
+                        <button mat-menu-item (click)="cambiarCargo()">
+                                <i class="fas fa-flag"></i>
+                                <p>Cambiar cargo</p>
+                        </button>
+                        <button mat-menu-item (click)="cambiarClave()">
+                                <i class="fas fa-flag"></i>
+                                <p>Cambiar contraseña</p>
+                        </button>
+                        <button mat-menu-item (click)="cambiarCorreo()">
+                                <i class="fas fa-flag"></i>
+                                <p>Cambiar correo electronico</p>
+                        </button>
+
+                </mat-menu>
+
+                <i class="fas fa-ellipsis-h"></i>
+        </div>
         <div class="box">
                 <div class="boxCont">
                         <div class="profCont">
@@ -10,11 +95,10 @@
                                 </h1>
                         </div>
                 </div>
-
         </div>
 </header>
 
-<section  *ngIf="miPersonal.cargo != 'A'" >
+<section *ngIf="miPersonal.cargo != 'A'">
         <div class="cont advices">
                 <div class="advice blue horizontal">
                         <i class="fas fa-trophy"></i>
@@ -56,23 +140,6 @@
                                 {{ miPersonal.departamento != null ? ( miPersonal.departamento.titulo | titlecase) : 'cargando' }}
                                 <br>
                         </p>
-                </div>
-        </div>
-</section>
-<section class="acciones">
-        <div class="cont">
-                <div class="box simple shadow" *ngIf="miPersonal.cargo != 'A'">
-                        <div class="title solidBlue ">
-                                <i class="fas fa-flag"></i>
-                                <h1>Acciones</h1>
-                        </div>
-                        <div class="boxCont">
-                                <button class=" btn float-dark" [routerLink]="['./grupo']">
-                                        <i class="fas fa-flag"></i>
-                                        <p>Mostrar grupo</p>
-                                </button>
-                                <br>
-                        </div>
                 </div>
         </div>
 </section>

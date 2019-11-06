@@ -1,16 +1,85 @@
 @import "../../components/panel/panel.component.sass"
+ 
 
 .formulario
     margin-top: 20px
 .box
-    
     .boxCont
+        .bxCont
+            display: grid
+            grid-template-columns: 1fr 1fr 
+            grid-template-rows: auto
+            grid-gap: 15px
+            padding: 15px
+            p
+                grid-column-start: 1 
+                grid-column-end:3
+            .mat-radio-button
+                margin-right: 15px
+            .mat-radio-group
+                margin-top: 10px
+                display: flex
+                justify-content: center
+                align-items: center
+                @include tablet
+                    flex-direction: column
+                    align-items: flex-start
+            .mat-form-field
+                font-size: 1.3em
+                @include tablet
+                    grid-column-start: 1 
+                    grid-column-end:3
+            .title
+                grid-column-start: 1 
+                grid-column-end: 3                      
+                font-size: 1.2em
+                color:  #525252i
+                i
+                    @include tablet
+                        display: none 
+            .mat-divider
+                grid-column-start: 1 
+                grid-column-end: 3
+            .radio
+                display: flex
+                justify-content: center
+                align-items: flex-start
+                flex-direction: column
+                p
+                    font-weight: bold
+                    font-size: 1.1em
+                    color: #525252
+                @include tablet
+                    grid-column-start: 1 
+                    grid-column-end:3
+            .radioU
+                display: flex
+                justify-content: center
+                align-items: flex-start
+                flex-direction: column
+                p
+                    font-weight: bold
+                    font-size: 1.1em
+                    color: #525252
+                @include panel
+                    grid-column-start: 1 
+                    grid-column-end: 3 
+            .btn
+                grid-column-start: 1
+                grid-column-end: 3
+                font-size: 1.2em
+                
+
+.box
+    background: white
+    .boxCont2
         form
             display: grid
             grid-template-columns: 1fr 1fr 
             grid-template-rows: auto
             grid-gap: 15px
             padding: 15px
+         
             p
                 grid-column-start: 1 
                 grid-column-end:3

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Personal, Usuario } from 'src/app/models/models';
+import { Personal, Usuario, Cargo } from 'src/app/models/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalService } from 'src/app/services/personal.service';
 import { AuthService } from 'src/app/services/auth-service.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-personal',
@@ -16,7 +19,24 @@ export class PersonalComponent implements OnInit {
   public miPersonal: Personal = new Personal();
   public miUsuario: Usuario = new Usuario();
   public rango: string;
-  constructor( private route: ActivatedRoute, private personalService: PersonalService,  private router: Router, private authService: AuthService) 
+  public permisoDeModificar = false;
+  public cargos: Array<Cargo> = [
+    { tipo: "C", titulo: "Coordinador" },
+    { tipo: "D", titulo: "Jefe de departamento" },
+    { tipo: "J", titulo: "Jefe de tutorias" },
+    { tipo: "T", titulo: "Tutor" }
+  ];
+
+  public formAlert = "none";
+
+  //Forms
+  cargoFormGroup: FormGroup;
+  claveFormGroup: FormGroup;
+  correoFormGroup: FormGroup;
+
+
+
+  constructor(private usuarioService: UsuarioService, private route: ActivatedRoute, private personalService: PersonalService,  private router: Router, private authService: AuthService) 
   {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];  
@@ -47,11 +67,107 @@ export class PersonalComponent implements OnInit {
          
         });
     }
+    if(this.miUsuario.tipo == 'P'){
+      if(
+         this.miUsuario.personal.cargo == 'A' || 
+         this.miUsuario.personal.cargo == 'J' || 
+         this.miUsuario.personal.cargo == 'D' ){
+        this.permisoDeModificar = true;
+      }
+    }
    }
 
   ngOnInit() {
-    
-    
-     
+    this.cargoFormGroup = new FormGroup({
+      cargo: new FormControl('', [Validators.required]),
+    });
+    this.claveFormGroup = new FormGroup({
+      clave: new FormControl('', [Validators.required, Validators.min(6)]),
+    });
+    this.correoFormGroup = new FormGroup({
+      correo: new FormControl('', [Validators.required, Validators.email]),
+    });
+  }
+
+  cambiarClave(){
+    this.formAlert = "clave";
+  }
+  onSubmitClave(){
+    console.log("Cambiando clave...");
+    if(this.claveFormGroup.controls.clave.valid){
+      console.log
+      this.usuarioService.asignarClave(this.miPersonal.usuario.id, this.claveFormGroup.controls.clave.value).subscribe(r=> {
+        if(r.code == 200){
+          Swal.fire(
+            'Se ha cambiado la clave correctamente',
+            r.mensaje,
+            'success'
+          );
+        }else{
+          Swal.fire(
+            'ha ocurrido un error',
+            r.mensaje,
+            'error'
+          );
+        }
+      })
+    }else{
+      Swal.fire(
+        'ha ocurrido un error',
+        'La clave es muy corta',
+        'error'
+      );
+    }
+  }
+  cambiarCargo()
+  {
+    this.formAlert = "cargo"; 
+  }
+  onSubmitCargo(){
+    if(this.cargoFormGroup.controls.cargo.valid){
+      this.personalService.asignarCargo(this.miPersonal.id, this.cargoFormGroup.controls.cargo.value).subscribe(r=> {
+        if(r.code == 200){
+          Swal.fire(
+            'Se ha cambiado la clave correctamente',
+            r.mensaje,
+            'success'
+          );
+        }else{
+          Swal.fire(
+            'ha ocurrido un error',
+            r.mensaje,
+            'error'
+          );
+        }
+      })
+    }
+  }
+  cambiarCorreo(){
+    this.formAlert = "correo"; 
+  }
+  onSubmitCorreo(){
+    if(this.correoFormGroup.controls.correo.valid){
+      this.usuarioService.asignarCorreo(this.miPersonal.usuario.id, this.correoFormGroup.controls.correo.value).subscribe(r=> {
+        if(r.code == 200){
+          Swal.fire(
+            'Se ha cambiado el correo correctamente',
+            r.mensaje,
+            'success'
+          );
+        }else{
+          Swal.fire(
+            'ha ocurrido un error',
+            r.mensaje,
+            'error'
+          );
+        }
+      })
+    }else{
+      Swal.fire(
+        'Error',
+        'El correo dado no es valido',
+        'error'
+      );
+    }
   }
 }

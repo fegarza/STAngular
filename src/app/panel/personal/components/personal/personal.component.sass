@@ -1,14 +1,37 @@
 @import "../../../components/panel/panel.component.sass"
 
+.mat-menu-item
+    display: flex
+    align-items: center
+    i
+        margin-right: 15px
+    p
+        font-weight: 500
+        
 
- 
 header
-    background:  url(/assets/img/panel/personalHeader.jpeg)  center /cover no-repeat 
+    background:  url(/assets/img/panel/personalHeader.jpeg)  center /cover no-repeat, #34699a
     height: 28em
     width: 100%
     display: flex
     align-items: flex-end
     margin-bottom: 20px
+    position: relative
+    .settings
+            position: absolute
+            right: 15px
+            top: 15px
+            width:50px
+            height:50px
+            display: flex
+            justify-content: center
+            align-items: center
+            background: white
+            border-radius: 50%
+            cursor: pointer
+            i
+                color: black
+                font-size: 1.5em
     .box
         width: 100%
         background: white
@@ -51,3 +74,6 @@ header
 
 .info, .acciones
     margin-bottom: 20px
+
+.textBox
+    font-size: 1.4em
