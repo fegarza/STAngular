@@ -95,7 +95,7 @@ nav
             p 
                 margin-left: -10px
     .menu
-        width: 200px
+        width: 300px
         height: 100%
         @include movil
             width: 150px
@@ -108,7 +108,7 @@ nav
             li
                 color: white
                 list-style: none
-                width: 100%
+                width: 200%
                 display: flex
                 justify-content: center
                 align-items: center
@@ -249,8 +249,9 @@ section
         height: auto
         background: url(/assets/img/objectives.png) right 10% center /40vw no-repeat ,$bgColor2
         @include laptop
-            background: url(/assets/img/objectives.png) center /cover no-repeat , $bgColor2
+            background: white
         @include movil
+            background: white
             font-size: .8em
         .cont
             padding-bottom: 40px
@@ -283,13 +284,54 @@ section
                     padding-right: 1em
                     @include laptop
                         padding: 1em
+    &.coord
+        padding-bottom: 40px
+        padding-top: 40px
+        width: 100%
+        height: 450px
+        background: url(/assets/img/creditos.png) right 10% center /30vw no-repeat
+        @include laptop
+                background: white
+                height: auto
+        @include movil
+            background:  white
+        .cont
+            display: flex
+            align-items: center
+            flex-direction: column
+            .title
+                width: 800px
+                text-align: center
+            .boxes
+                width: 100%
+                display: flex
+                justify-content: center
+                align-items: flex-start
+                flex-direction: column
+                margin-top: 80px
+                @include laptop
+                    align-items: center
+                @include movil
+                    margin-top: 40px
+                .textBox
+                    width:600px
+                    margin-bottom: 30px
+                    @include laptop
+                        width: 100%
+                        p
+                            margin-right: 0px
+                    @include movil
+                        border: 0px
+                       
+                    &:nth-child(2)
+                        margin-bottom: 0px
                 
     &.creditos
         .title
-            width: 200px
+            width: auto
         height: auto
         padding-bottom: 40px
-        padding-top: 40px
+        padding-top: 20px
         @include tablet
             height: auto
             padding:  40px 10px
@@ -321,7 +363,6 @@ section
                         text-align: left
                     @include laptop
                         width: 100%
-                 
 
 footer
     background: $mainColor

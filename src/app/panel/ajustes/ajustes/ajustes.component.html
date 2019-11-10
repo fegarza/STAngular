@@ -5,6 +5,50 @@
     </div>
   </div>
 </div>
+<div class="formAlert" *ngIf="formAlert == 'acciones'">
+    <div class="cont x1">
+        <form [formGroup]="accionesForm" (ngSubmit)="onSubmitAcciones()">
+
+
+
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Titulo" formControlName="titulo" value="">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha">
+              <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #myPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <textarea matInput placeholder="Contenido" formControlName="contenido"></textarea>
+            </mat-form-field>
+            <div class="radio">
+              <p>Tipo</p>
+              <mat-radio-group aria-label="Genero" formControlName="tipo">
+                <mat-radio-button value="I"> Individual</mat-radio-button>
+                <mat-radio-button value="G">Grupal</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="radio">
+                <p>Obligatorio</p>
+                <mat-radio-group aria-label="Genero" formControlName="obligatorio">
+                  <mat-radio-button value="1"> Si</mat-radio-button>
+                  <mat-radio-button value="0">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            <button class="btn float">
+              <i class="fas fa-sign-in-alt"></i>
+              <p>GUARDAR CAMBIOS</p>
+            </button>
+            <button class="btn float-dark" (click)="formAlert = 'none'">
+                <i class="fas fa-sign-in-alt"></i>
+                <p>CANCELAR</p>
+              </button>
+
+          </form>
+    </div>
+  </div>
+
 
 <section class="formulario">
   <div class="cont">
@@ -534,7 +578,7 @@
           <mat-tab
             *ngIf="miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C'">
             <ng-template mat-tab-label>
-              <i class="fas fa-user-circle" style="margin-right: 15px"></i> Personales
+              <i class="fas fa-user-circle" style="margin-right: 15px"></i> Empleados
             </ng-template>
 
             <form [formGroup]="personalesForm" (ngSubmit)="onSubmitPersonal()">
@@ -542,8 +586,8 @@
 
 
               <mat-form-field>
-                <mat-label>Empleados</mat-label>
-                <mat-select formControlName="departamento" formControlName="cve">
+                <mat-label>Haga click aquí para seleccionar el empleado</mat-label>
+                <mat-select  formControlName="cve">
                   <mat-option *ngFor="let p of personales" [value]="p.cve">
                     {{p.usuario.nombre + ' ' + p.usuario.apellidoPaterno + ' ' + p.usuario.apellidoMaterno}}
                   </mat-option>
@@ -551,12 +595,17 @@
               </mat-form-field>
 
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Correo" formControlName="email" value="">
+                <input matInput placeholder="Correo electrónico" formControlName="email" type="email" value="">
               </mat-form-field>
-
+              
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Constraseña" formControlName="password" value="">
+                <input matInput placeholder="Constraseña" formControlName="password" value="" [type]="hide ? 'password' : 'text'" >
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <i [className]="hide ? 'fas fa-eye' : 'fas fa-eye-slash'" ></i> 
+                </button>
+
               </mat-form-field>
+              
               <mat-form-field>
                 <mat-label>Titulo</mat-label>
                 <mat-select formControlName="titulo">
@@ -604,34 +653,7 @@
               <i class="fas fa-user-circle" style="margin-right: 15px"></i> Acciones tutoriales
             </ng-template>
 
-            <form [formGroup]="accionesForm" (ngSubmit)="onSubmitAcciones()">
-
-
-
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Titulo" formControlName="titulo" value="">
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha">
-                <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
-                <mat-datepicker #myPicker></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Contenido" formControlName="contenido"></textarea>
-              </mat-form-field>
-              <div class="radio">
-                <p>Obligatorio</p>
-                <mat-radio-group aria-label="Genero" formControlName="obligatorio">
-                  <mat-radio-button value="1"> Si</mat-radio-button>
-                  <mat-radio-button value="0">No</mat-radio-button>
-                </mat-radio-group>
-              </div>
-              <button class="btn float">
-                <i class="fas fa-sign-in-alt"></i>
-                <p>GUARDAR CAMBIOS</p>
-              </button>
-
-            </form>
+          
             <table mat-table [dataSource]="accionesSource" matSort class="mat-elevation-z8">
 
                 <ng-container matColumnDef="fecha">
@@ -665,9 +687,16 @@
               <tr mat-header-row *matHeaderRowDef="accionesColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: accionesColumns;"></tr>
             </table>
-            <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-              (page)="pageEvent = mostrarAcciones($event)">
-            </mat-paginator>
+            <div class="paginator">
+              <button class="btn float-white" (click)="formAlert = 'acciones'">
+                  <i class="fas fa-plus"></i>
+                  <p>Agregar nueva accion tutorial</p>
+                </button>
+                <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = mostrarAcciones($event)">
+              </mat-paginator>
+            </div>
+           
           </mat-tab>
           <mat-tab
             *ngIf="miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C'">
@@ -707,37 +736,44 @@
               </button>
 
             </form>
-            <table mat-table [dataSource]="sesionesSource" matSort class="mat-elevation-z8">
-
-                <ng-container matColumnDef="fecha">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                      {{element.fecha}}
-                    </td>
-                  </ng-container>
-              
-              <ng-container matColumnDef="editar">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar
-                  </th>
-                  <td mat-cell *matCellDef="let element">
-                    editar
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="eliminar">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                      Eliminar
-                    </td>
-                  </ng-container>
-              <tr mat-header-row *matHeaderRowDef="sesionesColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: sesionesColumns;"></tr>
-            </table>
-            <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-              (page)="pageEvent = mostrarAcciones($event)">
-            </mat-paginator>
+            
           </mat-tab>
+          <mat-tab>
+          <ng-template mat-tab-label>
+            <i class="fas fa-user-circle" style="margin-right: 15px"></i> Archivos
+          </ng-template>
+
+          <form [formGroup]="personalesForm" (ngSubmit)="onSubmitPersonal()">
+
+
+
+            
+
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Titulo del archivo" formControlName="email" type="email" value="">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="contenido"></textarea>
+              </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Hypervinculo de descarga" formControlName="email" type="email" value="">
+            </mat-form-field>
+            
+             
+            
+             
+          
+            <button class="btn float-dark">
+              <i class="fas fa-sign-in-alt"></i>
+              <p>GUARDAR CAMBIOS</p>
+            </button>
+            <button [routerLink]="['/panel/personales']" type="button" class="btn float">
+              <i class="fas fa-sign-in-alt"></i>
+              <p>MOSTRAR PERSONAL</p>
+            </button>
+          </form>
+
+        </mat-tab>
         </mat-tab-group>
       </div>
     </div>

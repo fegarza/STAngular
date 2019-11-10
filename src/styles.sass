@@ -146,7 +146,7 @@ body
 
 //Alertas
 .formAlert
-    z-index: 200
+    z-index: 120
     position: fixed
     left:  0
     top: 0
@@ -157,14 +157,38 @@ body
     width:100%
     height: 100%
     .cont
+        position: relative
+        z-index: 130
         background: white
-        width: 420px
+        width: auto
         height: auto
         padding: 15px
-        display: flex
-        flex-direction: column
+        display: grid
+        grid-column: 1fr
+        grid-row-gap: 15px
+        .exit
+            border-radius: 50%
+            font-size: 30px
+            cursor: pointer
+            position: absolute
+            right: -25px
+            top: -25px
+            width: 50px
+            height: 50px
+            background: red
+            color: white
+            font-weight: bold
+            display: flex
+            justify-content: center
+            align-items: center
         form
-            flex-direction: column
+            display: grid
+            grid-template-columns: 1fr
+            grid-row-gap: 15px
+
+            
+
+                
         
 
 //Botones
@@ -508,3 +532,8 @@ body
     width: 100%
     background: $mainColor
     color: white
+
+.paginator
+    display: flex
+    justify-content: space-between
+    align-items: center

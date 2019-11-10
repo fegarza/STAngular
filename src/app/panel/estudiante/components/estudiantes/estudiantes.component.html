@@ -1,51 +1,85 @@
-<section class="result">
-        <div class="cont">
-                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<section class="filtrado">
+  <div class="cont">
+    <mat-form-field>
+      <mat-label>Haz click para buscar alumnos en especifico</mat-label>
+      <mat-select>
+        <mat-option [value]="carrera">
+          Busqueda por carrera
+        </mat-option>
+        <mat-option [value]="control">
+          Busqueda por número de control
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button class="btn float">
+      <i class="fas fa-flag"></i>
+      <p>BUSCAR</p>
+    </button>
+  </div>
+</section>
 
-                        <ng-container matColumnDef="numeroDeControl">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero de control
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                        {{element.numeroDeControl}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="nombre">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre completo
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                        <a [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
-                                                {{element.usuario.nombreCompleto | titlecase}}
-                                        </a>
-                                </td>
-                        </ng-container>
-                        <ng-container matColumnDef="semestre">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Semestre
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                        {{element.semestre}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="sesiones">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sesiones
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                        {{element.sesiones}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="tutor">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutor
-                                </th>
-                                <td mat-cell *matCellDef="let element">
-                                        {{  element.grupo.tutor == null || element.grupo.tutor == '' ? 'Sin asignar' : element.tutor }} </td>
-                        </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-        </div>
+<section class="result">
+  <div class="cont">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="numeroDeControl">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Numero de control
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.numeroDeControl }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Nombre completo
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <a [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
+            {{ element.usuario.nombreCompleto | titlecase }}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="semestre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Semestre</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.semestre }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="sesiones">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sesiones</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.sesiones }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="creditos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Creditos</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.cantidadDeCreditos }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tutor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tutor</th>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element.grupo.tutor == null || element.grupo.tutor == ""
+              ? "Sin asignar"
+              : element.grupo.tutor.usuario.nombreCompleto
+          }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 </section>
 <section>
-        <div class="cont">
-                <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-                        (page)="pageEvent = mostrarEstudiantes($event)">
-
-                </mat-paginator>
-
-        </div>
+  <div class="cont">
+    <mat-paginator
+      [length]="100"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageEvent = mostrarEstudiantes($event)"
+    >
+    </mat-paginator>
+  </div>
 </section>

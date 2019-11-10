@@ -32,7 +32,7 @@ export class GrupoComponent implements OnInit {
   public usuario: Usuario = new Usuario();
   //Tabla
   dataSource = new MatTableDataSource(this.miGrupo.estudiantes);
-  displayedColumns: string[] = ['nombre', 'numeroDeControl'];
+  displayedColumns: string[] = ['nombre', 'numeroDeControl','semestre' ,'creditos', 'sesiones', 'sesionesIniciales', 'estatus'];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   asistenciaSource = new MatTableDataSource(this.asistencia);
   asistenciaColumns : string[] = ['presente', 'nombre', 'numeroDeControl'];

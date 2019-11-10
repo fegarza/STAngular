@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
  
-
- 
  
 import {
   MatDatepickerModule,
@@ -20,7 +18,8 @@ import {
   MatSlideToggleModule,
   MatCheckboxModule,
   MatExpansionModule,
-  MatMenuModule
+  MatMenuModule,
+  MatIconModule
 } from '@angular/material';  
  
 const Componentes =  [
@@ -40,7 +39,8 @@ const Componentes =  [
   MatSlideToggleModule,
   MatCheckboxModule,
   MatExpansionModule,
-  MatMenuModule
+  MatMenuModule,
+  MatIconModule
 ];
 
 

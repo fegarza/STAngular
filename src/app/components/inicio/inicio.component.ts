@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2'; 
+import { ArchivoService } from '../../services/archivo.service';
 
 @Component({
   selector: 'app-inicio',
@@ -15,8 +16,8 @@ export class InicioComponent implements OnInit {
   public tab: string =  'home';
   
   //Constructor
-  constructor(){
-
+  constructor(private archivoService: ArchivoService){
+    
   }
   Redirect(_url: string){
     window.location.href = _url;
@@ -46,4 +47,13 @@ export class InicioComponent implements OnInit {
     this.tab = "registro";
     this.Login = false;
   }
+  ScrollTutorias(){
+    try 
+    { 
+     window.scrollTo({ left: 0, top: 570, behavior: 'smooth' });
+     } catch (e) {
+      window.scrollTo(0, 570);
+      }
+  }
+
 } 

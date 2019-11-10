@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth-service.service";
 import Swal from "sweetalert2";
@@ -24,9 +24,10 @@ export class RegistroComponent implements OnInit {
   ) {
     this.registroForm = new FormGroup({
       numeroControl: new FormControl(),
-      curp: new FormControl(),
-      email: new FormControl(),
-      clave: new FormControl()
+      curp: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      clave: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      clave2: new FormControl('',[ Validators.required, Validators.minLength(6)])
     });
   }
 
@@ -34,45 +35,55 @@ export class RegistroComponent implements OnInit {
 
   onSubmit() {
     if (this.disponible) {
-      this.disponible = false;
-      this.loading = true;
-      this.nuevoEstudiante.numeroDeControl = this.registroForm.controls.numeroControl.value;
-      this.nuevoEstudiante.usuario = new Usuario();
-      this.nuevoEstudiante.usuario.email = this.registroForm.controls.email.value;
-      this.nuevoEstudiante.curp = this.registroForm.controls.curp.value;
-      this.nuevoEstudiante.usuario.clave = this.registroForm.controls.clave.value;
-      this.estudianteService.add(this.nuevoEstudiante).subscribe(r => {
-        this.disponible = true;
-        if (r.code == 200) {
-          this.miEstudiante = r.data as Estudiante;
-          this.authService
-            .entrar(this.nuevoEstudiante.usuario.email, this.nuevoEstudiante.usuario.clave)
-            .subscribe(r => {
-              if (r.code == 200) {
-                this.loading = false;
-                var usuario: Usuario = r.data as Usuario;
-                localStorage.setItem("usuario", JSON.stringify(usuario));
-                Swal.fire("Exito", "¡Se ha registrado con exito!", "success");
-                this.router.navigate(["/panel"]);
-              } else {
-                this.loading = false;
-                Swal.fire(
-                  r.mensaje.toLocaleUpperCase(),
-                  "error al iniciar sesion",
-                  "error"
-                );
-              }
+     
+      if(this.registroForm.controls.clave.value == this.registroForm.controls.clave2.value){
+        this.disponible = false;
+        this.loading = true;
+        this.nuevoEstudiante.numeroDeControl = this.registroForm.controls.numeroControl.value;
+        this.nuevoEstudiante.usuario = new Usuario();
+        this.nuevoEstudiante.usuario.email = this.registroForm.controls.email.value;
+        this.nuevoEstudiante.curp = this.registroForm.controls.curp.value;
+        this.nuevoEstudiante.usuario.clave = this.registroForm.controls.clave.value;
+        this.estudianteService.add(this.nuevoEstudiante).subscribe(r => {
+          this.disponible = true;
+          if (r.code == 200) {
+            this.miEstudiante = r.data as Estudiante;
+            this.authService
+              .entrar(this.nuevoEstudiante.usuario.email, this.nuevoEstudiante.usuario.clave)
+              .subscribe(r => {
+                if (r.code == 200) {
+                  this.loading = false;
+                  var usuario: Usuario = r.data as Usuario;
+                  localStorage.setItem("usuario", JSON.stringify(usuario));
+                  Swal.fire("Exito", "¡Se ha registrado con exito!", "success");
+                  this.router.navigate(["/panel"]);
+                } else {
+                  this.loading = false;
+                  Swal.fire(
+                    r.mensaje.toLocaleUpperCase(),
+                    "error al iniciar sesion",
+                    "error"
+                  );
+                }
+              });
+          } else {
+            this.loading = false;
+            var ContenidoErrores: string = "";
+            var errores: Array<string> = r.data as Array<string>;
+            errores.forEach(element => {
+              ContenidoErrores += element + "<br>";
             });
-        } else {
-          this.loading = false;
-          var ContenidoErrores: string = "";
-          var errores: Array<string> = r.data as Array<string>;
-          errores.forEach(element => {
-            ContenidoErrores += element + "<br>";
-          });
-          Swal.fire(r.mensaje.toLocaleUpperCase(), ContenidoErrores, "error");
-        }
-      });
+            Swal.fire(r.mensaje.toLocaleUpperCase(), ContenidoErrores, "error");
+          }
+        });
+      }else{
+        Swal.fire(
+          "Las dos contraseñas no coinciden",
+          "error al  intentar registrarse",
+          "error"
+        );
+      }
+     
     }
   }
 }

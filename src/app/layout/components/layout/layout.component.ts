@@ -10,7 +10,7 @@ export class LayoutComponent implements OnInit {
 
   public bg = "red";
   public value =  15;
-
+  public formAlert = false;
   onInputChange(event: MatSliderChange) {
     console.log("This is emitted as the thumb slides");
     console.log(event.value);

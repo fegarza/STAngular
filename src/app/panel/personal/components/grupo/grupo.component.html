@@ -1,134 +1,181 @@
 <header>
-        <div class="box">
-                <div class="boxCont">
-                        <div class="profCont">
-                                <div class="profImg">
-
-                                </div>
-                                <a [routerLink]="['/panel/personales/'+miGrupo.personal.id]">
-                                        <h1>
-                                                {{ miGrupo.personal.usuario.nombreCompleto | titlecase }}
-                                        </h1>
-                                </a>
-                        </div>
-                </div>
-        </div>
+  <div class="box">
+    <div class="boxCont">
+      <div class="profCont">
+        <div class="profImg"></div>
+        <a [routerLink]="['/panel/personales/' + miGrupo.personal.id]">
+          <h1>
+            {{ miGrupo.personal.usuario.nombreCompleto | titlecase }}
+          </h1>
+        </a>
+      </div>
+    </div>
+  </div>
 </header>
 <section>
-        <div class="cont">
-                <mat-accordion>
-                        <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                                Estudiantes
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-                                                mostrar todos los alumnos
-                                        </mat-panel-description>
-                                </mat-expansion-panel-header>
-                                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <div class="cont">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Estudiantes
+          </mat-panel-title>
+          <mat-panel-description>
+            mostrar todos los alumnos
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="numeroDeControl">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Numero de control
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.numeroDeControl }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="semestre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Semestre</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.semestre }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="estatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.estado == 'A' ? 'Activo' : 'xd'  }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Nombre completo
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <a [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
+                {{ element.usuario.nombreCompleto | titlecase }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="sesionesIniciales">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Sesiones iniciales
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.sesionesIniciales }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="sesiones">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sesiones</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.sesiones }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="creditos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Creditos</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.cantidadDeCreditos }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Sesiones
+          </mat-panel-title>
+          <mat-panel-description>
+            realiza un pase de lista
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-                                        <ng-container matColumnDef="numeroDeControl">
-                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero de control
-                                                </th>
-                                                <td mat-cell *matCellDef="let element">
-                                                        {{element.numeroDeControl}} </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="nombre">
-                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre completo
-                                                </th>
-                                                <td mat-cell *matCellDef="let element">
-                                                        <a
-                                                                [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
-                                                                {{element.usuario.nombreCompleto | titlecase}}
-                                                        </a>
-                                                </td>
-                                        </ng-container>
-                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                                </table>
-                        </mat-expansion-panel>
-                        <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                                Sesiones
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-                                                realiza un pase de lista
-                                        </mat-panel-description>
-                                </mat-expansion-panel-header>
-
-                                <div class="box">
-                                        <div class="boxCont">
-                                                <form [formGroup]="sesionesForm">
-                                                        <mat-form-field>
-                                                                <mat-label>Sesiones</mat-label>
-                                                                <mat-select formControlName="sesion"
-                                                                        (ngModelChange)="cargarAsistencias($event)">
-                                                                        <mat-option *ngFor="let s of sesiones"
-                                                                                [value]="s.id">
-                                                                                {{s.fecha}}
-                                                                        </mat-option>
-                                                                </mat-select>
-                                                        </mat-form-field>
-                                                        <button class="btn float" (click)="Guardar()">
-                                                                <i class="fas fa-flag"></i>
-                                                                <p>Guardar</p>
-                                                        </button>
-                                                </form>
-                                        </div>
-                                </div>
-                                <br>
-                                <table mat-table [dataSource]="asistenciaSource" matSort class="mat-elevation-z8">
-
-                                        <ng-container matColumnDef="presente">
-                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Asistencia </th>
-                                                <td mat-cell *matCellDef="let element">
-                                                        <mat-checkbox [checked]="element.presente"
-                                                                (change)="AsignarAsistencia($event, element.id)">
-                                                        </mat-checkbox>
-                                                </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="numeroDeControl">
-                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero de control
-                                                </th>
-                                                <td mat-cell *matCellDef="let element"> <a
-                                                                [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
-                                                                {{element.numeroDeControl}}</a> </td>
-                                        </ng-container>
-                                        <ng-container matColumnDef="nombre">
-                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre completo
-                                                </th>
-                                                <td mat-cell *matCellDef="let element">
-                                                        {{element.usuario.nombreCompleto | titlecase}} </td>
-                                        </ng-container>
-                                        <tr mat-header-row *matHeaderRowDef="asistenciaColumns"></tr>
-                                        <tr mat-row *matRowDef="let row; columns: asistenciaColumns;"></tr>
-                                </table>
-                        </mat-expansion-panel>
-                        <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                                Canalizaciones
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-                                                mostrar las canalizaciones pendientes
-                                        </mat-panel-description>
-                                </mat-expansion-panel-header>
-
-                        </mat-expansion-panel>
-                        <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                                Documentos
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-                                                imprimir lista
-                                        </mat-panel-description>
-                                </mat-expansion-panel-header>
-
-                        </mat-expansion-panel>
-
-                </mat-accordion>
+        <div class="box">
+          <div class="boxCont">
+            <form [formGroup]="sesionesForm">
+              <mat-form-field>
+                <mat-label>Sesiones</mat-label>
+                <mat-select
+                  formControlName="sesion"
+                  (ngModelChange)="cargarAsistencias($event)"
+                >
+                  <mat-option *ngFor="let s of sesiones" [value]="s.id">
+                    {{ s.fecha }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button class="btn float" (click)="Guardar()">
+                <i class="fas fa-flag"></i>
+                <p>Guardar</p>
+              </button>
+            </form>
+          </div>
         </div>
+        <br />
+        <table
+          mat-table
+          [dataSource]="asistenciaSource"
+          matSort
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="presente">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Asistencia
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox
+                [checked]="element.presente"
+                (change)="AsignarAsistencia($event, element.id)"
+              >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="numeroDeControl">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Numero de control
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <a [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
+                {{ element.numeroDeControl }}</a
+              >
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Nombre completo
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.usuario.nombreCompleto | titlecase }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="asistenciaColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: asistenciaColumns"></tr>
+        </table>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Canalizaciones
+          </mat-panel-title>
+          <mat-panel-description>
+            mostrar las canalizaciones pendientes
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Documentos
+          </mat-panel-title>
+          <mat-panel-description>
+            imprimir lista
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </section>

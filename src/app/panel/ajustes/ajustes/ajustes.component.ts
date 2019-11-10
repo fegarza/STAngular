@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { AccionService } from 'src/app/services/accion.service';
 import { SesionService } from 'src/app/services/sesion.service';
 import { TituloService } from 'src/app/services/titulo.service';
-import { Estudiante, EstudianteDatos } from '../../../models/models';
+import { EstudianteDatos } from '../../../models/models';
 import { EstudianteService } from '../../../services/estudiante.service';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 
@@ -19,8 +19,9 @@ import { MatTableDataSource, PageEvent } from '@angular/material';
   styleUrls: ['./ajustes.component.sass']
 })
 export class AjustesComponent implements OnInit {
+  hide = true;
   public loading: boolean = false;
-
+  public formAlert: string = "none";
   //Constantes
   cargos: Array<Cargo> = [
     { tipo: "C", titulo: "Coordinador" },
@@ -73,17 +74,17 @@ export class AjustesComponent implements OnInit {
   //sesiones dataTable
   todasSesiones: Array<Sesion> = new Array<Sesion>();
   sesionesSource = new MatTableDataSource(this.todasSesiones);
-  sesionesColumns: string[] = ['fecha', 'editar', 'eliminar' ];
+  sesionesColumns: string[] = ['fecha', 'editar', 'eliminar'];
 
 
   //acciones dattable
   todasAcciones: Array<Accion> = new Array<Accion>();
   accionesSource = new MatTableDataSource(this.todasAcciones);
-  accionesColumns: string[] = ['fecha' ,'titulo', 'editar', 'eliminar' ];
+  accionesColumns: string[] = ['fecha', 'titulo', 'editar', 'eliminar'];
   // MatPaginator Inputs
   length = 100;
   pageSize = 10;
-  pageSizeOptions: number[] = [10,20,30,40,50];
+  pageSizeOptions: number[] = [10, 20, 30, 40, 50];
 
   // MatPaginator Output
   pageEvent: PageEvent;
@@ -106,7 +107,7 @@ export class AjustesComponent implements OnInit {
           this.settingsForm.controls.ciudadDeNacimiento.setValue(this.miUsuario.estudiante.estudianteDatos.ciudadNacimiento);
           this.settingsForm.controls.telefonoMovil.setValue(this.miUsuario.estudiante.estudianteDatos.telefonoMovil);
           this.settingsForm.controls.telefonoDomicilio.setValue(this.miUsuario.estudiante.estudianteDatos.telefonoDomicilio);
-          
+
         }
       });
     }
@@ -114,18 +115,18 @@ export class AjustesComponent implements OnInit {
     else {
       this.crearFormsDePersonales();
       this.accionService.showAll().subscribe(r => {
-        if(r.code == 200){
-          this.todasAcciones = r.data as  Array<Accion>;
+        if (r.code == 200) {
+          this.todasAcciones = r.data as Array<Accion>;
           this.accionesSource = new MatTableDataSource(this.todasAcciones);
         }
       });
       this.sesionService.showAll().subscribe(r => {
-        if(r.code == 200){
-          this.todasSesiones = r.data as  Array<Sesion>;
+        if (r.code == 200) {
+          this.todasSesiones = r.data as Array<Sesion>;
           this.sesionesSource = new MatTableDataSource(this.todasSesiones);
         }
       });
-      
+
       this.departamentoServices.showAll().subscribe(
         s => {
           this.departamentos = s.data as Array<Departamento>;
@@ -151,19 +152,20 @@ export class AjustesComponent implements OnInit {
   /*
     POR PARTE DE LOS ESTUDIANTES
   */
- guardarEstudiante(){
-   var nuevo : EstudianteDatos = new EstudianteDatos();
-   nuevo.fechaNacimiento = this.settingsForm.controls.fechaDeNacimiento.value;
-   console.log(this.settingsForm.controls.fechaDeNacimiento.value);
+  guardarEstudiante() {
 
-   this.estudianteService.guardarDatos(nuevo).subscribe(r => {
-     if(r.code == 200){
-      
-     }else{
-
-     }
-   }) 
- }
+    var nuevo: EstudianteDatos = new EstudianteDatos();
+    nuevo.fechaNacimiento = this.settingsForm.controls.fechaDeNacimiento.value;
+    console.log(this.settingsForm.controls.fechaDeNacimiento.value);
+    /*
+        this.estudianteService.guardarDatos(nuevo).subscribe(r => {
+          if(r.code == 200){
+            
+          }else{
+    
+          }
+        })  */
+  }
   crearFormsDeEstudiantes() {
     this.settingsForm = new FormGroup({
       /*
@@ -172,77 +174,77 @@ export class AjustesComponent implements OnInit {
       //Datos generales
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.min(6)]),
-      fechaDeNacimiento: new FormControl('',),
-      estadoDeNacimiento: new FormControl('',),
-      ciudadDeNacimiento: new FormControl('',),
-      telefonoMovil: new FormControl('',),
+      fechaDeNacimiento: new FormControl(''),
+      estadoDeNacimiento: new FormControl(''),
+      ciudadDeNacimiento: new FormControl(''),
+      telefonoMovil: new FormControl(''),
       //Domicilio
-      telefonoDomicilio: new FormControl('',),
-      colonia: new FormControl('',),
-      calle: new FormControl('',),
-      numero: new FormControl('',),
+      telefonoDomicilio: new FormControl(''),
+      colonia: new FormControl(''),
+      calle: new FormControl(''),
+      numero: new FormControl(''),
       //Beca
-      tieneBeca: new FormControl('',),
-      seguroSocial: new FormControl('',),
-      tipoDeBeca: new FormControl('',),
+      tieneBeca: new FormControl(''),
+      seguroSocial: new FormControl(''),
+      tipoDeBeca: new FormControl(''),
       //Trabajo
-      tieneTrabajo: new FormControl('',),
-      nombreEmpresa: new FormControl('',),
-      horario: new FormControl('',),
+      tieneTrabajo: new FormControl(''),
+      nombreEmpresa: new FormControl(''),
+      horario: new FormControl(''),
       //Estado civil
-      estadoCivil: new FormControl('',),
-      numeroDeHijos: new FormControl('',),
-      dependenciaEconomica: new FormControl('',),
+      estadoCivil: new FormControl(''),
+      numeroDeHijos: new FormControl(''),
+      dependenciaEconomica: new FormControl(''),
       /*
         -> Datos clinicos
       */
       //Deficiencias sensiorales
-      vista: new FormControl('',),
-      oido: new FormControl('',),
-      lenguaje: new FormControl('',),
-      motriz: new FormControl('',),
+      vista: new FormControl(''),
+      oido: new FormControl(''),
+      lenguaje: new FormControl(''),
+      motriz: new FormControl(''),
       //PAdecimientos o deficiencias del sistema organico
-      nervioso: new FormControl('',),
-      circulatorio: new FormControl('',),
-      digestivo: new FormControl('',),
-      respiratorio: new FormControl('',),
-      oseo: new FormControl('',),
-      otros: new FormControl('',),
+      nervioso: new FormControl(''),
+      circulatorio: new FormControl(''),
+      digestivo: new FormControl(''),
+      respiratorio: new FormControl(''),
+      oseo: new FormControl(''),
+      otros: new FormControl(''),
       //Lleva o ha llevado tratamiento psicologico o psiquiatrico
-      haLlevadoTratamiento: new FormControl('',),
-      tratamiento: new FormControl('',),
+      haLlevadoTratamiento: new FormControl(''),
+      tratamiento: new FormControl(''),
       //Tratamiento psicofisilogico
-      hinchazon: new FormControl('',),
-      doloresVientre: new FormControl('',),
-      doloresCabeza: new FormControl('',),
-      perdidaEquilibrio: new FormControl('',),
-      fatiga: new FormControl('',),
-      perdidaVista: new FormControl('',),
-      dificultadParaDormir: new FormControl('',),
-      pesadilla: new FormControl('',),
-      pesadillaAQue: new FormControl('',),
-      incontinencia: new FormControl('',),
-      tartamudeos: new FormControl('',),
-      miedos: new FormControl('',),
+      hinchazon: new FormControl(''),
+      doloresVientre: new FormControl(''),
+      doloresCabeza: new FormControl(''),
+      perdidaEquilibrio: new FormControl(''),
+      fatiga: new FormControl(''),
+      perdidaVista: new FormControl(''),
+      dificultadParaDormir: new FormControl(''),
+      pesadilla: new FormControl(''),
+      pesadillaAQue: new FormControl(''),
+      incontinencia: new FormControl(''),
+      tartamudeos: new FormControl(''),
+      miedos: new FormControl(''),
       /*
         ->Datos de el padre
       */
-      padreVive: new FormControl('',),
-      padreGrado: new FormControl('',),
-      padreTrabajo: new FormControl('',),
-      padreNumero: new FormControl('',),
+      padreVive: new FormControl(''),
+      padreGrado: new FormControl(''),
+      padreTrabajo: new FormControl(''),
+      padreNumero: new FormControl(''),
       /*
         ->Datos de la madre
       */
-     madreVive: new FormControl('',),
-     madreGrado: new FormControl('',),
-     madreTrabajo: new FormControl('',),
-     madreNumero: new FormControl('',)
+      madreVive: new FormControl(''),
+      madreGrado: new FormControl(''),
+      madreTrabajo: new FormControl(''),
+      madreNumero: new FormControl('')
 
 
 
-      
-     
+
+
     });
   }
   onSubmit() {
@@ -269,6 +271,7 @@ export class AjustesComponent implements OnInit {
       fecha: new FormControl('', [Validators.required]),
       contenido: new FormControl('', [Validators.required]),
       obligatorio: new FormControl('', [Validators.required]),
+      tipo: new FormControl('', [Validators.required])
     });
 
     this.sesionesForm = new FormGroup({
@@ -334,6 +337,7 @@ export class AjustesComponent implements OnInit {
     accion.titulo = this.accionesForm.controls.titulo.value;
     accion.contenido = this.accionesForm.controls.contenido.value;
     accion.fecha = this.accionesForm.controls.fecha.value;
+    accion.tipo = this.accionesForm.controls.tipo.value;
     if (this.accionesForm.controls.obligatorio.value == "1") {
       accion.obligatorio = true;
     } else {
@@ -411,7 +415,7 @@ export class AjustesComponent implements OnInit {
 
   }
 
-  mostrarAcciones(){
+  mostrarAcciones() {
 
   }
 }

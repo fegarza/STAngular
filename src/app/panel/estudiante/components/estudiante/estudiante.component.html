@@ -1,66 +1,83 @@
 <header>
-        <div class="cont">
-                <div class="profImg">
-
-                </div>
-                <div class="info">
-                        <h1>
-                                {{ miEstudiante.usuario.nombreCompleto | titlecase  }}
-                        </h1>
-                        <p>Estudiante</p>
-                </div>
-                <div class="settings" [matMenuTriggerFor]="appMenu" *ngIf="permisoDeModificar">
-                        <mat-menu #appMenu="matMenu">
-                                <button mat-menu-item (click)="asignarGrupo()">
-                                        <i class="fas fa-flag"></i>
-                                        <p>Asignar grupo</p>
-                                </button>
-                                <button mat-menu-item (click)="asignarSesiones()">
-                                        <i class="fas fa-flag"></i>
-                                        <p>Establecer sesiones iniciales</p>
-                                </button>
-                                <button mat-menu-item (click)="canalizar()">
-                                        <i class="fas fa-flag"></i>
-                                        <p>Canalizar</p>
-                                </button>
-
-                        </mat-menu>
-
-                        <i class="fas fa-ellipsis-h"></i>
-                </div>
-        </div>
+  <div class="cont">
+    <div class="profImg" [style.background]="'url: ' + miEstudiante.fotoLink"></div>
+    <div class="info">
+      <h1>
+        {{ miEstudiante.usuario.nombreCompleto | titlecase }}
+      </h1>
+      <p>Estudiante</p>
+    </div>
+    <div class="settings" [matMenuTriggerFor]="appMenu" *ngIf="permisoDeModificar">
+      <mat-menu #appMenu="matMenu">
+        <button mat-menu-item (click)="asignarGrupo()">
+          <i class="fas fa-users-cog"></i>
+          <p>Asignar grupo</p>
+        </button>
+        <button mat-menu-item (click)="asignarSesiones()">
+          <i class="fas fa-flag"></i>
+          <p>Establecer sesiones iniciales</p>
+        </button>
+        <button mat-menu-item (click)="canalizar()">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>Canalizar</p>
+        </button>
+      </mat-menu>
+      <button class="btn float-white">
+        <i class="fas fa-chevron-circle-down"></i>
+        <p>Mostrar opciones</p>
+      </button>
+    </div>
+  </div>
 </header>
 
 <section>
-        <div class="cont advices">
-                <div class="advice blue horizontal">
-                        <i class="fas fa-trophy"></i>
-                        <div class="info">
-                                <h1> {{ miEstudiante.creditos   }}</h1>
-                                <p>Créditos</p>
-                        </div>
-                </div>
-                <div class="advice blue horizontal">
-                        <i class="fas fa-clipboard-check"></i>
-                        <div class="info">
-                                <h1> {{ miEstudiante.sesiones  }}</h1>
-                                <p>Sesiones</p>
-                        </div>
-                </div>
-                <div class="advice blue horizontal">
-                        <i class="fas fa-graduation-cap"></i>
-                        <div class="info">
-                                <h1> {{ miEstudiante.semestre   }}</h1>
-                                <p>Semestre</p>
-                        </div>
-                </div>
-                <div class="advice blue horizontal">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <div class="info">
-                                <h1> {{ miEstudiante.canalizaciones   }}</h1>
-                                <p>Canalizaciones</p>
-                        </div>
-                </div>
+  <div class="cont advices">
+    <div class="advice blue horizontal">
+      <i class="fas fa-trophy"></i>
+      <div class="info">
+        <h1>{{ miEstudiante.cantidadDeCreditos }}</h1>
+        <p>Créditos</p>
+      </div>
+    </div>
+    <div class="advice blue horizontal">
+      <i class="fas fa-clipboard-check"></i>
+      <div class="info">
+        <h1>{{ sesionesTotales }}</h1>
+        <p>Sesiones</p>
+      </div>
+    </div>
+    <div class="advice blue horizontal">
+      <i class="fas fa-graduation-cap"></i>
+      <div class="info">
+        <h1>{{ miEstudiante.semestre }}</h1>
+        <p>Semestre</p>
+      </div>
+    </div>
+    <div class="advice blue horizontal">
+      <i class="fas fa-exclamation-circle"></i>
+      <div class="info">
+        <h1>{{ miEstudiante.canalizaciones }}</h1>
+        <p>Canalizaciones</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="creditos">
+  <div class="cont boxCont">
+    <div class="box simple shadow">
+      <div class="title solidBlue ">
+        <i class="fas fa-flag"></i>
+        <h1>Creditos</h1>
+      </div>
+      <div class="boxCont">
+        <div class="credito" *ngFor="let i of miEstudiante.creditos">
+            <mat-divider></mat-divider>
+            <p>Titulo del credito: {{ i.actividad.titulo }}</p>
+            <p>Fecha: {{i.fechaDeOficio | date:'shortDate'}}</p>
+            <p>Estado de la actividad: {{ i.estadoDeLaActividad == 'T' ? 'termminada' : 'en proceso' }} </p>
         </div>
-
+          
+      </div>
+    </div>
+  </div>
 </section>

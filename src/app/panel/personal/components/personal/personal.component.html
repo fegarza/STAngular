@@ -1,145 +1,172 @@
-<div class="formAlert" *ngIf="formAlert == 'correo'" >
-        <div class="cont">
-                <form [formGroup]="correoFormGroup" (ngSubmit)="onSubmitCorreo()">
-                        <h1>Nuevo correo</h1>
-                        <mat-form-field class="example-full-width">
-                                <input matInput placeholder="Nuevo correo" formControlName="correo" value="">
-                        </mat-form-field>
-                        <button type="submit" class="btn float-dark">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <p>GUARDAR CAMBIOS</p>
-                        </button>
-                        <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <p>SALIR</p>
-                        </button>
-                </form>
-        </div>
-
+<div class="formAlert" *ngIf="formAlert == 'correo'">
+  <div class="cont">
+    <form [formGroup]="correoFormGroup" (ngSubmit)="onSubmitCorreo()">
+      <h1>Nuevo correo</h1>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Nuevo correo"
+          formControlName="correo"
+          value=""
+        />
+      </mat-form-field>
+      <button type="submit" class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button
+        type="button"
+        class="btn float-dark"
+        (click)="formAlert = ' none'"
+      >
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
 </div>
-<div class="formAlert" *ngIf="formAlert == 'clave'" >
-        <div class="cont">
-                <form [formGroup]="claveFormGroup" (ngSubmit)="onSubmitClave()">
-                        <h1>Nueva contraseña</h1>
-                        <mat-form-field class="example-full-width">
-                                <input matInput placeholder="Nueva contraseña" formControlName="clave" value="">
-                        </mat-form-field>
-                        <button type="submit" class="btn float-dark">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <p>GUARDAR CAMBIOS</p>
-                        </button>
-                        <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <p>SALIR</p>
-                        </button>
-                </form>
-        </div>
-
+<div class="formAlert" *ngIf="formAlert == 'clave'">
+  <div class="cont">
+    <form [formGroup]="claveFormGroup" (ngSubmit)="onSubmitClave()">
+      <h1>Nueva contraseña</h1>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Nueva contraseña"
+          formControlName="clave"
+          value=""
+        />
+      </mat-form-field>
+      <button type="submit" class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button
+        type="button"
+        class="btn float-dark"
+        (click)="formAlert = ' none'"
+      >
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
 </div>
-<div class="formAlert" *ngIf="formAlert == 'cargo'" >
-        <div class="cont">
-                <form [formGroup]="cargoFormGroup" (ngSubmit)="onSubmitCargo()">
-                        <mat-form-field>
-                                <mat-label>Seleccione el nuevo cargo</mat-label>
-                                <mat-select formControlName="cargo">
-                                        <mat-option *ngFor="let c of cargos" [value]="c.tipo">
-                                                {{c.titulo}}
-                                        </mat-option>
-                                </mat-select>
-                        </mat-form-field>
-                        <button  class="btn float-dark">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <p>GUARDAR CAMBIOS</p>
-                        </button>
-                        <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <p>SALIR</p>
-                        </button>
-                </form>
-        </div>
-
+<div class="formAlert" *ngIf="formAlert == 'cargo'">
+  <div class="cont">
+    <form [formGroup]="cargoFormGroup" (ngSubmit)="onSubmitCargo()">
+      <mat-form-field>
+        <mat-label>Seleccione el nuevo cargo</mat-label>
+        <mat-select formControlName="cargo">
+          <mat-option *ngFor="let c of cargos" [value]="c.tipo">
+            {{ c.titulo }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button
+        type="button"
+        class="btn float-dark"
+        (click)="formAlert = ' none'"
+      >
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
 </div>
 
 <header>
-        <div class="settings" [matMenuTriggerFor]="appMenu" *ngIf="permisoDeModificar">
-                <mat-menu #appMenu="matMenu">
-                        <button type="button" mat-menu-item [routerLink]="['./grupo']">
-                                <i class="fas fa-flag"></i>
-                                <p>Mostrar grupo</p>
-                        </button>
-                        <button mat-menu-item (click)="cambiarCargo()">
-                                <i class="fas fa-flag"></i>
-                                <p>Cambiar cargo</p>
-                        </button>
-                        <button mat-menu-item (click)="cambiarClave()">
-                                <i class="fas fa-flag"></i>
-                                <p>Cambiar contraseña</p>
-                        </button>
-                        <button mat-menu-item (click)="cambiarCorreo()">
-                                <i class="fas fa-flag"></i>
-                                <p>Cambiar correo electronico</p>
-                        </button>
+  <div
+    class="settings"
+    [matMenuTriggerFor]="appMenu"
+    *ngIf="permisoDeModificar"
+  >
+    <mat-menu #appMenu="matMenu">
+      <button type="button" mat-menu-item [routerLink]="['./grupo']">
+        <i class="fas fa-users"></i>
+        <p>Ver su grupo</p>
+      </button>
+      <button mat-menu-item (click)="cambiarCargo()">
+        <i class="fas fa-briefcase"></i>
+        <p>Cambiar cargo</p>
+      </button>
+      <button mat-menu-item (click)="cambiarClave()">
+        <i class="fas fa-lock"></i>
+        <p>Cambiar contraseña</p>
+      </button>
+      <button mat-menu-item (click)="cambiarCorreo()">
+        <i class="fas fa-envelope"></i>
+        <p>Cambiar correo electronico</p>
+      </button>
+    </mat-menu>
 
-                </mat-menu>
-
-                <i class="fas fa-ellipsis-h"></i>
-        </div>
-        <div class="box">
-                <div class="boxCont">
-                        <div class="profCont">
-                                <div class="profImg">
-
-                                </div>
-                                <h1>
-                                        {{ miPersonal.usuario.nombreCompleto | titlecase }}
-                                </h1>
-                        </div>
-                </div>
-        </div>
+    <button class="btn float-white">
+      <i class="fas fa-chevron-circle-down"></i>
+      <p>Mostrar opciones</p>
+    </button>
+  </div>
+  <div class="box">
+    <div class="boxCont">
+      <div class="profCont">
+        <div class="profImg"></div>
+        <h1>
+          {{ miPersonal.usuario.nombreCompleto | titlecase }}
+        </h1>
+      </div>
+    </div>
+  </div>
 </header>
 
 <section *ngIf="miPersonal.cargo != 'A'">
-        <div class="cont advices">
-                <div class="advice blue horizontal">
-                        <i class="fas fa-trophy"></i>
-                        <div class="info">
-                                <h1>{{ miPersonal.tutorados }}</h1>
-                                <p>Tutorados</p>
-                        </div>
-                </div>
-                <div class="advice blue horizontal">
-                        <i class="fas fa-clipboard-check"></i>
-                        <div class="info">
-                                <h1>{{ miPersonal.canalizaciones }}</h1>
-                                <p>Canalizaciones</p>
-                        </div>
-                </div>
-                <div class="advice blue horizontal">
-                        <i class="fas fa-graduation-cap"></i>
-                        <div class="info">
-                                <h1>{{ miPersonal.posts }}</h1>
-                                <p>Posts</p>
-                        </div>
-                </div>
-        </div>
-
+  <div class="cont advices">
+    <div class="advice blue horizontal">
+      <i class="fas fa-trophy"></i>
+      <div class="info">
+        <h1>{{ miPersonal.tutorados }}</h1>
+        <p>Tutorados</p>
+      </div>
+    </div>
+    <div class="advice blue horizontal">
+      <i class="fas fa-clipboard-check"></i>
+      <div class="info">
+        <h1>{{ miPersonal.canalizaciones }}</h1>
+        <p>Canalizaciones</p>
+      </div>
+    </div>
+    <div class="advice blue horizontal">
+      <i class="fas fa-graduation-cap"></i>
+      <div class="info">
+        <h1>{{ miPersonal.posts }}</h1>
+        <p>Posts</p>
+      </div>
+    </div>
+  </div>
 </section>
 <section class="info">
-        <div class="cont">
-                <div class="textBox lineBlue">
-                        <h1><i class="fas fa-flag"></i>Datos</h1>
-                        <p>
-                                Cargo: {{miPersonal.cargo == "A" ? "Administrador" : ""}}
-                                {{miPersonal.cargo == "C" ? "Coordinador" : ""}}
-                                {{miPersonal.cargo == "D" ? "Jefe de departamento" : ""}}
-                                {{miPersonal.cargo == "J" ? "Jefe de tutorias" : ""}}
-                                {{miPersonal.cargo == "T" ? "Tutor" : ""}}<br>
-                                Email: {{ miPersonal.usuario.email }} <br>
-                                Genero: {{ miPersonal.usuario.genero == "M" ? "Mujer" : "Hombre" }} <br>
-                                Departamento:
-                                {{ miPersonal.departamento != null ? ( miPersonal.departamento.titulo | titlecase) : 'cargando' }}
-                                <br>
-                        </p>
-                </div>
-        </div>
+  <div class="cont">
+    <div class="textBox lineBlue">
+      <h1><i class="fas fa-flag"></i>Datos</h1>
+      <p>
+        Cargo: {{ miPersonal.cargo == "A" ? "Administrador" : "" }}
+        {{ miPersonal.cargo == "C" ? "Coordinador" : "" }}
+        {{ miPersonal.cargo == "D" ? "Jefe de departamento" : "" }}
+        {{ miPersonal.cargo == "J" ? "Jefe de tutorias" : "" }}
+        {{ miPersonal.cargo == "T" ? "Tutor" : "" }}<br />
+        Email: {{ miPersonal.usuario.email }} <br />
+        Genero: {{ miPersonal.usuario.genero == "M" ? "Mujer" : "Hombre" }}
+        <br />
+        Departamento:
+        {{
+          miPersonal.departamento != null
+            ? (miPersonal.departamento.titulo | titlecase)
+            : "cargando"
+        }}
+        <br />
+      </p>
+    </div>
+  </div>
 </section>

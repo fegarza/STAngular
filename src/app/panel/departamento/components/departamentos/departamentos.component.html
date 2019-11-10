@@ -10,6 +10,22 @@
                     </a>
                 </td>
             </ng-container>
+            <ng-container matColumnDef="tutores">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tutores </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a [routerLink]="['/panel/departamentos', element.id]">
+                            {{element.tutores}}
+                        </a>
+                    </td>
+            </ng-container>
+            <ng-container matColumnDef="tutorados">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tutorados </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a [routerLink]="['/panel/departamentos', element.id]">
+                            {{element.tutorados}}
+                        </a>
+                    </td>
+            </ng-container>
             
             
 

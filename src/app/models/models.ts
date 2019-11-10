@@ -89,6 +89,7 @@ export class Accion{
     contenido: string;
     fecha: string;
     obligatorio: boolean;
+    tipo: string;
 }
 
 export class Atencion{
@@ -109,13 +110,31 @@ export class Canalizacion{
     atencion: Atencion;
     estudiante: Estudiante;
 }
+/*
+    CREDITOS
+*/
+export class Credito{
+    estadoDeLaActividad: string;
+    estadoDeLaFirma: string;
+    fechaDeOficio: string;
+}
+export class Actividad{
+    titulo: string;
 
+}
 export class Carrera{
     id: number;
     nombre:string = "";
     clave:string = ""; 
 }
-
+export class Archivo{
+    id: number;
+    titulo: string;
+    tipo: string;
+    descripcion: string;
+    link: string;
+    fecha: string;
+}
 export class EstudianteDatos{
     //Parents
     madreVive: boolean;

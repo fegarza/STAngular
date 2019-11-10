@@ -1,47 +1,47 @@
 <div class="loader" *ngIf="loading">
-    <div class="lds-dual-ring">
-        <div class="img">
+  <div class="lds-dual-ring">
+      <div class="img">
 
-          </div>
-    </div>
+        </div>
+  </div>
 </div>
 <div class="main animated bounceInDown slow" >
-   <div class="cont">
-     <div class="login">
-       <div class="left">
-          <img src="/assets/img/logo.svg" alt="">
-         <form  [formGroup]="loginForm"  (ngSubmit)="onSubmit()">
-           <h1>
-            INICIAR SESIÓN
-           </h1>
-           <div class="input normal">
-              <i class="fas fa-user"></i><input type="text" formControlName="user" placeholder="Correo electrónico" />
-           </div>
-           <div class="input normal">
-              <i class="fas fa-lock"></i><input type="password" formControlName="password" placeholder="Contraseña" />
-           </div>
-
-           <div class="buttons">
-             <button  class="btn push">
-                <i class="fas fa-sign-in-alt"></i>
-               <p>Ingresar</p>
-             </button>
-              
-             <button class="btn push-dark" (click)="Close()">
-                <i class="fas fa-door-closed"></i>
-               <p>Salir</p>
-             </button>
-           </div>
-         </form>
-         <div class="textBox simpleBlue">
-           <h1><i class="fas fa-question-circle"></i>¿No tienes cuenta?</h1>
-           
-            <p [routerLink]="['/registro']" >
-              Haz click aqui para registrarte
-             </p>
-          
+ <div class="cont">
+   <div class="login">
+     <div class="left">
+        <img src="/assets/img/logo.svg" alt="">
+       <form  [formGroup]="loginForm"  (ngSubmit)="onSubmit()">
+         <h1>
+          INICIAR SESIÓN
+         </h1>
+         <div class="input normal">
+            <i class="fas fa-user"></i><input type="text" formControlName="user" placeholder="Correo electrónico" />
          </div>
+         <div class="input normal">
+            <i class="fas fa-lock"></i><input type="password" formControlName="password" placeholder="Contraseña" />
+         </div>
+
+         <div class="buttons">
+           <button  class="btn push">
+              <i class="fas fa-sign-in-alt"></i>
+             <p>Ingresar</p>
+           </button>
+            
+           <button class="btn push-dark" (click)="Close()">
+              <i class="fas fa-door-closed"></i>
+             <p>Salir</p>
+           </button>
+         </div>
+       </form>
+       <div class="textBox simpleBlue">
+         <h1><i class="fas fa-question-circle"></i>¿No tienes cuenta?</h1>
+         
+          <p [routerLink]="['/registro']" >
+            Haz click aqui para registrarte
+           </p>
+        
        </div>
      </div>
    </div>
  </div>
+</div>

@@ -3,7 +3,7 @@
                 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
                         <ng-container matColumnDef="nombre">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre del empleado</th>
                                 <td mat-cell *matCellDef="let element">
                                         <a [routerLink]="['/panel/personales', element.id]">
                                                 {{element.usuario.nombreCompleto | titlecase}}
@@ -11,7 +11,7 @@
                                 </td>
                         </ng-container>
                         <ng-container matColumnDef="cargo">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo que emplea</th>
                                 <td mat-cell *matCellDef="let element">
                                         {{ element.cargo == 'A' ? 'Administrador' : ''}}
                                         {{ element.cargo == 'J' ? 'Jefe de tutorias' : ''}}
@@ -21,12 +21,12 @@
                                 </td>
                         </ng-container>
                         <ng-container matColumnDef="departamento">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento </th>
                                 <td mat-cell *matCellDef="let element"> {{element.departamento.titulo | titlecase}}
                                 </td>
                         </ng-container>
                         <ng-container matColumnDef="tutorados">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutorados </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad de tutorados </th>
                                 <td mat-cell *matCellDef="let element"> {{element.tutorados}} </td>
                         </ng-container>
 

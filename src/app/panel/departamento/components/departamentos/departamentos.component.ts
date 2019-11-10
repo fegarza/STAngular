@@ -13,7 +13,7 @@ export class DepartamentosComponent implements OnInit {
 
   departamentos: Array<Departamento> = new Array<Departamento>();
   dataSource = new MatTableDataSource(this.departamentos);
-  displayedColumns: string[] = ['titulo'];
+  displayedColumns: string[] = ['titulo', 'tutores', 'tutorados'];
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   // MatPaginator Inputs
   length = 100;

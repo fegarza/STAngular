@@ -16,11 +16,11 @@ export class EstudianteService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
-    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/EstudianteDatos/", JSON.stringify(datos), { headers: headers });
+    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/Datos", JSON.stringify(datos), { headers: headers });
 
   }
   mostrarDatos(numeroControl: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/EstudianteDatos/" + numeroControl);
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl+"/Datos");
   }
   get(numeroControl: string) {
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl);
