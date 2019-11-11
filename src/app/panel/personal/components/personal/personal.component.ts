@@ -42,6 +42,9 @@ export class PersonalComponent implements OnInit {
       this.id = +params['id'];  
     });
     this.miUsuario = this.authService.traerUsuario();
+    console.log("-->Trayendo usuario");
+    console.log(this.miUsuario);
+
     if(this.miUsuario.personal.cargo == "T"){
       if(this.miUsuario.personal.id != parseInt(this.id.toString())){
         this.router.navigate(['/panel']);
@@ -50,6 +53,8 @@ export class PersonalComponent implements OnInit {
           r => {
             if(r.code == 202){
               this.miPersonal = r.data as Personal;
+              console.log("-->Trayendo personal");
+              console.log(this.miPersonal);
             }else{
               this.router.navigate(['/404']);
             }

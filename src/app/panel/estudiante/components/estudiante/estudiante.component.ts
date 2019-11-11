@@ -1,64 +1,94 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { EstudianteService } from "src/app/services/estudiante.service";
-import {
-  Estudiante,
-  Grupo,
-  Usuario,
-  Atencion,
-  Canalizacion
-} from "src/app/models/models";
+import { Estudiante,Grupo,Usuario,Atencion,Canalizacion} from "src/app/models/models";
 import { GrupoService } from "src/app/services/grupo.service";
 import Swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth-service.service";
 import { AtencionService } from "src/app/services/atencion.service";
 import { CanalizacionService } from "src/app/services/canalizacion.service";
-
+import { FormGroup, Validators, FormControl } from "@angular/forms";
+import { Router } from '@angular/router';
 @Component({
   selector: "app-estudiante",
   templateUrl: "./estudiante.component.html",
   styleUrls: ["./estudiante.component.sass"]
 })
 export class EstudianteComponent implements OnInit {
+  
+  //Datos del estudiante
   private sub: any;
   public miEstudiante: Estudiante = new Estudiante();
   public miUsuario: Usuario = new Usuario();
   public permisoDeModificar = false;
   public sesionesTotales: number = 0;
+  
+  //Configuracion del formAlert
+  public formAlert: string = "none";
+
+  //Variables globales
+  public canalizaciones: Array<Canalizacion> = new Array<Canalizacion>();
+
+  //Forms
+  estudianteForm: FormGroup;
+
   constructor(
     private canalizacionService: CanalizacionService,
     private atencionService: AtencionService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private estudianteService: EstudianteService,
-    private grupoService: GrupoService
+    private grupoService: GrupoService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    //Traer elID
     var id: string;
     this.sub = this.route.params.subscribe(params => {
       id = params["id"].toString();
     });
+
+    //Traer al estudiante dado el ID
     this.estudianteService.get(id.toString()).subscribe(r => {
-      this.miEstudiante = r.data as Estudiante;
-      this.sesionesTotales = this.miEstudiante.sesiones + this.miEstudiante.sesionesIniciales;
+      console.log("-->Obteniendo alumno");
+      if(r.code == 200){
+        this.miEstudiante = r.data as Estudiante;
+        this.sesionesTotales = this.miEstudiante.sesiones + this.miEstudiante.sesionesIniciales;
+       
+       
+        console.log(this.miEstudiante)
+      }else{
+        console.log("Error");
+        Swal.fire("El estudiante solicitado no existe", "Probablemente no se ha registrado o simplemente no existe", "error");
+        this.router.navigate(['/panel/estudiantes']);
+      }
+     
+
     });
     this.miUsuario = this.authService.traerUsuario();
-   
-    if (this.miUsuario.tipo == "P") {
-      if (
-        this.miUsuario.personal.cargo == "A" ||
-        this.miUsuario.personal.cargo == "J" ||
-        (this.miUsuario.personal.cargo == "D" &&
-          this.miUsuario.personal.departamentoId ==
-            this.miEstudiante.grupo.personal.departamentoId)
-      ) {
-        this.permisoDeModificar = true;
+    console.log("-->Obteniendo usuario");
+    console.log(this.miUsuario);
+
+    this.estudianteForm = new  FormGroup({
+      correo: new FormControl(this.miEstudiante.usuario.email, [Validators.required]),
+      clave: new FormControl('', [Validators.required]),
+    });
+    this.estudianteService.mostrarCanalizaciones(id).subscribe(r => {
+      if(r.code == 200){
+        this.canalizaciones = r.data as Array<Canalizacion>;
       }
-    }
+    });
+     
+  }
+ 
+
+  public onSubmitEditarEstudiante(){
+
   }
 
-  public getEstudiante(id: string) {}
+
+
   public async asignarSesiones() {
     const { value: sesiones } = await Swal.fire({
       title: "Introduce la cantidad inicial de sesiones",
@@ -93,6 +123,7 @@ export class EstudianteComponent implements OnInit {
         });
     }
   }
+
   public canalizar() {
     var atenciones: Array<Atencion> = new Array<Atencion>();
     var opciones: Map<string, string> = new Map();
@@ -102,6 +133,7 @@ export class EstudianteComponent implements OnInit {
         atenciones.map(g => {
           opciones.set(g.id.toString(), g.titulo);
         });
+         
       },
       error => {
         console.log("ERROR");
@@ -140,6 +172,7 @@ export class EstudianteComponent implements OnInit {
           this.canalizacionService.add(canalizacion).subscribe(r => {
             if (r.code == 200) {
               this.miEstudiante.canalizaciones += 1;
+              
               Swal.fire(
                 "Se ha creado una canalizacion",
                 "Ahora el alumno: " +
@@ -149,6 +182,12 @@ export class EstudianteComponent implements OnInit {
                   " canalizaciones",
                 "success"
               );
+              this.estudianteService.mostrarCanalizaciones(this.miEstudiante.numeroDeControl).subscribe(r =>{
+                if(r.code == 200){
+                  this.canalizaciones = r.data as Array<Canalizacion>;
+                }
+              })
+              
             } else {
               Swal.fire("Ha ocurrido un error", r.mensaje, "error");
             }
@@ -207,5 +246,9 @@ export class EstudianteComponent implements OnInit {
       }
       }
     );
+  }
+
+  public editar(){
+
   }
 }

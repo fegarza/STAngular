@@ -20,5 +20,14 @@ export class CanalizacionService {
     .set('Accept', 'application/json');
    return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Canalizaciones/",  JSON.stringify(canalizacion),   { headers: headers } );
   }
-
+  editar(canalizacion: Canalizacion){
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');    
+     return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Canalizaciones/",  JSON.stringify(canalizacion),   { headers: headers } );
+   }
+   eliminar(id: number){
+    
+     return this.http.delete<IRespuesta>(this.constants.apiUrl + "api/Canalizaciones/"+id);
+   }
 }

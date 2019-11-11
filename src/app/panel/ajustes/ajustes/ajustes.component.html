@@ -6,48 +6,138 @@
   </div>
 </div>
 <div class="formAlert" *ngIf="formAlert == 'acciones'">
+  <div class="cont x1">
+    <form [formGroup]="accionesForm" (ngSubmit)="onSubmitAcciones()">
+
+
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Titulo" formControlName="titulo" value="">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha">
+        <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #myPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Contenido" formControlName="contenido"></textarea>
+      </mat-form-field>
+      <div class="radio">
+        <p>Tipo</p>
+        <mat-radio-group aria-label="Genero" formControlName="tipo">
+          <mat-radio-button value="I"> Individual</mat-radio-button>
+          <mat-radio-button value="G">Grupal</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="radio">
+        <p>Obligatorio</p>
+        <mat-radio-group aria-label="Genero" formControlName="obligatorio">
+          <mat-radio-button value="1"> Si</mat-radio-button>
+          <mat-radio-button value="0">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <button class="btn float">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button class="btn float-dark" (click)="formAlert = 'none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>CANCELAR</p>
+      </button>
+
+    </form>
+  </div>
+</div>
+<div class="formAlert" *ngIf="formAlert == 'editarAcciones'">
     <div class="cont x1">
-        <form [formGroup]="accionesForm" (ngSubmit)="onSubmitAcciones()">
-
-
-
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Titulo" formControlName="titulo" value="">
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha">
-              <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
-              <mat-datepicker #myPicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <textarea matInput placeholder="Contenido" formControlName="contenido"></textarea>
-            </mat-form-field>
-            <div class="radio">
-              <p>Tipo</p>
-              <mat-radio-group aria-label="Genero" formControlName="tipo">
-                <mat-radio-button value="I"> Individual</mat-radio-button>
-                <mat-radio-button value="G">Grupal</mat-radio-button>
-              </mat-radio-group>
-            </div>
-            <div class="radio">
-                <p>Obligatorio</p>
-                <mat-radio-group aria-label="Genero" formControlName="obligatorio">
-                  <mat-radio-button value="1"> Si</mat-radio-button>
-                  <mat-radio-button value="0">No</mat-radio-button>
-                </mat-radio-group>
-              </div>
-            <button class="btn float">
-              <i class="fas fa-sign-in-alt"></i>
-              <p>GUARDAR CAMBIOS</p>
-            </button>
-            <button class="btn float-dark" (click)="formAlert = 'none'">
-                <i class="fas fa-sign-in-alt"></i>
-                <p>CANCELAR</p>
-              </button>
-
-          </form>
+      <form [formGroup]="accionesEditarForm" (ngSubmit)="editarAccion()">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Titulo" formControlName="titulo" [value]="accionSeleccionada.titulo">
+        </mat-form-field>
+        <mat-form-field > 
+          <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha" [value]="accionSeleccionada.fecha" >
+          <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #myPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="Contenido" formControlName="contenido" [value]="accionSeleccionada.contenido"></textarea>
+        </mat-form-field>
+        <div class="radio">
+          <p>Tipo</p>
+          <mat-radio-group aria-label="Genero" formControlName="tipo">
+            <mat-radio-button value="I" [checked]="accionSeleccionada.tipo == 'I'"> Individual</mat-radio-button>
+            <mat-radio-button value="G" [checked]="accionSeleccionada.tipo == 'G'">Grupal</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="radio">
+          <p>Obligatorio</p>
+          <mat-radio-group aria-label="Genero" formControlName="obligatorio">
+            <mat-radio-button value="1"  [checked]="accionSeleccionada.obligatorio == 1"> Si</mat-radio-button>
+            <mat-radio-button value="0" [checked]="accionSeleccionada.obligatorio == 0">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <button class="btn float">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>GUARDAR CAMBIOS</p>
+        </button>
+        <button class="btn float-dark" (click)="formAlert = 'none'">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>CANCELAR</p>
+        </button>
+  
+      </form>
     </div>
   </div>
+
+<div class="formAlert" *ngIf="formAlert == 'archivos'">
+  <div class="cont x1">
+    <form [formGroup]="archivosForm" (ngSubmit)="onSubmitArchivos()">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Titulo del archivo" formControlName="titulo" type="email" value="">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="descripcion"></textarea>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Hypervinculo de descarga" formControlName="link" type="email" value="">
+      </mat-form-field>
+      <button class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button class="btn float-dark" (click)="formAlert = 'none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>CANCELAR</p>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="formAlert" *ngIf="formAlert == 'editarArchivos'">
+    <div class="cont x1">
+      <form [formGroup]="archivosEditarForm" (ngSubmit)="editarArchivos()">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Titulo del archivo" formControlName="titulo" type="email" [value]="archivoSeleccionado.titulo">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="descripcion" [value]="archivoSeleccionado.descripcion"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Hypervinculo de descarga" formControlName="link" type="email" [value]="archivoSeleccionado.email">
+        </mat-form-field>
+        <button class="btn float-dark">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>GUARDAR CAMBIOS</p>
+        </button>
+        <button class="btn float-dark" (click)="formAlert = 'none'">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>CANCELAR</p>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+
 
 
 <section class="formulario">
@@ -73,20 +163,13 @@
                   <h1>DATOS PERSONALES</h1>
                 </div>
 
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Correo" value="" formControlName="email">
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Clave" formControlName="password" value="">
-                </mat-form-field>
-
+                
                 <mat-form-field>
-                  <input matInput [matDatepicker]="myPicker" placeholder="Fecha de nacimiento"
-                    formControlName="fechaDeNacimiento">
-                  <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
-                  <mat-datepicker #myPicker></mat-datepicker>
-                </mat-form-field>
+                    <input matInput [matDatepicker]="myPicker" placeholder="Fecha de nacimiento" formControlName="fechaNacimiento"  >
+                    <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #myPicker disabled="false"></mat-datepicker>
+                  </mat-form-field>
+                
 
                 <mat-form-field class="example-full-width">
                   <input matInput placeholder="Estado de nacimiento" formControlName="estadoDeNacimiento" value="">
@@ -132,9 +215,10 @@
 
                 <div class="radio">
                   <p>Tiene beca</p>
-                  <mat-radio-group aria-label="Trabaja" formControlName="tieneBeca">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                  <mat-radio-group aria-label="Trabaja" formControlName="tieneBeca" >
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tieneBeca == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false"  [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tieneBeca == false">No</mat-radio-button>
+                    <mat-radio-button value=""  [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tieneBeca == null">En proceso</mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <mat-form-field class="example-full-width">
@@ -160,8 +244,8 @@
                 <div class="radio">
                   <p>¿Tiene trabajo?</p>
                   <mat-radio-group aria-label="Trabaja" formControlName="tieneTrabajo">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.trabaja == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.trabaja == true">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <mat-form-field class="example-full-width">
@@ -498,8 +582,8 @@
                 <div class="radio">
                   <p>Vive</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="padreVive">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.padreVive == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.padreVive == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <mat-form-field>
@@ -536,8 +620,8 @@
                 <div class="radio">
                   <p>Vive</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="madreVive">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.madreVive == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.madreVive == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <mat-form-field>
@@ -587,7 +671,7 @@
 
               <mat-form-field>
                 <mat-label>Haga click aquí para seleccionar el empleado</mat-label>
-                <mat-select  formControlName="cve">
+                <mat-select formControlName="cve">
                   <mat-option *ngFor="let p of personales" [value]="p.cve">
                     {{p.usuario.nombre + ' ' + p.usuario.apellidoPaterno + ' ' + p.usuario.apellidoMaterno}}
                   </mat-option>
@@ -597,15 +681,17 @@
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Correo electrónico" formControlName="email" type="email" value="">
               </mat-form-field>
-              
+
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Constraseña" formControlName="password" value="" [type]="hide ? 'password' : 'text'" >
-                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <i [className]="hide ? 'fas fa-eye' : 'fas fa-eye-slash'" ></i> 
+                <input matInput placeholder="Constraseña" formControlName="password" value=""
+                  [type]="hide ? 'password' : 'text'">
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <i [className]="hide ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
                 </button>
 
               </mat-form-field>
-              
+
               <mat-form-field>
                 <mat-label>Titulo</mat-label>
                 <mat-select formControlName="titulo">
@@ -653,16 +739,23 @@
               <i class="fas fa-user-circle" style="margin-right: 15px"></i> Acciones tutoriales
             </ng-template>
 
-          
+
             <table mat-table [dataSource]="accionesSource" matSort class="mat-elevation-z8">
 
-                <ng-container matColumnDef="fecha">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha
+                <ng-container matColumnDef="obligatorio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Obligatorio
                     </th>
                     <td mat-cell *matCellDef="let element">
-                      {{element.fecha}}
+                      {{element.obligatorio == true ? 'Sí' : 'No'}}
                     </td>
                   </ng-container>
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.fecha | date:'shortDate'}}
+                </td>
+              </ng-container>
               <ng-container matColumnDef="titulo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Titulo
                 </th>
@@ -670,33 +763,46 @@
                   {{element.titulo}}
                 </td>
               </ng-container>
-              <ng-container matColumnDef="editar">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar
+              <ng-container matColumnDef="tipo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo
                   </th>
                   <td mat-cell *matCellDef="let element">
-                    editar
+                    {{(element.tipo | lowercase) == 'i'? 'Individual' : 'Grupal'}}
                   </td>
                 </ng-container>
-                <ng-container matColumnDef="eliminar">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                      Eliminar
-                    </td>
-                  </ng-container>
+              <ng-container matColumnDef="editar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button class="btn float" (click)="establecerAccion(element.id) ">
+                        <i class="fas fa-flag"></i>
+                        <p>Editar</p>
+                      </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="eliminar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button class="btn float-dark" (click)="eliminarAccion(element.id)">
+                        <i class="fas fa-flag"></i>
+                        <p>Eliminar</p>
+                      </button>
+                </td>
+              </ng-container>
               <tr mat-header-row *matHeaderRowDef="accionesColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: accionesColumns;"></tr>
             </table>
             <div class="paginator">
               <button class="btn float-white" (click)="formAlert = 'acciones'">
-                  <i class="fas fa-plus"></i>
-                  <p>Agregar nueva accion tutorial</p>
-                </button>
-                <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                <i class="fas fa-plus"></i>
+                <p>Agregar nueva accion tutorial</p>
+              </button>
+              <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 (page)="pageEvent = mostrarAcciones($event)">
               </mat-paginator>
             </div>
-           
+
           </mat-tab>
           <mat-tab
             *ngIf="miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C'">
@@ -736,44 +842,55 @@
               </button>
 
             </form>
-            
+
           </mat-tab>
           <mat-tab>
-          <ng-template mat-tab-label>
-            <i class="fas fa-user-circle" style="margin-right: 15px"></i> Archivos
-          </ng-template>
+            <ng-template mat-tab-label>
+              <i class="fas fa-user-circle" style="margin-right: 15px"></i> Archivos
+            </ng-template>
+            <table mat-table [dataSource]="archivosSource" matSort class="mat-elevation-z8">
+              <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Titulo
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <a href="{{element.link}}"  target="_blank" >{{element.titulo}}</a>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="editar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="btn float" (click)="establecerArchivo(element.id)">
+                    <i class="fas fa-flag"></i>
+                    <p>Editar</p>
+                  </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="eliminar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="btn float-dark" (click)="eliminarArchivo(element.id)">
+                    <i class="fas fa-flag"></i>
+                    <p>Eliminar</p>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="archivosColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: archivosColumns;"></tr>
+            </table>
+            <div class="paginator">
+              <button class="btn float-white" (click)="formAlert = 'archivos'">
+                <i class="fas fa-plus"></i>
+                <p>Agregar un nuevo archivo</p>
+              </button>
+              <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = mostrarAcciones($event)">
+              </mat-paginator>
+            </div>
 
-          <form [formGroup]="personalesForm" (ngSubmit)="onSubmitPersonal()">
 
-
-
-            
-
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Titulo del archivo" formControlName="email" type="email" value="">
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="contenido"></textarea>
-              </mat-form-field>
-            <mat-form-field class="example-full-width">
-                <input matInput placeholder="Hypervinculo de descarga" formControlName="email" type="email" value="">
-            </mat-form-field>
-            
-             
-            
-             
-          
-            <button class="btn float-dark">
-              <i class="fas fa-sign-in-alt"></i>
-              <p>GUARDAR CAMBIOS</p>
-            </button>
-            <button [routerLink]="['/panel/personales']" type="button" class="btn float">
-              <i class="fas fa-sign-in-alt"></i>
-              <p>MOSTRAR PERSONAL</p>
-            </button>
-          </form>
-
-        </mat-tab>
+          </mat-tab>
         </mat-tab-group>
       </div>
     </div>

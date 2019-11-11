@@ -52,10 +52,11 @@ export class DepartamentoComponent implements OnInit {
   //DataTable de las canalizaciones
   public canalizaciones: Array<Canalizacion> = new Array<Canalizacion>()
   canalizacionesDataSource = new MatTableDataSource(this.canalizaciones);
-  canalizacionesColumns: string[] = ['tutor', 'estudiante', 'atencion'];
+  canalizacionesColumns: string[] = ['tutor', 'estudiante', 'atencion', 'estatus'];
   canalizacionesLength = 100;
   canalizacionesPageSize = 10;
   canalizacionesPageSizeOptions: number[] = [10,20,30,40,50];
+
   // Sesiones
   public sesiones : Array<Sesion> = new Array<Sesion>();
   sesionesDataSource = new MatTableDataSource(this.sesiones);

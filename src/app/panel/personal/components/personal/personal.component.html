@@ -83,22 +83,21 @@
   <div
     class="settings"
     [matMenuTriggerFor]="appMenu"
-    *ngIf="permisoDeModificar"
   >
     <mat-menu #appMenu="matMenu">
       <button type="button" mat-menu-item [routerLink]="['./grupo']">
         <i class="fas fa-users"></i>
         <p>Ver su grupo</p>
       </button>
-      <button mat-menu-item (click)="cambiarCargo()">
+      <button mat-menu-item (click)="cambiarCargo()" *ngIf="miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C' || (miUsuario.personal.cargo == 'J' && miUsuario.personal.departamentoId == miPersonal.departamento.id)  || (miUsuario.personal.cargo == 'D' && miUsuario.personal.departamentoId == miPersonal.departamento.id)">
         <i class="fas fa-briefcase"></i>
         <p>Cambiar cargo</p>
       </button>
-      <button mat-menu-item (click)="cambiarClave()">
+      <button mat-menu-item (click)="cambiarClave()" *ngIf="miUsuario.personal.id == miPersonal.id || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C' || (miUsuario.personal.cargo == 'J' && miUsuario.personal.departamentoId == miPersonal.departamento.id)  || (miUsuario.personal.cargo == 'D' && miUsuario.personal.departamentoId == miPersonal.departamento.id)">
         <i class="fas fa-lock"></i>
         <p>Cambiar contraseña</p>
       </button>
-      <button mat-menu-item (click)="cambiarCorreo()">
+      <button mat-menu-item (click)="cambiarCorreo()" *ngIf="miUsuario.personal.id == miPersonal.id || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C' || (miUsuario.personal.cargo == 'J' && miUsuario.personal.departamentoId == miPersonal.departamento.id)  || (miUsuario.personal.cargo == 'D' && miUsuario.personal.departamentoId == miPersonal.departamento.id)">
         <i class="fas fa-envelope"></i>
         <p>Cambiar correo electronico</p>
       </button>

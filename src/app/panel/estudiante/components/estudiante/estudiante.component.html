@@ -1,3 +1,41 @@
+<!--FORM ALERT PARA CAMBIAR DATOS DEL ESTUDIANTE-->
+<div class="formAlert" *ngIf="formAlert == 'correo'">
+    <div class="cont">
+      <form [formGroup]="estudianteForm" (ngSubmit)="onSubmitEditarEstudiante()">
+        <h1>Nuevo correo</h1>
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Nuevo correo"
+            formControlName="correo"
+            value=""
+          />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Nueva contraseña"
+              formControlName="clave"
+              value=""
+            />
+          </mat-form-field>
+        <button type="submit" class="btn float-dark">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>GUARDAR CAMBIOS</p>
+        </button>
+        <button
+          type="button"
+          class="btn float-dark"
+          (click)="formAlert = ' none'"
+        >
+          <i class="fas fa-sign-in-alt"></i>
+          <p>SALIR</p>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
 <header>
   <div class="cont">
     <div class="profImg" [style.background]="'url: ' + miEstudiante.fotoLink"></div>
@@ -7,20 +45,24 @@
       </h1>
       <p>Estudiante</p>
     </div>
-    <div class="settings" [matMenuTriggerFor]="appMenu" *ngIf="permisoDeModificar">
+    <div class="settings" [matMenuTriggerFor]="appMenu">
       <mat-menu #appMenu="matMenu">
-        <button mat-menu-item (click)="asignarGrupo()">
+        <button mat-menu-item (click)="asignarGrupo()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
           <i class="fas fa-users-cog"></i>
           <p>Asignar grupo</p>
         </button>
-        <button mat-menu-item (click)="asignarSesiones()">
+        <button mat-menu-item (click)="asignarSesiones()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
           <i class="fas fa-flag"></i>
           <p>Establecer sesiones iniciales</p>
         </button>
-        <button mat-menu-item (click)="canalizar()">
+        <button mat-menu-item (click)="canalizar()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A' ||  (miUsuario.personal.cargo == 'T' && miEstudiante.grupo.personal.id == miUsuario.personal.id))">
           <i class="fas fa-exclamation-circle"></i>
           <p>Canalizar</p>
         </button>
+        <button mat-menu-item [routerLink]="['/panel/ajustes']" *ngIf="miUsuario.estudiante != null  " >
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Editar</p>
+          </button>
       </mat-menu>
       <button class="btn float-white">
         <i class="fas fa-chevron-circle-down"></i>
@@ -62,6 +104,26 @@
     </div>
   </div>
 </section>
+<section class="infor">
+  <div class="cont">
+    <div class="textBox lineBlue">
+      <h1><i class="fas fa-flag"></i>Informacion del estudiante</h1>
+      <p>
+         
+        <br />
+        <b>Tutor: </b>{{miEstudiante.grupo.personal.id != 0 ? miEstudiante.grupo.personal.usuario.nombreCompleto : 'Sin asignar'}}
+        <br />
+        <b>Correo electrónico personal: </b>{{miEstudiante.usuario.email}}
+        <br />
+        <b>Sesiones iniciales: </b>{{miEstudiante.sesionesIniciales}}
+        <br />
+        <b>Sesiones individuales: </b>{{miEstudiante.sesionesIndividuales}}
+        <br />
+        <b>Sesiones grupales: </b>{{miEstudiante.sesiones}}
+      </p>
+    </div>
+  </div>
+</section>
 <section class="creditos">
   <div class="cont boxCont">
     <div class="box simple shadow">
@@ -70,6 +132,7 @@
         <h1>Creditos</h1>
       </div>
       <div class="boxCont">
+         
         <div class="credito" *ngFor="let i of miEstudiante.creditos">
             <mat-divider></mat-divider>
             <p>Titulo del credito: {{ i.actividad.titulo }}</p>
@@ -81,3 +144,28 @@
     </div>
   </div>
 </section>
+
+<section class="canalizaciones">
+    <div class="cont boxCont">
+      <div class="box simple shadow">
+        <div class="title solidBlue ">
+          <i class="fas fa-flag"></i>
+          <h1>Canalizaciones</h1>
+        </div>
+        <div class="boxCont">
+          <p *ngIf="canalizaciones.length == 0">
+            No hay ninguna canalizacion registrada
+          </p>
+          <div class="canalizacion" *ngFor="let i of canalizaciones">
+              <mat-divider></mat-divider>
+              <p>Tutor: {{ i.personal.usuario.nombreCompleto }} </p>
+              <p>Asunto: {{ i.atencion.titulo }}</p>
+              <p>Fecha: {{i.fecha | date:'shortDate'}}</p>
+              <p>Descripcion: {{ i.descripcion }} </p>
+              <p>Estatus de la canalización: {{ i.estado == 'T' ? 'Terminada' : 'En proceso' }} </p>
+          </div>
+            
+        </div>
+      </div>
+    </div>
+  </section>

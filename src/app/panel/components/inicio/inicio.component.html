@@ -12,10 +12,13 @@
                                         <mat-divider></mat-divider>
                                         <h1>{{ a.titulo }}</h1>
                                         <p>{{ a.descripcion }}</p>
-                                        <button class="btn float">
-                                                <i class="fas fa-flag"></i>
-                                                <p>Descargar</p>
-                                        </button>
+                                        <a href="{{a.link}}" routerLinkActive="router-link-active"  target="_blank" >
+                                                        <button class="btn float">
+                                                                        <i class="fas fa-flag"></i>
+                                                                        <p>Descargar</p>
+                                                                </button>
+                                        </a>
+                                       
                                 </div>
                         </mat-expansion-panel>
                 </mat-accordion>

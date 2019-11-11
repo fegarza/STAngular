@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Departamento } from '../../../../models/models';
+import { Departamento, Usuario } from '../../../../models/models';
 import { PageEvent, MatSort, MatTableDataSource } from '@angular/material';
 import { DepartamentoService } from '../../../../services/departamento.service';
+import { AuthService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'app-departamentos',
@@ -21,9 +22,10 @@ export class DepartamentosComponent implements OnInit {
   pageSizeOptions: number[] = [10,20,30,40,50];
 
   // MatPaginator Output
-  pageEvent: PageEvent;
-
-  constructor(private departamentoService: DepartamentoService) 
+    pageEvent: PageEvent;
+  
+    miUsuario: Usuario;
+  constructor(private departamentoService: DepartamentoService, private authService:AuthService) 
   {
     this.departamentoService.showAll().subscribe(r=>{
       if( r.code == 200){
@@ -31,6 +33,8 @@ export class DepartamentosComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.departamentos);
       }
     });
+    this.miUsuario = this.authService.traerUsuario();
+    
   }
 
   ngOnInit() {

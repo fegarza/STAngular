@@ -1,4 +1,4 @@
-export class Usuario{
+export class Usuario {
     id: number;
     nombreCompleto: string;
     nombre: string;
@@ -11,20 +11,22 @@ export class Usuario{
     clave: string;
     publica: string;
     estudianteId: number;
-    personalId:number;  
+    personalId: number;
     estudiante: Estudiante;
-    personal: Personal; 
+    personal: Personal;
 }
-export class Estudiante{
-    id:number;
+export class Estudiante {
+    id: number;
     usuarioId: number;
     grupoId: number;
     carreraId: number;
     numeroDeControl: string;
     sesionesIniciales: number;
+    sesionesIndividuales: number;
     sesiones: number;
     semestre: number;
     carrera: Carrera;
+    estado: string;
     grupo: Grupo;
     usuario: Usuario = new Usuario();
     estudianteDatos: EstudianteDatos;
@@ -33,6 +35,7 @@ export class Estudiante{
     curp: string;
     creditos: number;
     presente: boolean = false;
+    cantidadDeCreditos: number;
 }
 export class Personal {
     id: number;
@@ -49,21 +52,21 @@ export class Personal {
     tituloId: number;
     titulo: Titulo;
 }
-export class Titulo{
+export class Titulo {
     id: number;
     titulo: string;
 }
-export class Departamento{
+export class Departamento {
     id: number;
-    titulo : string;
+    titulo: string;
 }
-export class Cargo{
+export class Cargo {
     tipo: string;
     titulo: string;
 }
 
 
-export class Sesion{
+export class Sesion {
     id: number;
     accionTutorialId: number;
     departamentoId: number;
@@ -73,7 +76,7 @@ export class Sesion{
     departamento: Departamento = new Departamento();
 }
 
-export class Grupo{
+export class Grupo {
     id: number;
     salon: string;
     personalId: number;
@@ -82,9 +85,9 @@ export class Grupo{
     sesiones: Array<Sesion>;
 }
 
-export class Accion{
+export class Accion {
     id: number;
-    personalId:number;
+    personalId: number;
     titulo: string;
     contenido: string;
     fecha: string;
@@ -92,13 +95,13 @@ export class Accion{
     tipo: string;
 }
 
-export class Atencion{
+export class Atencion {
     id: number;
     areaId: number;
     titulo: string;
 }
 
-export class Canalizacion{
+export class Canalizacion {
     id: number;
     personalId: number;
     estudianteId: number;
@@ -113,21 +116,21 @@ export class Canalizacion{
 /*
     CREDITOS
 */
-export class Credito{
+export class Credito {
     estadoDeLaActividad: string;
     estadoDeLaFirma: string;
     fechaDeOficio: string;
 }
-export class Actividad{
+export class Actividad {
     titulo: string;
 
 }
-export class Carrera{
+export class Carrera {
     id: number;
-    nombre:string = "";
-    clave:string = ""; 
+    nombre: string = "";
+    clave: string = "";
 }
-export class Archivo{
+export class Archivo {
     id: number;
     titulo: string;
     tipo: string;
@@ -135,61 +138,61 @@ export class Archivo{
     link: string;
     fecha: string;
 }
-export class EstudianteDatos{
-    //Parents
-    madreVive: boolean;
-    madreTrabajo: string;
-    madreTelefono: string;
-    padreVive: boolean;
-    padreTrabajo: string;
-    padreTelefono: string;
-    //Personales
+export class EstudianteDatos {
+    id: number;
+    estudianteId: number;
+    telefonoDomicilio: string;
+    telefonoMovil: string;
     fechaNacimiento: string;
-    estadoCivil: string;
-    trabaja: boolean;
-    tieneBeca: boolean;
     ciudadNacimiento: string;
     estadoNacimiento: string;
-    numeroDeHijos: number;
-    maximoGradoDeEstudios: string;
-    tipoBeca: string;
-    telefonoMovil: string;
-    dependenciaEconomica: string;
-    seguroSocial: string;
-    //Familia
-    familiaTrabajo: string;
-    familiaTrabajoNumero: string;
+    estadoCivil: string;
+    numeroHijos: number;
     calleDomicilio: string;
-    numeroDomicilio: string;
-    colonia: string;
-    nombreEmpresa: string;
-    horarioEmpresa: string;
-    telefonoDomicilio: string;
-    //Deficiencias
-    dVista: boolean;
-    dOido: boolean;
-    dLenguaje: boolean;
-    dMotriz: boolean;
-    dNerviosa: boolean;
-    dCirculatorio: boolean;
-    dDigestivo: boolean;
-    dRespiratorio: boolean;
-    dOseo: boolean;
-    dOtro: boolean;
-    //Tratamiento
-    tTratamiento: boolean;
-    tCausa: string;
-    //Estado psicofisiologico
-    eHinchados: number;
-    eVientre: number;
-    eCabeza: number;
-    eEquilibrio: number;
-    eFatiga: number;
-    eVista: number;
-    eDormir: number;
-    ePesadilla: number;
-    ePesadillaCont: string;
-    eIncontinencia: number;
-    eTartamuedo: number;
-    eMiedo: number;
+    numDomicilio: string;
+    coloniaDomicilio: string;
+    codigoPostalDomicilio: string;
+    cependenciaEconomica: string;
+    trabaja: boolean;
+    empresa: string;
+    horario: string;
+    padreVive: boolean;
+    madreVive: boolean;
+    estudiosPadre: string;
+    estudiosMadre: string;
+    lugarTrabajoPadre: string;
+    lugarTrabajoMadre: string;
+    lugarTrabajoFamiliar: string;
+    telefonoTrabajoPadre: string;
+    telefonoTrabajoMadre: string;
+    telefonoTrabajoFamiliar: string;
+    tieneBeca: boolean;
+    becadoPor: string;
+    nss: string;
+    prescripcionVista: boolean;
+    prescripcionOido: boolean;
+    prescripcionLenguaje: boolean;
+    prescripcionMotriz: boolean;
+    prescripcionSistemaNervioso: boolean;
+    prescripcionSistemaCirculatorio: boolean;
+    prescripcionSistemaDigestivo: boolean;
+    prescripcionSistemaRespiratorio: boolean;
+    prescripcionSistemaOseo: boolean;
+    prescripcionSistemaOtro: boolean;
+    tratamientoPsicologicoPsiquiatrico: boolean;
+    tratamientoPsicologicoPsiquiatricoExplicacion: boolean;
+    manosPiesHinchados: boolean;
+    doloresVientre: boolean;
+    doloresCabezaVomito: boolean;
+    perdidaEquilibrio: boolean;
+    fatigaAgotamiento: boolean;
+    perdidaVistaOido: boolean;
+    dificultadDormir: boolean;
+    pesadillasTerroresNocturnos: boolean;
+    pesadillasTerroresNocturnosAque: boolean;
+    incontinencia: boolean;
+    tartamudeos: boolean;
+    miedosIntensos: boolean;
+    observacionesHigiene: string;
+    fechaModificacion: string;
 }

@@ -1,3 +1,43 @@
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring">
+      <div class="img">
+  
+      </div>
+    </div>
+  </div>
+  <div class="formAlert" *ngIf="formAlert == 'editarCanalizacion'">
+    <div class="cont x1">
+      <form [formGroup]="canalizacionForm" (ngSubmit)="editarCanalizacion()">
+        
+        <mat-form-field>
+          <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha">
+          <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #myPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="Contenido" formControlName="descripcion" [value]="canalizacionSeleccionada.descripcion"></textarea>
+        </mat-form-field>
+        <div class="radio">
+          <p>Estado</p>
+          <mat-radio-group aria-label="Estatus" formControlName="estatus">
+            <mat-radio-button  [checked]="(canalizacionSeleccionada.estado | lowercase) == 't' ? 'true' : 'false'" value="T"> Terminada</mat-radio-button>
+            <mat-radio-button   [checked]="(canalizacionSeleccionada.estado | lowercase)  == 'a' ? 'true': 'false'"value="A">En proceso</mat-radio-button>
+          </mat-radio-group>
+        </div>
+         
+        <button class="btn float">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>GUARDAR CAMBIOS</p>
+        </button>
+        <button class="btn float-dark" (click)="formAlert = 'none'">
+          <i class="fas fa-sign-in-alt"></i>
+          <p>CANCELAR</p>
+        </button>
+  
+      </form>
+    </div>
+  </div>
+
 <header>
   <div class="box">
     <div class="boxCont">
@@ -24,12 +64,7 @@
             mostrar todos los alumnos
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <table
-          mat-table
-          [dataSource]="dataSource"
-          matSort
-          class="mat-elevation-z8"
-        >
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
           <ng-container matColumnDef="numeroDeControl">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>
               Numero de control
@@ -47,7 +82,7 @@
           <ng-container matColumnDef="estatus">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
             <td mat-cell *matCellDef="let element">
-              {{element.estado == 'A' ? 'Activo' : 'xd'  }}
+              {{element.estado == 'A' ? 'Activo' : 'Liberado'  }}
             </td>
           </ng-container>
           <ng-container matColumnDef="nombre">
@@ -93,68 +128,66 @@
             realiza un pase de lista
           </mat-panel-description>
         </mat-expansion-panel-header>
-
         <div class="box">
           <div class="boxCont">
-            <form [formGroup]="sesionesForm">
-              <mat-form-field>
-                <mat-label>Sesiones</mat-label>
-                <mat-select
-                  formControlName="sesion"
-                  (ngModelChange)="cargarAsistencias($event)"
-                >
+            <form [formGroup]="sesionesForm" style="font-size: 1.3em;">
+              <p>Seleccione la sesion que desea hacer el pase de lista</p>
+              <p style="color: red; font-weight: bold;">AL SELECCIONAR LA SESIÓN CAMBIARA LA TABLA DONDE SE ENCUENTRAN LOS ESTUDIANTES, MARCANDO CON UNA PALOMITA AQUELLOS QUE TIENEN LA ASISTENCIA MARCADA EN DICHA SESIÓN</p>
+           
+              <mat-form-field style="width: 100%">
+                <mat-label>Haga click aquí para seleccionar la sesión</mat-label>
+
+                <mat-select formControlName="sesion" (ngModelChange)="cargarAsistencias($event)">
                   <mat-option *ngFor="let s of sesiones" [value]="s.id">
-                    {{ s.fecha }}
+                    {{ s.fecha }} {{s.accionTutorial.titulo}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <button class="btn float" (click)="Guardar()">
-                <i class="fas fa-flag"></i>
-                <p>Guardar</p>
-              </button>
+              <br>
+              <div class="paseDeLista" *ngIf="sesionSeleccionada != 0">
+                  <p>
+                      Marque con una flecha los rectangulos en los que desea marcar una asistencia, de lo contrario
+                      desmarquela.
+                    </p>
+                    <table mat-table [dataSource]="asistenciaSource" matSort class="mat-elevation-z8">
+                      <ng-container matColumnDef="presente">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                          ¿Tiene asistencia?
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-checkbox [checked]="element.presente" (change)="AsignarAsistencia($event, element.id)">
+                          </mat-checkbox>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="numeroDeControl">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Numero de control
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <a [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
+                            {{ element.numeroDeControl }}</a>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="nombre">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Nombre completo
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.usuario.nombreCompleto | titlecase }}
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="asistenciaColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: asistenciaColumns"></tr>
+                    </table>
+                    <button class="btn float" (click)="Guardar()" style="margin-top:20px; width:100%">
+                      <i class="fas fa-flag"></i>
+                      <p>GUARDAR PASE DE LISTA</p>
+                    </button>
+              </div>
+             
             </form>
           </div>
         </div>
-        <br />
-        <table
-          mat-table
-          [dataSource]="asistenciaSource"
-          matSort
-          class="mat-elevation-z8"
-        >
-          <ng-container matColumnDef="presente">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Asistencia
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <mat-checkbox
-                [checked]="element.presente"
-                (change)="AsignarAsistencia($event, element.id)"
-              >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="numeroDeControl">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Numero de control
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <a [routerLink]="['/panel/estudiantes', element.numeroDeControl]">
-                {{ element.numeroDeControl }}</a
-              >
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="nombre">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Nombre completo
-            </th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.usuario.nombreCompleto | titlecase }}
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="asistenciaColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: asistenciaColumns"></tr>
-        </table>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -165,6 +198,70 @@
             mostrar las canalizaciones pendientes
           </mat-panel-description>
         </mat-expansion-panel-header>
+        <table mat-table [dataSource]="canalizacionesSource" matSort class="mat-elevation-z8">
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+            <td mat-cell *matCellDef="let element">
+              <a>
+                {{ element.fecha | date:"shortDate" }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="estudiante">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Estudiante
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <a>
+                {{ element.estudiante.usuario.nombreCompleto | titlecase }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="atencion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Asunto</th>
+            <td mat-cell *matCellDef="let element">
+              <a>
+                {{ element.atencion.titulo | titlecase }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="estatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
+            <td mat-cell *matCellDef="let element">
+              <a>
+                {{ (element.estado | lowercase ) == 'a' ? 'En proceso' : 'Terminada' }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="editar">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Editar</th>
+            <td mat-cell *matCellDef="let element">
+
+                <button class="btn float" (click)="establecerCanalizacion(element.id)">
+                    <i class="fas fa-flag"></i>
+                    <p>Editar</p>
+                  </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="eliminar">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>eliminar</th>
+            <td mat-cell *matCellDef="let element">
+
+                <button class="btn float-dark" (click)="eliminarCanalizacion(element.id)">
+                    <i class="fas fa-flag"></i>
+                    <p>Eliminar</p>
+                  </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="canalizacionesColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: canalizacionesColumns"></tr>
+        </table>
+
+        <div class="cont">
+          <mat-paginator [length]="100" [pageSize]="canalizacionesPageSize"
+            [pageSizeOptions]="canalizacionesPageSizeOptions" (page)="pageEvent = mostrarCanalizaciones($event)">
+          </mat-paginator>
+        </div>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -172,9 +269,14 @@
             Documentos
           </mat-panel-title>
           <mat-panel-description>
-            imprimir lista
+
           </mat-panel-description>
         </mat-expansion-panel-header>
+        <button class="btn float-dark" (click)="generarLista()"> 
+            <i class="fas fa-flag"></i>
+            <p>Descargar lista</p>
+          </button>
+       
       </mat-expansion-panel>
     </mat-accordion>
   </div>

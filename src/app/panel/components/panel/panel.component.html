@@ -53,9 +53,9 @@
             <i class="fas fa-building"></i>
             <p>Departamentos</p>
           </li>
-          <li> <i class="fas fa-file-pdf"></i>
+        <!--<li> <i class="fas fa-file-pdf"></i>
             <p (click)="showDocumentos()">Documentos</p>
-          </li>
+          </li>-->
           <li [routerLink]="['/panel/ajustes']"> <i class="fas fa-tools"> </i>
             <p>Ajustes</p>
           </li>
@@ -80,21 +80,37 @@
         <i class="fas fa-user-friends"></i>
         <p *ngIf="menu" class="animated forwards fadeInRight fast">Empleados</p>
       </li>
+      <li [routerLink]="['/panel/personales/'+usuario.personal.id +'/grupo']"
+      *ngIf="usuario.personal != null && (usuario.personal.cargo == 'T')">
+      <i class="fas fa-user-friends"></i>
+      <p *ngIf="menu" class="animated forwards fadeInRight fast">Mi grupo</p>
+    </li>
       <li [routerLink]="['/panel/estudiantes']"
         *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
         <i class="fas fa-user-graduate"></i>
         <p *ngIf="menu" class="animated forwards fadeInRight fast">Estudiantes</p>
       </li>
       <li [routerLink]="['/panel/departamentos']"
-        *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C' || usuario.personal.cargo == 'J' || usuario.personal.cargo == 'D')">
+        *ngIf="usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C')">
         <i class="fas fa-building"></i>
         <p *ngIf="menu" class="animated forwards fadeInRight fast">Departamentos</p>
       </li>
+      <li [routerLink]="['/panel/departamentos/'+usuario.personal.departamentoId]"
+      *ngIf="usuario.personal != null && (usuario.personal.cargo == 'D' || usuario.personal.cargo == 'J' )">
+      <i class="fas fa-building"></i>
+      <p *ngIf="menu" class="animated forwards fadeInRight fast">Mi Departamento</p>
+    </li>
+      <!--
       <li> <i class="fas fa-file-pdf"></i>
         <p *ngIf="menu" class="animated forwards fadeInRight fast">Documentos</p>
-      </li>
-      <li [routerLink]="['/panel/ajustes']"> <i class="fas fa-tools"> </i>
-        <p *ngIf="menu" class="animated forwards fadeInRight fast">Ajustes</p>
+      </li>-->
+      <li [routerLink]="['/panel/ajustes']"
+        *ngIf="usuario.estudiante != null || (usuario.personal != null && (usuario.personal.cargo == 'A' || usuario.personal.cargo == 'C'))">
+      
+        <i class="fas fa-tools"> </i>
+        <p *ngIf="menu" class="animated forwards fadeInRight fast">
+          {{usuario.estudiante != null ? 'Editar datos personales' : 'Configuración del sistema'}}
+        </p>
       </li>
       <li (click)="cerrarSesion()"> <i class="fas fa-times"></i>
         <p *ngIf="menu" class="animated forwards fadeInRight fast">Salir</p>

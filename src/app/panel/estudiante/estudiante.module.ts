@@ -6,13 +6,15 @@ import { EstudiantesComponent } from './components/estudiantes/estudiantes.compo
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { AjustesComponent } from './components/ajustes/ajustes.component';
 import { MaterialModule } from 'src/app/material/material.module';
- 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [EstudiantesComponent, EstudianteComponent, AjustesComponent],
   imports: [
     CommonModule,
     EstudianteRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule, ReactiveFormsModule
   ]
 })
 export class EstudianteModule { }

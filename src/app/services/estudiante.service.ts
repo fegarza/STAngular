@@ -22,6 +22,9 @@ export class EstudianteService {
   mostrarDatos(numeroControl: string) {
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl+"/Datos");
   }
+  mostrarCanalizaciones(numeroControl: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl+"/Canalizaciones");
+  }
   get(numeroControl: string) {
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl);
   }

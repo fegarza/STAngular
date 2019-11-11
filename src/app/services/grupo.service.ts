@@ -25,6 +25,9 @@ export class GrupoService {
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Grupos/"+id+"/Sesiones/"+sesionId );
 
   }
+  showCanalizaciones(id: string){
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Grupos/"+id +"/Canalizaciones");
+  }
   AgregarAsistencias(id: string, sesionId: string, estudiantes :Array<Estudiante>){
     const headers = new HttpHeaders()
      .set('Content-Type', 'application/json')

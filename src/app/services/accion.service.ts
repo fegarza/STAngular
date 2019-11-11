@@ -21,5 +21,13 @@ export class AccionService {
   showAll(){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Acciones/");
   }
-  
+  editarAccion(accion: Accion){
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');    
+     return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Acciones/",  JSON.stringify(accion),   { headers: headers } );
+   }
+   eliminar(id: number){
+    return this.http.delete<IRespuesta>(this.constants.apiUrl + "api/Acciones/"+id);
+  }
 }
