@@ -100,8 +100,9 @@ export class PersonalComponent implements OnInit {
   onSubmitClave(){
     console.log("Cambiando clave...");
     if(this.claveFormGroup.controls.clave.valid){
-      console.log
-      this.usuarioService.asignarClave(this.miPersonal.usuario.id, this.claveFormGroup.controls.clave.value).subscribe(r=> {
+      
+      this.miPersonal.usuario.clave = this.claveFormGroup.controls.clave.value;
+      this.usuarioService.editar(this.miPersonal.usuario).subscribe(r=> {
         if(r.code == 200){
           Swal.fire(
             'Se ha cambiado la clave correctamente',
@@ -133,7 +134,7 @@ export class PersonalComponent implements OnInit {
       this.personalService.asignarCargo(this.miPersonal.id, this.cargoFormGroup.controls.cargo.value).subscribe(r=> {
         if(r.code == 200){
           Swal.fire(
-            'Se ha cambiado la clave correctamente',
+            'Se ha cambiado la cargo correctamente',
             r.mensaje,
             'success'
           );
@@ -151,8 +152,10 @@ export class PersonalComponent implements OnInit {
     this.formAlert = "correo"; 
   }
   onSubmitCorreo(){
+    
     if(this.correoFormGroup.controls.correo.valid){
-      this.usuarioService.asignarCorreo(this.miPersonal.usuario.id, this.correoFormGroup.controls.correo.value).subscribe(r=> {
+      this.miPersonal.usuario.email = this.correoFormGroup.controls.correo.value;
+      this.usuarioService.editar(this.miPersonal.usuario).subscribe(r=> {
         if(r.code == 200){
           Swal.fire(
             'Se ha cambiado el correo correctamente',

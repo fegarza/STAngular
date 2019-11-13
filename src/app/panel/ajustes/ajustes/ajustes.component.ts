@@ -128,18 +128,13 @@ export class AjustesComponent implements OnInit {
    this.formAlert = 'editarArchivos';
  }
   constructor(private archivoService: ArchivoService, private accionService: AccionService, private estudianteService: EstudianteService, private tituloService: TituloService, private sesionService: SesionService, private accionesService: AccionService, private authService: AuthService, private departamentoServices: DepartamentoService, private personalService: PersonalService) {
-    this.archivoService.showAll().subscribe(r => {
-      if(r.code == 200){
-        this.archivos = r.data as Array<Archivo>;
-        this.archivosSource = new MatTableDataSource(this.archivos);
-      }
-    });
+    
   }
   ngOnInit() {
     //Cargar datos del usuario
     this.miUsuario = this.authService.traerUsuario();
     //-> En caso de ser estudiante
-    if (this.miUsuario.tipo == "E") {
+    if (this.miUsuario.estudiante != null) {
       
       this.crearFormsDeEstudiantes(); 
       this.estudianteService.mostrarDatos(this.miUsuario.estudiante.numeroDeControl).subscribe(r => {
@@ -184,6 +179,12 @@ export class AjustesComponent implements OnInit {
     }
     //-> En caso de ser personal
     else {
+      this.archivoService.showAll().subscribe(r => {
+        if(r.code == 200){
+          this.archivos = r.data as Array<Archivo>;
+          this.archivosSource = new MatTableDataSource(this.archivos);
+        }
+      });
       this.crearFormsDePersonales();
       this.accionService.showAll().subscribe(r => {
         if (r.code == 200) {
@@ -429,8 +430,12 @@ export class AjustesComponent implements OnInit {
             }
           );
         } else {
-
-
+          Swal.fire(
+            'Error',
+            r.mensaje,
+            'error'
+          );
+this.loading = false;
 
 
         }
@@ -438,17 +443,10 @@ export class AjustesComponent implements OnInit {
     } else {
       this.loading = false;
       var cadena: string = "";
-      Object.keys(this.personalesForm.controls).forEach(key => {
-        const controlErrors: ValidationErrors = this.personalesForm.get(key).errors;
-        if (controlErrors) {
-          Object.keys(controlErrors).forEach(keyError => {
-            cadena += ('Key: ' + key + +'error: ' + keyError + ' value: ' + controlErrors[keyError] + "<br>");
-          });
-        }
-      });
+     
       Swal.fire(
         "error",
-        cadena,
+        'La contraseña debe tener como mínimo 6 digitos',
         'error'
       );
     }
@@ -611,17 +609,35 @@ export class AjustesComponent implements OnInit {
     
   }
   editarArchivo(){
-    
+    this.archivoSeleccionado.titulo = this.archivosEditarForm.controls.titulo.value;
+    this.archivoSeleccionado.link = this.archivosEditarForm.controls.link.value;
+     this.archivoSeleccionado.descripcion = this.archivosEditarForm.controls.descripcion.value;
+
+      this.archivoService.editar(this.archivoSeleccionado).subscribe(r =>{
+        if(r.code == 200){
+          Swal.fire('exito', 'se ha editado con exito el archivo', 'success');
+          this.archivoService.showAll().subscribe(r => {
+            if(r.code == 200){
+              this.archivos = r.data as Array<Archivo>;
+              this.archivosSource = new MatTableDataSource(this.archivos);
+            }
+            this.formAlert = 'none';
+          });
+        }
+      })
   }
   eliminarArchivo(id: number){
     this.archivoService.eliminar(id).subscribe(r => {
       if(r.code == 200){
         Swal.fire('exito', 'se ha eliminado con exito la accion tutorial', 'success');
-        this.archivos = new Array<Archivo>();
+        
         this.archivoService.showAll().subscribe(r => {
           if(r.code == 200){
             this.archivos = r.data as Array<Archivo>;
             this.archivosSource = new MatTableDataSource(this.archivos);
+          }else{
+            this.archivos = new Array<Archivo>();
+        this.archivosSource = new MatTableDataSource(this.archivos);
           }
         });
       }

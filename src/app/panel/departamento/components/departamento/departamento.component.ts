@@ -18,6 +18,7 @@ import { SesionService } from 'src/app/services/sesion.service';
 export class DepartamentoComponent implements OnInit {
   
   acciones: Array<Accion> = new Array<Accion>();
+  pageEvent: PageEvent;
 
   //Formularios
   public personalesForm: FormGroup;

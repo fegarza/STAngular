@@ -13,7 +13,18 @@ export class UsuarioService {
 
   }
 
+  editar(usuario: Usuario){
+    
+        
 
+   
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');    
+     return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Usuarios/",  JSON.stringify(usuario),   { headers: headers } );
+   
+  }
+/*
   asignarCorreo(id: number, correo: string){
     var usuario : Usuario = new Usuario();
         
@@ -38,5 +49,5 @@ export class UsuarioService {
     .set('Accept', 'application/json');    
      return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Usuarios/",  JSON.stringify(usuario),   { headers: headers } );
    }
-
+*/
 }

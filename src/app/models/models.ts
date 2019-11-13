@@ -36,6 +36,7 @@ export class Estudiante {
     creditos: number;
     presente: boolean = false;
     cantidadDeCreditos: number;
+    fotoLink: string;
 }
 export class Personal {
     id: number;

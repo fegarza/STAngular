@@ -1,5 +1,6 @@
 <section class="filtrado">
   <div class="cont">
+    <!--
     <mat-form-field >
       <mat-label>Haz click para seleccionar el tipo de busqueda</mat-label>
       <select matNativeControl [(ngModel)]="tipoBusqueda" >
@@ -9,16 +10,16 @@
       
     </mat-form-field>
     <div class="numeroDeControl" *ngIf="tipoBusqueda == 'control'">
-        <div class="input normal">
-            <i class="fas fa-flag"></i>
-            <input type="text" placeholder="Introduce el número de control aquí"  [(ngModel)]="numeroDeControl" />
-          </div>
-          <button class="btn float" [routerLink]="['/panel/estudiantes', numeroDeControl]">
-              <i class="fas fa-flag"></i>
-              <p>BUSCAR</p>
-            </button>
-    </div>
-    
+        
+    </div>-->
+    <div class="input normal">
+        <i class="fas fa-flag"></i>
+        <input type="text" placeholder="Introduce el número de control aquí"  [(ngModel)]="numeroDeControl" />
+      </div>
+      <button class="btn float" style="margin-top: 20px;" [routerLink]="['/panel/estudiantes', numeroDeControl]">
+          <i class="fas fa-flag"></i>
+          <p>BUSCAR</p>
+        </button>
   </div>
 </section>
 

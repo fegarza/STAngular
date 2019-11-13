@@ -17,7 +17,7 @@ export class EstudiantesComponent implements OnInit {
     length = 100;
     pageSize = 10;
     pageSizeOptions: number[] = [10,20,30,40,50];
-
+    numeroDeControl: string;
     // MatPaginator Output
     pageEvent: PageEvent;
 

@@ -22,7 +22,7 @@ export class EstudianteComponent implements OnInit {
   public miUsuario: Usuario = new Usuario();
   public permisoDeModificar = false;
   public sesionesTotales: number = 0;
-  
+  fotoLink: string;
   //Configuracion del formAlert
   public formAlert: string = "none";
 

@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PersonalService } from 'src/app/services/personal.service';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { CanalizacionService } from 'src/app/services/canalizacion.service';
+import { PageEvent } from '@angular/material';
  
 @Component({
   selector: 'app-grupo',
@@ -22,8 +23,11 @@ export class GrupoComponent implements OnInit {
   //Traer el ID del  url
   public id: number;
   private sub: any;
-
+  pageEvent: PageEvent;
+  canalizacionesPageSize = 10;
+  canalizacionesPageSizeOptions: number[] = [10,20,30,40,50];
   //Variables publicas
+  public loading: boolean = false;
   public miGrupo: Grupo = new Grupo();
   public sesiones: Array<Sesion> = new Array<Sesion>();
   public seleccionado: boolean = false;
@@ -307,4 +311,5 @@ export class GrupoComponent implements OnInit {
     }
     );
   }
+  mostrarCanalizaciones( x){}
 }

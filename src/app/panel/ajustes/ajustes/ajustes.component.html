@@ -38,7 +38,7 @@
       </div>
       <button class="btn float">
         <i class="fas fa-sign-in-alt"></i>
-        <p>GUARDAR CAMBIOS</p>
+        <p>GUARDAR</p>
       </button>
       <button class="btn float-dark" (click)="formAlert = 'none'">
         <i class="fas fa-sign-in-alt"></i>
@@ -78,7 +78,7 @@
         </div>
         <button class="btn float">
           <i class="fas fa-sign-in-alt"></i>
-          <p>GUARDAR CAMBIOS</p>
+          <p>GUARDAR</p>
         </button>
         <button class="btn float-dark" (click)="formAlert = 'none'">
           <i class="fas fa-sign-in-alt"></i>
@@ -103,7 +103,7 @@
       </mat-form-field>
       <button class="btn float-dark">
         <i class="fas fa-sign-in-alt"></i>
-        <p>GUARDAR CAMBIOS</p>
+        <p>GUARDAR</p>
       </button>
       <button class="btn float-dark" (click)="formAlert = 'none'">
         <i class="fas fa-sign-in-alt"></i>
@@ -114,7 +114,7 @@
 </div>
 <div class="formAlert" *ngIf="formAlert == 'editarArchivos'">
     <div class="cont x1">
-      <form [formGroup]="archivosEditarForm" (ngSubmit)="editarArchivos()">
+      <form [formGroup]="archivosEditarForm" (ngSubmit)="editarArchivo()">
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Titulo del archivo" formControlName="titulo" type="email" [value]="archivoSeleccionado.titulo">
         </mat-form-field>
@@ -122,11 +122,11 @@
           <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="descripcion" [value]="archivoSeleccionado.descripcion"></textarea>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Hypervinculo de descarga" formControlName="link" type="email" [value]="archivoSeleccionado.email">
+          <input matInput placeholder="Hypervinculo de descarga" formControlName="link" type="email" [value]="archivoSeleccionado.link">
         </mat-form-field>
-        <button class="btn float-dark">
+        <button class="btn float-dark" >
           <i class="fas fa-sign-in-alt"></i>
-          <p>GUARDAR CAMBIOS</p>
+          <p>GUARDAR</p>
         </button>
         <button class="btn float-dark" (click)="formAlert = 'none'">
           <i class="fas fa-sign-in-alt"></i>
@@ -144,7 +144,7 @@
   <div class="cont">
 
     <!--FORMULARIO DE LOS ESTUDIANTES-->
-    <div class="box simple shadow" *ngIf="miUsuario.tipo == 'E'">
+    <div class="box simple shadow" *ngIf="miUsuario.estudiante != null">
 
       <div class="boxCont">
         <form [formGroup]="settingsForm" (ngSubmit)="guardarEstudiante()">
@@ -291,7 +291,7 @@
 
             </mat-tab>
 
-            <mat-tab>
+            <mat-tab *ngIf=" 2 == 3">
               <div class="bxCont">
                 <ng-template mat-tab-label>
                   <i class="fas fa-male" style="margin-right: 15px"></i>
@@ -565,6 +565,8 @@
 
               </div>
             </mat-tab>
+
+
             <mat-tab>
               <div class="bxCont">
                 <ng-template mat-tab-label>
@@ -646,7 +648,7 @@
           </mat-tab-group>
           <button class="btn float">
             <i class="fas fa-sign-in-alt"></i>
-            <p>GUARDAR CAMBIOS</p>
+            <p>GUARDAR</p>
           </button>
         </form>
       </div>
@@ -654,7 +656,7 @@
 
     <!--FORMULARIO DE LOS PERSONALES-->
 
-    <div class="box simple shadow" *ngIf="miUsuario.tipo == 'P'">
+    <div class="box simple shadow" *ngIf="miUsuario.personal != null">
 
       <div class="boxCont2">
 
@@ -683,7 +685,7 @@
               </mat-form-field>
 
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Constraseña" formControlName="password" value=""
+                <input matInput placeholder="Contraseña" formControlName="password" value=""
                   [type]="hide ? 'password' : 'text'">
                 <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -725,7 +727,7 @@
               </div>
               <button class="btn float-dark">
                 <i class="fas fa-sign-in-alt"></i>
-                <p>GUARDAR CAMBIOS</p>
+                <p>GUARDAR</p>
               </button>
               <button [routerLink]="['/panel/personales']" type="button" class="btn float">
                 <i class="fas fa-sign-in-alt"></i>
@@ -838,7 +840,7 @@
 
               <button class="btn float">
                 <i class="fas fa-sign-in-alt"></i>
-                <p>GUARDAR CAMBIOS</p>
+                <p>GUARDAR</p>
               </button>
 
             </form>
@@ -846,7 +848,7 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
-              <i class="fas fa-user-circle" style="margin-right: 15px"></i> Archivos
+              <i class="fas fa-user-circle" style="margin-right: 15px"></i> Subir archivos
             </ng-template>
             <table mat-table [dataSource]="archivosSource" matSort class="mat-elevation-z8">
               <ng-container matColumnDef="titulo">
