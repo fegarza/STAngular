@@ -107,7 +107,7 @@
 <section class="infor">
   <div class="cont">
     <div class="textBox lineBlue">
-      <h1><i class="fas fa-flag"></i>Informacion del estudiante</h1>
+      <h1><i class="fas fa-flag"></i>Información del estudiante</h1>
       <p>
          
         <br />
@@ -121,7 +121,7 @@
         <br />
         <b>Sesiones grupales: </b>{{miEstudiante.sesiones}}
         <br />
-        <b>Numero de seguro social: </b>{{miEstudiante.estudianteDatos.nss}}
+        <b>Número de seguro social: </b>{{miEstudiante.estudianteDatos.nss}}
       </p>
     </div>
   </div>
@@ -131,15 +131,15 @@
     <div class="box simple shadow">
       <div class="title solidBlue ">
         <i class="fas fa-flag"></i>
-        <h1>Creditos</h1>
+        <h1>Créditos</h1>
       </div>
       <div class="boxCont">
          
         <div class="credito" *ngFor="let i of miEstudiante.creditos">
             <mat-divider></mat-divider>
-            <p>Titulo del credito: {{ i.actividad.titulo }}</p>
+            <p>Título del crédito: {{ i.actividad.titulo }}</p>
             <p>Fecha: {{i.fechaDeOficio | date:'shortDate'}}</p>
-            <p>Estado de la actividad: {{ i.estadoDeLaActividad == 'T' ? 'termminada' : 'en proceso' }} </p>
+            <p>Estado de la actividad: {{ i.estadoDeLaActividad == 'T' ? 'Terminada' : 'En proceso' }} </p>
         </div>
           
       </div>
@@ -156,14 +156,14 @@
         </div>
         <div class="boxCont">
           <p *ngIf="canalizaciones.length == 0">
-            No hay ninguna canalizacion registrada
+            No hay ninguna canalización registrada
           </p>
           <div class="canalizacion" *ngFor="let i of canalizaciones">
               <mat-divider></mat-divider>
               <p>Tutor: {{ i.personal.usuario.nombreCompleto }} </p>
               <p>Asunto: {{ i.atencion.titulo }}</p>
               <p>Fecha: {{i.fecha | date:'shortDate'}}</p>
-              <p>Descripcion: {{ i.descripcion }} </p>
+              <p>Descripción: {{ i.descripcion }} </p>
               <p>Estatus de la canalización: {{ i.estado == 'T' ? 'Terminada' : 'En proceso' }} </p>
           </div>
             

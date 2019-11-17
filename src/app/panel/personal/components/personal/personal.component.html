@@ -1,7 +1,7 @@
 <div class="formAlert" *ngIf="formAlert == 'correo'">
   <div class="cont">
     <form [formGroup]="correoFormGroup" (ngSubmit)="onSubmitCorreo()">
-      <h1>Nuevo correo</h1>
+      <h1>Ingrese su nuevo correo</h1>
       <mat-form-field class="example-full-width">
         <input
           matInput
@@ -28,7 +28,7 @@
 <div class="formAlert" *ngIf="formAlert == 'clave'">
   <div class="cont">
     <form [formGroup]="claveFormGroup" (ngSubmit)="onSubmitClave()">
-      <h1>Nueva contraseña</h1>
+      <h1>Ingrese su nueva contraseña</h1>
       <mat-form-field class="example-full-width">
         <input
           matInput
@@ -80,10 +80,7 @@
 </div>
 
 <header>
-  <div
-    class="settings"
-    [matMenuTriggerFor]="appMenu"
-  >
+  <div class="settings" [matMenuTriggerFor]="appMenu" >
     <mat-menu #appMenu="matMenu">
       <button type="button" mat-menu-item [routerLink]="['./grupo']">
         <i class="fas fa-users"></i>
@@ -99,7 +96,7 @@
       </button>
       <button mat-menu-item (click)="cambiarCorreo()" *ngIf="miUsuario.personal.id == miPersonal.id || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C' || (miUsuario.personal.cargo == 'J' && miUsuario.personal.departamentoId == miPersonal.departamento.id)  || (miUsuario.personal.cargo == 'D' && miUsuario.personal.departamentoId == miPersonal.departamento.id)">
         <i class="fas fa-envelope"></i>
-        <p>Cambiar correo electronico</p>
+        <p>Cambiar correo electrónico</p>
       </button>
     </mat-menu>
 
@@ -156,7 +153,7 @@
         {{ miPersonal.cargo == "J" ? "Jefe de tutorias" : "" }}
         {{ miPersonal.cargo == "T" ? "Tutor" : "" }}<br />
         Email: {{ miPersonal.usuario.email }} <br />
-        Genero: {{ miPersonal.usuario.genero == "M" ? "Mujer" : "Hombre" }}
+        Género: {{ miPersonal.usuario.genero == "M" ? "Mujer" : "Hombre" }}
         <br />
         Departamento:
         {{

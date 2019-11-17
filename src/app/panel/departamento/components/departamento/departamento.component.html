@@ -4,7 +4,9 @@
   </div>
 </div>
 <div class="formAlert" *ngIf="formAlert == 'personal'">
-  <div class="cont x1">
+  <div class="cont x1"> 
+      <div class="title leftBlue">
+         <h1><i class="far fa-edit"></i>Ingrese los datos del nuevo empleado</h1> </div>
     <form [formGroup]="personalesForm" (ngSubmit)="onSubmitPersonal()">
       <mat-form-field>
         <mat-label>Haga click aquí para seleccionar el empleado</mat-label>
@@ -34,7 +36,7 @@
       <mat-form-field class="example-full-width">
         <input
           matInput
-          placeholder="Constraseña"
+          placeholder="Contraseña"
           formControlName="password"
           value=""
           [type]="hide ? 'password' : 'text'"
@@ -52,7 +54,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Nombre del empleado</mat-label>
+        <mat-label>Título del empleado</mat-label>
         <mat-select formControlName="titulo">
           <mat-option *ngFor="let d of titulos" [value]="d.id">
             {{ d.titulo }}
@@ -68,7 +70,7 @@
         </mat-select>
       </mat-form-field>
       <div class="radio">
-        <p>Genero</p>
+        <p>Género</p>
         <mat-radio-group aria-label="Genero" formControlName="genero">
           <mat-radio-button value="H"> Hombre</mat-radio-button>
           <mat-radio-button value="M">Mujer</mat-radio-button>
@@ -87,10 +89,13 @@
 </div>
 
 <div class="formAlert" *ngIf="formAlert == 'sesiones'">
-  <div class="cont x1">
+  <div class="cont x2">
+      <div class="title leftBlue">
+        <h1><i class="far fa-edit"></i> Ingrese los datos de la acción tutorial</h1>
+      </div>
     <form [formGroup]="sesionesForm" (ngSubmit)="onSubmitSesiones()">
       <mat-form-field>
-        <mat-label>Accion Tutorial</mat-label>
+        <mat-label>Seleccione la Acción Tutorial</mat-label>
         <mat-select formControlName="accionTutorial">
           <mat-option *ngFor="let d of acciones" [value]="d.id">
             {{ d.titulo }} - {{ d.fecha }}
@@ -101,7 +106,7 @@
         <input
           matInput
           [matDatepicker]="myPicker2"
-          placeholder="fecha"
+          placeholder="Seleccione la fecha"
           formControlName="fecha"
         />
         <mat-datepicker-toggle
@@ -295,7 +300,7 @@
         <div class="paginator">
           <button class="btn float-white" (click)="formAlert = 'sesiones'">
             <i class="fas fa-plus"></i>
-            <p>Agregar nueva sesion</p>
+            <p>Agregar nueva sesión</p>
           </button>
           <mat-paginator
             [length]="100"

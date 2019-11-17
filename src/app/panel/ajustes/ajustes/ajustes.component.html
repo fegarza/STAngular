@@ -93,13 +93,13 @@
   <div class="cont x1">
     <form [formGroup]="archivosForm" (ngSubmit)="onSubmitArchivos()">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Titulo del archivo" formControlName="titulo" type="email" value="">
+        <input matInput placeholder="Título del archivo" formControlName="titulo" type="email" value="">
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="descripcion"></textarea>
+        <textarea matInput placeholder="Descripción breve sobre el archivo" formControlName="descripcion"></textarea>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Hypervinculo de descarga" formControlName="link" type="email" value="">
+        <input matInput placeholder="Hipervínculo de descarga" formControlName="link" type="email" value="">
       </mat-form-field>
       <button class="btn float-dark">
         <i class="fas fa-sign-in-alt"></i>
@@ -116,13 +116,13 @@
     <div class="cont x1">
       <form [formGroup]="archivosEditarForm" (ngSubmit)="editarArchivo()">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Titulo del archivo" formControlName="titulo" type="email" [value]="archivoSeleccionado.titulo">
+          <input matInput placeholder="Título del archivo" formControlName="titulo" type="email" [value]="archivoSeleccionado.titulo">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <textarea matInput placeholder="Descripcion breve sobre el archivo" formControlName="descripcion" [value]="archivoSeleccionado.descripcion"></textarea>
+          <textarea matInput placeholder="Descripción breve sobre el archivo" formControlName="descripcion" [value]="archivoSeleccionado.descripcion"></textarea>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Hypervinculo de descarga" formControlName="link" type="email" [value]="archivoSeleccionado.link">
+          <input matInput placeholder="Hipervínculo de descarga" formControlName="link" type="email" [value]="archivoSeleccionado.link">
         </mat-form-field>
         <button class="btn float-dark" >
           <i class="fas fa-sign-in-alt"></i>
@@ -180,7 +180,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Telefono movil" value="" formControlName="telefonoMovil">
+                  <input matInput placeholder="Teléfono móvil" value="" formControlName="telefonoMovil">
                 </mat-form-field>
 
                 <mat-divider></mat-divider>
@@ -191,7 +191,7 @@
                 </div>
 
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Telefono" value="" formControlName="telefonoDomicilio">
+                  <input matInput placeholder="Teléfono" value="" formControlName="telefonoDomicilio">
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width">
@@ -277,7 +277,7 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                  <mat-label>Dependencia economica</mat-label>
+                  <mat-label>Dependencia económica</mat-label>
                   <mat-select formControlName="dependenciaEconomica">
                     <mat-option *ngFor="let dependenciaEconomica of dependenciasEconomica"
                       [value]="dependenciaEconomica">
@@ -302,7 +302,7 @@
 
                 <div class="title simple">
                   <i class="fas fa-user-cog"></i>
-                  <h1>DEFICIENCIAS SENSIORALES O FUNCIONALES</h1>
+                  <h1>DEFICIENCIAS SENSORIALES O FUNCIONALES</h1>
                 </div>
 
                 <div class="radio">
@@ -314,7 +314,7 @@
                 </div>
 
                 <div class="radio">
-                  <p>Oido</p>
+                  <p>Oído</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="oido">
                     <mat-radio-button value="1"> Sí</mat-radio-button>
                     <mat-radio-button value="2">No</mat-radio-button>
@@ -375,7 +375,7 @@
                 </div>
 
                 <div class="radio">
-                  <p>Sistema oseo</p>
+                  <p>Sistema óseo</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="oseo">
                     <mat-radio-button value="1"> Sí</mat-radio-button>
                     <mat-radio-button value="2">No</mat-radio-button>
@@ -589,7 +589,7 @@
                   </mat-radio-group>
                 </div>
                 <mat-form-field>
-                  <mat-label>Maximo grado de estudios</mat-label>
+                  <mat-label>Máximo grado de estudios</mat-label>
                   <mat-select formControlName="padreGrado">
                     <mat-option *ngFor="let gradoEstudio of gradosDeEstudio" [value]="gradoEstudio">
                       {{gradoEstudio}}
@@ -600,7 +600,7 @@
                   <input matInput placeholder="Lugar de trabajo" value="" formControlName="padreTrabajo">
                 </mat-form-field>
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Numero de telefono" value="" formControlName="padreNumero">
+                  <input matInput placeholder="Número de telefono" value="" formControlName="padreNumero">
                 </mat-form-field>
 
 
@@ -627,7 +627,7 @@
                   </mat-radio-group>
                 </div>
                 <mat-form-field>
-                  <mat-label>Maximo grado de estudios</mat-label>
+                  <mat-label>Máximo grado de estudios</mat-label>
                   <mat-select formControlName="madreGrado">
                     <mat-option *ngFor="let gradoEstudio of gradosDeEstudio" [value]="gradoEstudio">
                       {{gradoEstudio}}
@@ -695,7 +695,7 @@
               </mat-form-field>
 
               <mat-form-field>
-                <mat-label>Titulo</mat-label>
+                <mat-label>Título</mat-label>
                 <mat-select formControlName="titulo">
                   <mat-option *ngFor="let d of titulos" [value]="d.id">
                     {{d.titulo}}
@@ -719,7 +719,7 @@
                 </mat-select>
               </mat-form-field>
               <div class="radio">
-                <p>Genero</p>
+                <p>Género</p>
                 <mat-radio-group aria-label="Genero" formControlName="genero">
                   <mat-radio-button value="H"> Hombre</mat-radio-button>
                   <mat-radio-button value="M">Mujer</mat-radio-button>
@@ -798,7 +798,7 @@
             <div class="paginator">
               <button class="btn float-white" (click)="formAlert = 'acciones'">
                 <i class="fas fa-plus"></i>
-                <p>Agregar nueva accion tutorial</p>
+                <p>Agregar nueva acción tutorial</p>
               </button>
               <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 (page)="pageEvent = mostrarAcciones($event)">
@@ -824,7 +824,7 @@
                 </mat-select>
               </mat-form-field>
               <mat-form-field>
-                <mat-label>Accion Tutorial</mat-label>
+                <mat-label>Acción Tutorial</mat-label>
                 <mat-select formControlName="accionTutorial">
                   <mat-option *ngFor="let d of acciones" [value]="d.id">
                     {{d.titulo}} - {{d.fecha}}
@@ -852,7 +852,7 @@
             </ng-template>
             <table mat-table [dataSource]="archivosSource" matSort class="mat-elevation-z8">
               <ng-container matColumnDef="titulo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Titulo
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Título
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <a href="{{element.link}}"  target="_blank" >{{element.titulo}}</a>
