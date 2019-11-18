@@ -280,7 +280,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
             <td mat-cell *matCellDef="let element">
               <a>
-                {{ element.fecha }}
+                {{element.fecha | date:'shortDate'}}
               </a>
             </td>
           </ng-container>

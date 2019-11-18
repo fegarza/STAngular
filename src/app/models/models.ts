@@ -91,7 +91,7 @@ export class Accion {
     personalId: number;
     titulo: string;
     contenido: string;
-    fecha: string;
+    fecha: Date;
     obligatorio: boolean;
     tipo: string;
 }
