@@ -20,13 +20,13 @@ import { ArchivoService } from 'src/app/services/archivo.service';
   styleUrls: ['./ajustes.component.sass']
 })
 export class AjustesComponent implements OnInit {
-  
+
   hide = true;
   public loading: boolean = false;
   public formAlert: string = "none";
   public accionSeleccionada: Accion;
   public archivoSeleccionado: Archivo;
-  
+
   //Constantes
   cargos: Array<Cargo> = [
     { tipo: "C", titulo: "Coordinador" },
@@ -87,7 +87,7 @@ export class AjustesComponent implements OnInit {
   //acciones dattable
   todasAcciones: Array<Accion> = new Array<Accion>();
   accionesSource = new MatTableDataSource(this.todasAcciones);
-  accionesColumns: string[] = ['obligatorio', 'fecha', 'titulo', 'tipo','editar', 'eliminar'];
+  accionesColumns: string[] = ['visible', 'obligatorio', 'fecha', 'titulo', 'tipo', 'editar', 'eliminar'];
 
   //archivos datatable
   public archivos: Array<Archivo> = new Array<Archivo>();
@@ -102,41 +102,49 @@ export class AjustesComponent implements OnInit {
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  public establecerAccion( id: number){
-     this.todasAcciones.forEach( f => {if(f.id == id){
-      this.accionSeleccionada = f;
-      var fechaTemp = {
-        year: 1999,
-        month: 1,
-        day: 2
+  public establecerAccion(id: number) {
+    this.todasAcciones.forEach(f => {
+      if (f.id == id) {
+        console.log("-> Accion seleccionada:");
+        console.log(f);
+        var date = new Date(new Date(f.fecha).getTime())
+        console.log(date);
+        this.accionesEditarForm.controls.titulo.setValue(f.titulo);
+        this.accionesEditarForm.controls.contenido.setValue(f.contenido);
+        this.accionesEditarForm.controls.tipo.setValue(f.tipo);
+        this.accionesEditarForm.controls.activo.setValue(f.activo);
+        this.accionesEditarForm.controls.obligatorio.setValue(f.obligatorio);
+        this.accionesEditarForm.controls.fecha.setValue(date);
+        this.accionSeleccionada = f;
       }
-      //this.accionesEditarForm.controls.fecha. = fechaTemp;
-     
-      console.log("Accione seleccionada:");
-      console.log(f);
-    }});
-  
+    });
+
     this.formAlert = 'editarAcciones';
   }
-  public establecerArchivo( id: number){
-    this.archivos.forEach( f => {if(f.id == id){
-     this.archivoSeleccionado = f;
-     console.log("Archivo seleccionado:");
-     console.log(f);
-   }});
-  
-   this.formAlert = 'editarArchivos';
- }
+  public establecerArchivo(id: number) {
+    this.archivos.forEach(f => {
+      if (f.id == id) {
+        this.archivoSeleccionado = f;
+        this.archivosEditarForm.controls.titulo.setValue(f.titulo);
+        this.archivosEditarForm.controls.descripcion.setValue(f.descripcion);
+        this.archivosEditarForm.controls.link.setValue(f.link);
+        console.log("Archivo seleccionado:");
+        console.log(f);
+      }
+    });
+
+    this.formAlert = 'editarArchivos';
+  }
   constructor(private archivoService: ArchivoService, private accionService: AccionService, private estudianteService: EstudianteService, private tituloService: TituloService, private sesionService: SesionService, private accionesService: AccionService, private authService: AuthService, private departamentoServices: DepartamentoService, private personalService: PersonalService) {
-    
+
   }
   ngOnInit() {
     //Cargar datos del usuario
     this.miUsuario = this.authService.traerUsuario();
     //-> En caso de ser estudiante
     if (this.miUsuario.estudiante != null) {
-      
-      this.crearFormsDeEstudiantes(); 
+
+      this.crearFormsDeEstudiantes();
       this.estudianteService.mostrarDatos(this.miUsuario.estudiante.numeroDeControl).subscribe(r => {
         if (r.code == 200) {
           this.miUsuario.estudiante.estudianteDatos = r.data as EstudianteDatos;
@@ -156,19 +164,52 @@ export class AjustesComponent implements OnInit {
           //Beca y seguro social
           this.settingsForm.controls.seguroSocial.setValue(this.miUsuario.estudiante.estudianteDatos.nss);
           this.settingsForm.controls.tipoDeBeca.setValue(this.miUsuario.estudiante.estudianteDatos.becadoPor);
+          this.settingsForm.controls.tieneBeca.setValue(this.miUsuario.estudiante.estudianteDatos.tieneBeca);
           //Trabajo
           this.settingsForm.controls.nombreEmpresa.setValue(this.miUsuario.estudiante.estudianteDatos.empresa);
           this.settingsForm.controls.horario.setValue(this.miUsuario.estudiante.estudianteDatos.horario);
+          this.settingsForm.controls.tieneTrabajo.setValue(this.miUsuario.estudiante.estudianteDatos.trabaja);
           //Estado civil
           this.settingsForm.controls.estadoCivil.setValue(this.miUsuario.estudiante.estudianteDatos.estadoCivil);
           this.settingsForm.controls.numeroDeHijos.setValue(this.miUsuario.estudiante.estudianteDatos.numeroHijos);
           this.settingsForm.controls.dependenciaEconomica.setValue(this.miUsuario.estudiante.estudianteDatos.cependenciaEconomica);
+          //Deficiencias sensoriales o funcionales
+          this.settingsForm.controls.vista.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionVista);
+          this.settingsForm.controls.oido.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionOido);
+          this.settingsForm.controls.lenguaje.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionLenguaje);
+          this.settingsForm.controls.motriz.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionMotriz);
+          //Padecimientos o deficiencias de sistema organico
+          this.settingsForm.controls.nervioso.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaNervioso);
+          this.settingsForm.controls.circulatorio.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaCirculatorio);
+          this.settingsForm.controls.digestivo.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaDigestivo);
+          this.settingsForm.controls.respiratorio.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaRespiratorio);
+          this.settingsForm.controls.oseo.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaOseo);
+          this.settingsForm.controls.otros.setValue(this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaOtro);
+          //Lleva o ha llevado tratamiendo psicologico o psiquiatrico
+          this.settingsForm.controls.haLlevadoTratamiento.setValue(this.miUsuario.estudiante.estudianteDatos.tratamientoPsicologicoPsiquiatrico);
+          this.settingsForm.controls.tratamiento.setValue(this.miUsuario.estudiante.estudianteDatos.tratamientoPsicologicoPsiquiatricoExplicacion);
+          //Estado psicofisiologico
+          this.settingsForm.controls.hinchazon.setValue(this.miUsuario.estudiante.estudianteDatos.manosPiesHinchados);
+          this.settingsForm.controls.doloresVientre.setValue(this.miUsuario.estudiante.estudianteDatos.doloresVientre);
+          this.settingsForm.controls.doloresCabeza.setValue(this.miUsuario.estudiante.estudianteDatos.doloresCabezaVomito);
+          this.settingsForm.controls.perdidaEquilibrio.setValue(this.miUsuario.estudiante.estudianteDatos.perdidaEquilibrio);
+          this.settingsForm.controls.fatiga.setValue(this.miUsuario.estudiante.estudianteDatos.fatigaAgotamiento );
+          this.settingsForm.controls.perdidaVista.setValue(this.miUsuario.estudiante.estudianteDatos.perdidaVistaOido);
+          this.settingsForm.controls.dificultadParaDormir.setValue(this.miUsuario.estudiante.estudianteDatos.dificultadDormir );
+          this.settingsForm.controls.pesadilla.setValue(this.miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos );
+          this.settingsForm.controls.pesadillaAQue.setValue(this.miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnosAque );
+          this.settingsForm.controls.incontinencia.setValue(this.miUsuario.estudiante.estudianteDatos.incontinencia );
+          this.settingsForm.controls.tartamudeos.setValue(this.miUsuario.estudiante.estudianteDatos.tartamudeos);
+          this.settingsForm.controls.miedos.setValue(this.miUsuario.estudiante.estudianteDatos.miedosIntensos);
+          
           //Datos del padre
           this.settingsForm.controls.padreGrado.setValue(this.miUsuario.estudiante.estudianteDatos.estudiosPadre);
+          this.settingsForm.controls.padreVive.setValue(this.miUsuario.estudiante.estudianteDatos.padreVive);
           this.settingsForm.controls.padreTrabajo.setValue(this.miUsuario.estudiante.estudianteDatos.lugarTrabajoPadre);
           this.settingsForm.controls.padreNumero.setValue(this.miUsuario.estudiante.estudianteDatos.telefonoTrabajoPadre);
           //Datos de la madre
           this.settingsForm.controls.madreGrado.setValue(this.miUsuario.estudiante.estudianteDatos.estudiosMadre);
+          this.settingsForm.controls.madreVive.setValue(this.miUsuario.estudiante.estudianteDatos.madreVive);
           this.settingsForm.controls.madreTrabajo.setValue(this.miUsuario.estudiante.estudianteDatos.lugarTrabajoMadre);
           this.settingsForm.controls.madreNumero.setValue(this.miUsuario.estudiante.estudianteDatos.telefonoTrabajoMadre);
           
@@ -180,13 +221,13 @@ export class AjustesComponent implements OnInit {
     //-> En caso de ser personal
     else {
       this.archivoService.showAll().subscribe(r => {
-        if(r.code == 200){
+        if (r.code == 200) {
           this.archivos = r.data as Array<Archivo>;
           this.archivosSource = new MatTableDataSource(this.archivos);
         }
       });
       this.crearFormsDePersonales();
-      this.accionService.showAll().subscribe(r => {
+      this.accionService.getPage(10,1).subscribe(r => {
         if (r.code == 200) {
           this.todasAcciones = r.data as Array<Accion>;
           this.accionesSource = new MatTableDataSource(this.todasAcciones);
@@ -258,17 +299,46 @@ export class AjustesComponent implements OnInit {
     this.miUsuario.estudiante.estudianteDatos.estudiosMadre = this.settingsForm.controls.madreGrado.value;
     this.miUsuario.estudiante.estudianteDatos.lugarTrabajoMadre = this.settingsForm.controls.madreTrabajo.value;
     this.miUsuario.estudiante.estudianteDatos.telefonoTrabajoMadre = this.settingsForm.controls.madreNumero.value;
+    //DEFICIENCIAS SENSORIALES O FUNCIONALES
+    this.miUsuario.estudiante.estudianteDatos.prescripcionVista = this.settingsForm.controls.vista.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionOido = this.settingsForm.controls.oido.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionLenguaje = this.settingsForm.controls.lenguaje.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionMotriz = this.settingsForm.controls.motriz.value;
+    //Padecimientos o deficiencias de sistema organico
+    this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaNervioso = this.settingsForm.controls.nervioso.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaCirculatorio = this.settingsForm.controls.circulatorio.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaDigestivo = this.settingsForm.controls.digestivo.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaRespiratorio = this.settingsForm.controls.respiratorio.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaOseo = this.settingsForm.controls.oseo.value;
+    this.miUsuario.estudiante.estudianteDatos.prescripcionSistemaOtro = this.settingsForm.controls.otros.value;
+    //Leva o ha llevado tratamiento psicologico o psiquiatrico
+    this.miUsuario.estudiante.estudianteDatos.tratamientoPsicologicoPsiquiatrico = this.settingsForm.controls.haLlevadoTratamiento.value;
+    this.miUsuario.estudiante.estudianteDatos.tratamientoPsicologicoPsiquiatricoExplicacion = this.settingsForm.controls.tratamiento.value;
+    //Estado psicofisico
+    this.miUsuario.estudiante.estudianteDatos.manosPiesHinchados = this.settingsForm.controls.hinchazon.value;
+    this.miUsuario.estudiante.estudianteDatos.doloresVientre = this.settingsForm.controls.doloresVientre.value;
+    this.miUsuario.estudiante.estudianteDatos.doloresCabezaVomito = this.settingsForm.controls.doloresCabeza.value;
+    this.miUsuario.estudiante.estudianteDatos.perdidaEquilibrio = this.settingsForm.controls.perdidaEquilibrio.value;
+    this.miUsuario.estudiante.estudianteDatos.fatigaAgotamiento = this.settingsForm.controls.fatiga.value;
+    this.miUsuario.estudiante.estudianteDatos.perdidaVistaOido = this.settingsForm.controls.perdidaVista.value;
+    this.miUsuario.estudiante.estudianteDatos.dificultadDormir = this.settingsForm.controls.dificultadParaDormir.value;
+    this.miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos = this.settingsForm.controls.pesadilla.value;
+    this.miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnosAque = this.settingsForm.controls.pesadillaAQue.value;
+    this.miUsuario.estudiante.estudianteDatos.incontinencia = this.settingsForm.controls.incontinencia.value;
+    this.miUsuario.estudiante.estudianteDatos.tartamudeos = this.settingsForm.controls.tartamudeos.value;
+    this.miUsuario.estudiante.estudianteDatos.miedosIntensos = this.settingsForm.controls.miedos.value;
     
+
     console.log("--> Estudiante datos");
-    console.log( this.miUsuario.estudiante.estudianteDatos);
-        this.estudianteService.guardarDatos(this.miUsuario.estudiante.estudianteDatos).subscribe(r => {
-          if(r.code == 200){
-            Swal.fire('Exito',"Se ha guardado con exito", "success");
-          }else{
-    
-          }
-        });
-      
+    console.log(this.miUsuario.estudiante.estudianteDatos);
+    this.estudianteService.guardarDatos(this.miUsuario.estudiante.estudianteDatos).subscribe(r => {
+      if (r.code == 200) {
+        Swal.fire('Exito', "Se ha guardado con exito", "success");
+      } else {
+
+      }
+    });
+
 
   }
   crearFormsDeEstudiantes() {
@@ -383,6 +453,7 @@ export class AjustesComponent implements OnInit {
       fecha: new FormControl('', [Validators.required]),
       contenido: new FormControl('', [Validators.required]),
       obligatorio: new FormControl('', [Validators.required]),
+      activo: new FormControl('', [Validators.required]),
       tipo: new FormControl('', [Validators.required])
     });
 
@@ -394,14 +465,16 @@ export class AjustesComponent implements OnInit {
 
     this.archivosForm = new FormGroup({
       titulo: new FormControl('', [Validators.required]),
-      descripcion: new FormControl('', ),
-      link: new FormControl('', ),
+      descripcion: new FormControl(''),
+      link: new FormControl('', [Validators.required])
     });
     this.archivosEditarForm = new FormGroup({
       titulo: new FormControl('', [Validators.required]),
-      descripcion: new FormControl('', ),
-      link: new FormControl('', ),
+      descripcion: new FormControl(''),
+      link: new FormControl('', [Validators.required])
     });
+
+
   }
   onSubmitPersonal() {
     this.loading = true;
@@ -435,7 +508,7 @@ export class AjustesComponent implements OnInit {
             r.mensaje,
             'error'
           );
-this.loading = false;
+          this.loading = false;
 
 
         }
@@ -443,122 +516,208 @@ this.loading = false;
     } else {
       this.loading = false;
       var cadena: string = "";
-     
+      if (!this.personalesForm.controls.cve.valid) {
+        cadena += "Debe seleccionar un personal<br>";
+      }
+      if (!this.personalesForm.controls.email.valid) {
+        cadena += "Debe colocar un correo electronico valido<br>";
+      }
+      if (!this.personalesForm.controls.password.valid) {
+        cadena += "La contraseña debe de ser de mínimo 6 caracteres<br>";
+      }
+      if (!this.personalesForm.controls.titulo.valid) {
+        cadena += "Debe seleccionar un título profecional<br>";
+      }
+      if (!this.personalesForm.controls.departamento.valid) {
+        cadena += "Debe seleccionar el departamento al que pertenece<br>";
+      }
+      if (!this.personalesForm.controls.cargo.valid) {
+        cadena += "Debe seleccionar el cargo al cual va a emplear el empleado<br>";
+      }
+      if (!this.personalesForm.controls.genero.valid) {
+        cadena += "Debe seleccionar el género del empleado<br>";
+      }
       Swal.fire(
-        "error",
-        'La contraseña debe tener como mínimo 6 digitos',
+        "Errores en el formulario",
+        cadena,
         'error'
       );
     }
   }
   onSubmitAcciones() {
     this.loading = true;
-    var accion: Accion = new Accion();
-    accion.titulo = this.accionesForm.controls.titulo.value;
-    accion.contenido = this.accionesForm.controls.contenido.value;
-    accion.fecha = this.accionesForm.controls.fecha.value;
-    accion.tipo = this.accionesForm.controls.tipo.value;
-    if (this.accionesForm.controls.obligatorio.value == "1") {
-      accion.obligatorio = true;
-    } else {
-      accion.obligatorio = false;
-    }
-    accion.personalId = this.miUsuario.personal.id;
-    this.accionesService.add(accion).subscribe(r => {
-      if (r.code == 200) {
-        this.accionesForm.reset();
-        Swal.fire(
-          'Se ha insertado con exito',
-          r.mensaje,
-          'success'
-        );
-        this.loading = false;
-        this.formAlert = 'none';
-        this.accionService.showAll().subscribe(r => {
-          if (r.code == 200) {
-            this.todasAcciones = r.data as Array<Accion>;
-            this.accionesSource = new MatTableDataSource(this.todasAcciones);
-          }
-        });
+    if (this.accionesForm.valid) {
+      var accion: Accion = new Accion();
+      accion.titulo = this.accionesForm.controls.titulo.value;
+      accion.contenido = this.accionesForm.controls.contenido.value;
+      accion.fecha = this.accionesForm.controls.fecha.value;
+      accion.tipo = this.accionesForm.controls.tipo.value;
+      if (this.accionesForm.controls.obligatorio.value == "1") {
+        accion.obligatorio = true;
       } else {
-        this.loading = false;
-        var errores: Array<String> = r.data as Array<String>;
-        var cadena: string = "";
-        errores.forEach(e => {
-          cadena += (e + '<br>')
-        });
-        Swal.fire(
-          r.mensaje,
-          cadena,
-          'error'
-        );
+        accion.obligatorio = false;
       }
-    });
+      accion.personalId = this.miUsuario.personal.id;
+      this.accionesService.add(accion).subscribe(r => {
+        if (r.code == 200) {
+          this.accionesForm.reset();
+          Swal.fire(
+            'Se ha insertado con exito',
+            r.mensaje,
+            'success'
+          );
+          this.loading = false;
+          this.formAlert = 'none';
+          this.accionService.showAll().subscribe(r => {
+            if (r.code == 200) {
+              this.todasAcciones = r.data as Array<Accion>;
+              this.accionesSource = new MatTableDataSource(this.todasAcciones);
+            }
+          });
+        } else {
+          this.loading = false;
+          var errores: Array<String> = r.data as Array<String>;
+          var cadena: string = "";
+          errores.forEach(e => {
+            cadena += (e + '<br>')
+          });
+          Swal.fire(
+            r.mensaje,
+            cadena,
+            'error'
+          );
+        }
+      });
+    } else {
+      this.loading = false;
+      var cadena: string = "";
+      if (!this.accionesForm.controls.titulo.valid) {
+        cadena += "Debe colocar el título de la cción tutorial<br>";
+      }
+      if (!this.accionesForm.controls.fecha.valid) {
+        cadena += "Debe colocar la fecha<br>";
+      }
+      if (!this.accionesForm.controls.contenido.valid) {
+        cadena += "Debe colocar el contenido<br>";
+      }
+      if (!this.accionesForm.controls.tipo.valid) {
+        cadena += "Debe seleccionar el tipo<br>";
+      }
+      if (!this.accionesForm.controls.obligatorio.valid) {
+        cadena += "Debe indicar si es obbligatoria<br>";
+      }
+      Swal.fire(
+        "Errores en el formulario",
+        cadena,
+        'error'
+      );
+
+    }
+
   }
   onSubmitSesiones() {
     this.loading = true;
-    var sesion: Sesion = new Sesion();
-    sesion.fecha = this.sesionesForm.controls.fecha.value;
-    sesion.departamentoId = this.sesionesForm.controls.departamento.value;
-    sesion.accionTutorialId = this.sesionesForm.controls.accionTutorial.value;
-    sesion.departamento = null;
-    sesion.accionTutorial = null;
-    sesion.departamento = null;
-    this.sesionService.add(sesion).subscribe(r => {
-      if (r.code == 200) {
-        this.loading = false;
-        this.sesionesForm.reset();
-        this.cargarAcciones(sesion.departamentoId);
-        Swal.fire(
-          'Se ha insertado con exito',
-          r.mensaje,
-          'success'
-        );
-      } else {
-        this.loading = false;
-        var errores: Array<String> = r.data as Array<String>;
-        var cadena: string = "";
-        errores.forEach(e => {
-          cadena += (e + '<br>')
-        });
-        Swal.fire(
-          r.mensaje,
-          cadena,
-          'error'
-        );
+    if (this.sesionesForm.valid) {
+      var sesion: Sesion = new Sesion();
+      sesion.fecha = this.sesionesForm.controls.fecha.value;
+      sesion.departamentoId = this.sesionesForm.controls.departamento.value;
+      sesion.accionTutorialId = this.sesionesForm.controls.accionTutorial.value;
+      sesion.departamento = null;
+      sesion.accionTutorial = null;
+      sesion.departamento = null;
+      this.sesionService.add(sesion).subscribe(r => {
+        if (r.code == 200) {
+          this.loading = false;
+          this.sesionesForm.reset();
+          this.cargarAcciones(sesion.departamentoId);
+          Swal.fire(
+            'Se ha insertado con exito',
+            r.mensaje,
+            'success'
+          );
+        } else {
+          this.loading = false;
+          var errores: Array<String> = r.data as Array<String>;
+          var cadena: string = "";
+          errores.forEach(e => {
+            cadena += (e + '<br>')
+          });
+          Swal.fire(
+            r.mensaje,
+            cadena,
+            'error'
+          );
+        }
+      });
+    } else {
+      this.loading = false;
+      var cadena: string = "";
+      if (!this.sesionesForm.controls.departamento.valid) {
+        cadena += "Debe seleccionar un departamento<br>";
       }
-    });
+      if (!this.sesionesForm.controls.accionTutorial.valid) {
+        cadena += "Debe seleccionar una acción tutorial<br>";
+      }
+      if (!this.sesionesForm.controls.fecha.valid) {
+        cadena += "Debe seleccionar una fecha valida<br>";
+      }
+      Swal.fire(
+        "Errores en el formulario",
+        cadena,
+        'error'
+      );
+    }
+
   }
   onSubmitArchivos() {
     this.loading = true;
-    var acrhivo : Archivo = new Archivo();
-    acrhivo.titulo = this.archivosForm.controls.titulo.value;
-    acrhivo.descripcion = this.archivosForm.controls.descripcion.value;
-    acrhivo.link = this.archivosForm.controls.link.value;
+    if (this.archivosForm.valid) {
+      var acrhivo: Archivo = new Archivo();
+      acrhivo.titulo = this.archivosForm.controls.titulo.value;
+      acrhivo.descripcion = this.archivosForm.controls.descripcion.value;
+      acrhivo.link = this.archivosForm.controls.link.value;
 
-    this.archivoService.add(acrhivo).subscribe(r => {
-      if(r.code == 200){
-        Swal.fire(
-          'Se ha insertado con exito',
-          r.mensaje,
-          'success'
-        );
-        this.archivoService.showAll().subscribe(r => {
-          if(r.code == 200){
-            this.archivos = r.data as Array<Archivo>;
-            this.archivosSource = new MatTableDataSource(this.archivos);
-          }
-        });
-        this.formAlert = 'none';
-      }else{
-        Swal.fire(
-          r.mensaje,
-          'no ha sido posible',
-          'error'
-        );
-      }
+      this.archivoService.add(acrhivo).subscribe(r => {
+        if (r.code == 200) {
+          Swal.fire(
+            'Se ha insertado con exito',
+            r.mensaje,
+            'success'
+          );
+          this.archivoService.showAll().subscribe(r => {
+            if (r.code == 200) {
+              this.archivos = r.data as Array<Archivo>;
+              this.archivosSource = new MatTableDataSource(this.archivos);
+            }
+          });
+          this.formAlert = 'none';
+        } else {
+          Swal.fire(
+            r.mensaje,
+            'no ha sido posible',
+            'error'
+          );
+        }
+        this.loading = false;
+      })
+    } else {
       this.loading = false;
-    })
+      var cadena: string = "";
+      if (!this.archivosForm.controls.titulo.valid) {
+        cadena += "Debe colocar el título del archivo<br>";
+      }
+      if (!this.archivosForm.controls.link.valid) {
+        cadena += "Debe colocar el link de enlace al arhcivo<br>";
+      }
+      Swal.fire(
+        "Errores en el formulario",
+        cadena,
+        'error'
+      );
+
+
+    }
+
   }
   cargarAcciones(id) {
     this.loading = true;
@@ -573,88 +732,153 @@ this.loading = false;
 
   }
 
-  mostrarAcciones() {
-
-  }
-  editarAccion(){
-    this.accionSeleccionada.titulo = this.accionesEditarForm.controls.titulo.value;
-    this.accionSeleccionada.fecha = this.accionesEditarForm.controls.fecha.value;
-    this.accionSeleccionada.obligatorio = this.accionesEditarForm.controls.obligatorio.value;
-    this.accionSeleccionada.tipo = this.accionesEditarForm.controls.tipo.value;
-    this.accionSeleccionada.contenido = this.accionesEditarForm.controls.contenido.value;
-    if (this.accionesEditarForm.controls.obligatorio.value == "1") {
-      this.accionSeleccionada.obligatorio = true;
-    } else {
-      this.accionSeleccionada.obligatorio = false;
-    }
-    this.accionService.editarAccion(this.accionSeleccionada).subscribe(r => {
-      if(r.code == 200){
-        this.todasAcciones.forEach( f => {if(f.id == this.accionSeleccionada.id){
-          f = this.accionSeleccionada
-        }});
-        Swal.fire(
-          'Se ha editado con exito con exito',
-          r.mensaje,
-          'success'
-        );
-        this.formAlert = 'none';
-      }else{
-        Swal.fire(
-          r.mensaje,
-          "Ya existe una accion tutorial para esa fecha",
-          'error'
-        );
+  mostrarAcciones(event?:PageEvent) {
+    this.accionService.getPage(event.pageSize, (event.pageIndex+1)).subscribe(r => {
+      if (r.code == 200) {
+        this.todasAcciones = r.data as Array<Accion>;
+        this.accionesSource = new MatTableDataSource(this.todasAcciones);
       }
     });
-    
+    return event;
   }
-  editarArchivo(){
-    this.archivoSeleccionado.titulo = this.archivosEditarForm.controls.titulo.value;
-    this.archivoSeleccionado.link = this.archivosEditarForm.controls.link.value;
-     this.archivoSeleccionado.descripcion = this.archivosEditarForm.controls.descripcion.value;
+  editarAccion() {
+    this.loading = true;
+    if (this.accionesEditarForm.valid) {
+      this.accionSeleccionada.titulo = this.accionesEditarForm.controls.titulo.value;
+      this.accionSeleccionada.fecha = this.accionesEditarForm.controls.fecha.value;
+      this.accionSeleccionada.obligatorio = this.accionesEditarForm.controls.obligatorio.value;
+      this.accionSeleccionada.activo = this.accionesEditarForm.controls.activo.value;
+      this.accionSeleccionada.tipo = this.accionesEditarForm.controls.tipo.value;
+      this.accionSeleccionada.contenido = this.accionesEditarForm.controls.contenido.value;
+      if (this.accionesEditarForm.controls.obligatorio.value == "1") {
+        this.accionSeleccionada.obligatorio = true;
+      } else {
+        this.accionSeleccionada.obligatorio = false;
+      }
+      this.accionService.editarAccion(this.accionSeleccionada).subscribe(r => {
+        if (r.code == 200) {
+          this.loading = false
+          this.todasAcciones.forEach(f => {
+            if (f.id == this.accionSeleccionada.id) {
+              f = this.accionSeleccionada
+            }
+          });
+          Swal.fire(
+            'Se ha editado con exito con exito',
+            r.mensaje,
+            'success'
+          );
+          this.formAlert = 'none';
+        } else {
+          this.loading = false;
+          Swal.fire(
+            r.mensaje,
+            "Ya existe una accion tutorial para esa fecha",
+            'error'
+          );
+        }
+      });
 
-      this.archivoService.editar(this.archivoSeleccionado).subscribe(r =>{
-        if(r.code == 200){
+    }
+    else {
+      this.loading = false;
+      var cadena: string = "";
+      if (!this.accionesEditarForm.controls.titulo.valid) {
+        cadena += "Debe colocar el título de la cción tutorial<br>";
+      }
+      if (!this.accionesEditarForm.controls.fecha.valid) {
+        cadena += "Debe colocar la fecha<br>";
+      }
+      if (!this.accionesEditarForm.controls.contenido.valid) {
+        cadena += "Debe colocar el contenido<br>";
+      }
+      if (!this.accionesEditarForm.controls.tipo.valid) {
+        cadena += "Debe seleccionar el tipo<br>";
+      }
+      if (!this.accionesEditarForm.controls.obligatorio.valid) {
+        cadena += "Debe indicar si es obbligatoria<br>";
+      }
+      if (!this.accionesEditarForm.controls.activo.valid) {
+        cadena += "Debe indicar si va a ser visible la acción tutorial<br>";
+      }
+      Swal.fire(
+        "Errores en el formulario",
+        cadena,
+        'error'
+      );
+    }
+
+  }
+  editarArchivo() {
+    this.loading = true;
+    if (this.archivosEditarForm.valid) {
+      this.archivoSeleccionado.titulo = this.archivosEditarForm.controls.titulo.value;
+      this.archivoSeleccionado.link = this.archivosEditarForm.controls.link.value;
+      this.archivoSeleccionado.descripcion = this.archivosEditarForm.controls.descripcion.value;
+
+      this.archivoService.editar(this.archivoSeleccionado).subscribe(r => {
+
+        if (r.code == 200) {
           Swal.fire('exito', 'se ha editado con exito el archivo', 'success');
           this.archivoService.showAll().subscribe(r => {
-            if(r.code == 200){
+            this.loading = false;
+            if (r.code == 200) {
+
               this.archivos = r.data as Array<Archivo>;
               this.archivosSource = new MatTableDataSource(this.archivos);
             }
             this.formAlert = 'none';
           });
         }
-      })
+      });
+    } else {
+      this.loading = false;
+      var cadena: string = "";
+      if (!this.archivosEditarForm.controls.titulo.valid) {
+        cadena += "Debe colocar el título del archivo<br>";
+      }
+      if (!this.archivosEditarForm.controls.link.valid) {
+        cadena += "Debe colocar el link de enlace al arhcivo<br>";
+      }
+      Swal.fire(
+        "Errores en el formulario",
+        cadena,
+        'error'
+      );
+    }
   }
-  eliminarArchivo(id: number){
+  eliminarArchivo(id: number) {
     this.archivoService.eliminar(id).subscribe(r => {
-      if(r.code == 200){
+      if (r.code == 200) {
         Swal.fire('exito', 'se ha eliminado con exito la accion tutorial', 'success');
-        
+
         this.archivoService.showAll().subscribe(r => {
-          if(r.code == 200){
+          if (r.code == 200) {
             this.archivos = r.data as Array<Archivo>;
             this.archivosSource = new MatTableDataSource(this.archivos);
-          }else{
+          } else {
             this.archivos = new Array<Archivo>();
-        this.archivosSource = new MatTableDataSource(this.archivos);
+            this.archivosSource = new MatTableDataSource(this.archivos);
           }
         });
       }
     })
   }
-  eliminarAccion(id: number){
-    this.accionesService.eliminar(id).subscribe(r=>{
-      if(r.code == 200){
+  eliminarAccion(id: number) {
+    this.accionesService.eliminar(id).subscribe(r => {
+      if (r.code == 200) {
         Swal.fire('exito', 'se ha eliminado con exito la accion tutorial', 'success');
         this.todasAcciones = new Array<Accion>();
         this.accionService.showAll().subscribe(r => {
           if (r.code == 200) {
             this.todasAcciones = r.data as Array<Accion>;
             this.accionesSource = new MatTableDataSource(this.todasAcciones);
-          } 
+          } else {
+            this.todasAcciones = r.data as Array<Accion>;
+            this.accionesSource = new MatTableDataSource(this.todasAcciones);
+          }
         });
-      }else{
+      } else {
         Swal.fire('Error', 'No se puede eliminar puesto que ya existen sesiones con esa accion tutorial', 'error');
       }
     });

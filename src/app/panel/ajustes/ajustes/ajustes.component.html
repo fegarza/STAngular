@@ -37,7 +37,7 @@
         </mat-radio-group>
       </div>
       <button class="btn float">
-        <i class="fas fa-sign-in-alt"></i>
+        <i class="fas fa-save"></i>
         <p>GUARDAR</p>
       </button>
       <button class="btn float-dark" (click)="formAlert = 'none'">
@@ -52,15 +52,15 @@
     <div class="cont x1">
       <form [formGroup]="accionesEditarForm" (ngSubmit)="editarAccion()">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Titulo" formControlName="titulo" [value]="accionSeleccionada.titulo">
+          <input matInput placeholder="Titulo" formControlName="titulo"  >
         </mat-form-field>
         <mat-form-field > 
-          <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha" [value]="accionSeleccionada.fecha" >
+          <input matInput [matDatepicker]="myPicker" placeholder="fecha" formControlName="fecha"  >
           <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #myPicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <textarea matInput placeholder="Contenido" formControlName="contenido" [value]="accionSeleccionada.contenido"></textarea>
+          <textarea matInput placeholder="Contenido" formControlName="contenido" ></textarea>
         </mat-form-field>
         <div class="radio">
           <p>Tipo</p>
@@ -70,14 +70,21 @@
           </mat-radio-group>
         </div>
         <div class="radio">
+          <p>Visible</p>
+          <mat-radio-group aria-label="Genero" formControlName="activo">
+            <mat-radio-button value="true"  [checked]="accionSeleccionada.activo == 1"> Sí</mat-radio-button>
+            <mat-radio-button value="false" [checked]="accionSeleccionada.activo == 0">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="radio">
           <p>Obligatorio</p>
           <mat-radio-group aria-label="Genero" formControlName="obligatorio">
-            <mat-radio-button value="1"  [checked]="accionSeleccionada.obligatorio == 1"> Si</mat-radio-button>
-            <mat-radio-button value="0" [checked]="accionSeleccionada.obligatorio == 0">No</mat-radio-button>
+            <mat-radio-button value="true"  [checked]="accionSeleccionada.obligatorio == 1"> Sí</mat-radio-button>
+            <mat-radio-button value="false" [checked]="accionSeleccionada.obligatorio == 0">No</mat-radio-button>
           </mat-radio-group>
         </div>
         <button class="btn float">
-          <i class="fas fa-sign-in-alt"></i>
+          <i class="fas fa-save"></i>
           <p>GUARDAR</p>
         </button>
         <button class="btn float-dark" (click)="formAlert = 'none'">
@@ -102,7 +109,7 @@
         <input matInput placeholder="Hipervínculo de descarga" formControlName="link" type="email" value="">
       </mat-form-field>
       <button class="btn float-dark">
-        <i class="fas fa-sign-in-alt"></i>
+        <i class="fas fa-save"></i>
         <p>GUARDAR</p>
       </button>
       <button class="btn float-dark" (click)="formAlert = 'none'">
@@ -125,7 +132,7 @@
           <input matInput placeholder="Hipervínculo de descarga" formControlName="link" type="email" [value]="archivoSeleccionado.link">
         </mat-form-field>
         <button class="btn float-dark" >
-          <i class="fas fa-sign-in-alt"></i>
+          <i class="fas fa-save"></i>
           <p>GUARDAR</p>
         </button>
         <button class="btn float-dark" (click)="formAlert = 'none'">
@@ -245,7 +252,7 @@
                   <p>¿Tiene trabajo?</p>
                   <mat-radio-group aria-label="Trabaja" formControlName="tieneTrabajo">
                     <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.trabaja == true"> Sí</mat-radio-button>
-                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.trabaja == true">No</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.trabaja == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <mat-form-field class="example-full-width">
@@ -291,7 +298,7 @@
 
             </mat-tab>
 
-            <mat-tab *ngIf=" 2 == 3">
+            <mat-tab>
               <div class="bxCont">
                 <ng-template mat-tab-label>
                   <i class="fas fa-male" style="margin-right: 15px"></i>
@@ -308,32 +315,32 @@
                 <div class="radio">
                   <p>Vista</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="vista">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionVista == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionVista == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Oído</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="oido">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionOido == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionOido == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Lenguaje</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="lenguaje">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionLenguaje == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionLenguaje == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Motriz</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="motriz">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionMotriz == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionMotriz == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -345,48 +352,48 @@
                 <div class="radio">
                   <p>Sistema nervioso</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="nervioso">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaNervioso == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaNervioso == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Sistema circulatorio</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="circulatorio">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaCirculatorio == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaCirculatorio == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Sistema digestivo</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="digestivo">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaDigestivo == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaDigestivo == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Sistema respiratorio</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="respiratorio">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaRespiratorio == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaRespiratorio == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Sistema óseo</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="oseo">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaOseo == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaOseo == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
                 <div class="radio">
                   <p>Otros</p>
                   <mat-radio-group aria-label="Pregunta" formControlName="otros">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaOtro == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.prescripcionSistemaOtro == false">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <div class="radio">
@@ -398,8 +405,8 @@
                   </div>
 
                   <mat-radio-group aria-label="Pregunta" formControlName="haLlevadoTratamiento">
-                    <mat-radio-button value="1"> Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-button value="true" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tratamientoPsicologicoPsiquiatrico == true"> Sí</mat-radio-button>
+                    <mat-radio-button value="false" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tratamientoPsicologicoPsiquiatrico == false">No</mat-radio-button>
                   </mat-radio-group>
 
                 </div>
@@ -418,11 +425,11 @@
                     Manos y/o pies hinchados
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="hinchazon">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.manosPiesHinchados == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.manosPiesHinchados == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.manosPiesHinchados == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.manosPiesHinchados == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.manosPiesHinchados == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -431,11 +438,11 @@
                     Dolores en el vientre
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="doloresVientre">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresVientre == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresVientre == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresVientre == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresVientre == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresVientre == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -444,11 +451,11 @@
                     Dolores de cabeza y/o vómitos
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="doloresCabeza">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresCabezaVomito == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresCabezaVomito == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresCabezaVomito == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresCabezaVomito == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.doloresCabezaVomito == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -457,11 +464,11 @@
                     Pérdida del equilibrio
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="perdidaEquilibrio">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaEquilibrio == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaEquilibrio == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaEquilibrio == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaEquilibrio == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaEquilibrio == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -470,11 +477,11 @@
                     Fatiga y agotamiento
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="fatiga">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.fatigaAgotamiento == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.fatigaAgotamiento == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.fatigaAgotamiento == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.fatigaAgotamiento == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.fatigaAgotamiento == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -483,11 +490,11 @@
                     Pérdida de vista u oído
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="perdidaVista">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaVistaOido == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaVistaOido == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaVistaOido == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaVistaOido == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.perdidaVistaOido == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -496,11 +503,11 @@
                     Dificultades para dormir
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="dificultadParaDormir">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.dificultadDormir == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.dificultadDormir == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.dificultadDormir == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.dificultadDormir == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.dificultadDormir == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -509,29 +516,29 @@
                     Pesadillas o terrores nocturnos
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="pesadilla">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
-                  </mat-radio-group>
+                      <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos == 1"> Sí, antes pero ya no</mat-radio-button>
+                      <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos == 2">Muy frecuente</mat-radio-button>
+                      <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos == 3">Frecuente</mat-radio-button>
+                      <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos == 4">A veces</mat-radio-button>
+                      <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.pesadillasTerroresNocturnos == 5">Nunca</mat-radio-button>
+                    </mat-radio-group>
                 </div>
 
                 <mat-form-field class="example-full-width">
-                  <textarea matInput placeholder="Explica a que" formControlName="pesadillaAQue"></textarea>
+                  <textarea matInput placeholder="Explica a que se tiene pesadillas" formControlName="pesadillaAQue"></textarea>
                 </mat-form-field>
-
+                
                 <div class="radioU">
                   <p>
                     Incontinencia
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="incontinencia">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
-                  </mat-radio-group>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.incontinencia == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.incontinencia == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.incontinencia == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.incontinencia == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.incontinencia == 5">Nunca</mat-radio-button>
+                   </mat-radio-group>
                 </div>
 
                 <div class="radioU">
@@ -539,11 +546,11 @@
                     Tartamudeos al explicarse
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="tartamudeos">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tartamudeos == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tartamudeos == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tartamudeos == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tartamudeos == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.tartamudeos == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -552,11 +559,11 @@
                     Miedos intensos ante cosas
                   </p>
                   <mat-radio-group aria-label="Pregunta" formControlName="miedos">
-                    <mat-radio-button value="1"> Sí, antes pero ya no</mat-radio-button>
-                    <mat-radio-button value="2">Muy frecuente</mat-radio-button>
-                    <mat-radio-button value="3">Frecuente</mat-radio-button>
-                    <mat-radio-button value="4">A veces</mat-radio-button>
-                    <mat-radio-button value="5">Nunca</mat-radio-button>
+                    <mat-radio-button value="1" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.miedosIntensos == 1"> Sí, antes pero ya no</mat-radio-button>
+                    <mat-radio-button value="2" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.miedosIntensos == 2">Muy frecuente</mat-radio-button>
+                    <mat-radio-button value="3" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.miedosIntensos == 3">Frecuente</mat-radio-button>
+                    <mat-radio-button value="4" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.miedosIntensos == 4">A veces</mat-radio-button>
+                    <mat-radio-button value="5" [checked]="miUsuario.estudiante.estudianteDatos != null && miUsuario.estudiante.estudianteDatos.miedosIntensos == 5">Nunca</mat-radio-button>
                   </mat-radio-group>
                 </div>
 
@@ -647,7 +654,7 @@
 
           </mat-tab-group>
           <button class="btn float">
-            <i class="fas fa-sign-in-alt"></i>
+            <i class="fas fa-save"></i>
             <p>GUARDAR</p>
           </button>
         </form>
@@ -726,7 +733,7 @@
                 </mat-radio-group>
               </div>
               <button class="btn float-dark">
-                <i class="fas fa-sign-in-alt"></i>
+                <i class="fas fa-save"></i>
                 <p>GUARDAR</p>
               </button>
               <button [routerLink]="['/panel/personales']" type="button" class="btn float">
@@ -744,6 +751,13 @@
 
             <table mat-table [dataSource]="accionesSource" matSort class="mat-elevation-z8">
 
+              <ng-container matColumnDef="visible">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visible
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.activo == true ? 'Sí' : 'No'}}
+                </td>
+              </ng-container>
                 <ng-container matColumnDef="obligatorio">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Obligatorio
                     </th>
@@ -777,7 +791,7 @@
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <button class="btn float" (click)="establecerAccion(element.id) ">
-                        <i class="fas fa-flag"></i>
+                      <i class="fas fa-edit"></i>
                         <p>Editar</p>
                       </button>
                 </td>
@@ -787,7 +801,7 @@
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <button class="btn float-dark" (click)="eliminarAccion(element.id)">
-                        <i class="fas fa-flag"></i>
+                      <i class="fas fa-trash-alt"></i>
                         <p>Eliminar</p>
                       </button>
                 </td>
@@ -800,8 +814,11 @@
                 <i class="fas fa-plus"></i>
                 <p>Agregar nueva acción tutorial</p>
               </button>
-              <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-                (page)="pageEvent = mostrarAcciones($event)">
+              <mat-paginator 
+              [length]="100"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="pageEvent = mostrarAcciones($event)">
               </mat-paginator>
             </div>
 
@@ -839,7 +856,7 @@
 
 
               <button class="btn float">
-                <i class="fas fa-sign-in-alt"></i>
+                <i class="fas fa-save"></i>
                 <p>GUARDAR</p>
               </button>
 
@@ -863,7 +880,7 @@
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <button class="btn float" (click)="establecerArchivo(element.id)">
-                    <i class="fas fa-flag"></i>
+                    <i class="fas fa-edit"></i>
                     <p>Editar</p>
                   </button>
                 </td>
@@ -873,7 +890,7 @@
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <button class="btn float-dark" (click)="eliminarArchivo(element.id)">
-                    <i class="fas fa-flag"></i>
+                    <i class="fas fa-trash-alt"></i>
                     <p>Eliminar</p>
                   </button>
                 </td>

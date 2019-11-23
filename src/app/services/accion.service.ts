@@ -21,6 +21,9 @@ export class AccionService {
   showAll(){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Acciones/");
   }
+  getPage(cant: number, pag: number) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Acciones/?cant="+ cant + "&pag=" + pag);
+  }
   editarAccion(accion: Accion){
     const headers = new HttpHeaders()
     .set('Content-Type', 'application/json')

@@ -100,7 +100,7 @@
       </button>
     </mat-menu>
 
-    <button class="btn float-white">
+    <button class="btn float-white" *ngIf="miUsuario.personal.cargo != 'A'">
       <i class="fas fa-chevron-circle-down"></i>
       <p>Mostrar opciones</p>
     </button>

@@ -93,6 +93,7 @@ export class Accion {
     contenido: string;
     fecha: Date;
     obligatorio: boolean;
+    activo: boolean;
     tipo: string;
 }
 
