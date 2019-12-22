@@ -12,6 +12,8 @@ import { PersonalService } from 'src/app/services/personal.service';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { CanalizacionService } from 'src/app/services/canalizacion.service';
 import { PageEvent } from '@angular/material';
+import { formatDate } from '@angular/common';
+import { EstudianteService } from 'src/app/services/estudiante.service';
  
 @Component({
   selector: 'app-grupo',
@@ -63,7 +65,7 @@ export class GrupoComponent implements OnInit {
     this.formAlert = "editarCanalizacion";
   }
 
-  constructor(private canalizacionService:CanalizacionService, private router: Router, private authService: AuthService, private route: ActivatedRoute, private grupoService: GrupoService, private personalService : PersonalService) {
+  constructor(private estudianteService: EstudianteService, private canalizacionService:CanalizacionService, private router: Router, private authService: AuthService, private route: ActivatedRoute, private grupoService: GrupoService, private personalService : PersonalService) {
     this.sesionesForm = new FormGroup({
       sesion: new FormControl('', [Validators.required]),
     });
@@ -177,34 +179,96 @@ export class GrupoComponent implements OnInit {
     );
   }
 
+ 
   generarReporte(){
-     var doc = new jsPDF();   
-    
-    var estudiantesLista = [];
-    this.miGrupo.estudiantes.forEach(e => {
-      var n = [e.numeroDeControl, e.usuario.nombreCompleto, e.semestre, '________________', e.sesiones];
-      estudiantesLista.push(n);
-    });
-
-
-     doc.autoTable({
-        head: [['Numero de control', 'Nombre', 'Semestre', 'Firma', 'Sesiones']],
-        body:  estudiantesLista,
-        theme: 'grid'
-    })
-    
-    
-    
-    doc.save('a4.pdf');
-  }
-  generarLista(){
     var doc = new jsPDF();   
-    doc.setFontSize(18);
-    doc.text(15, 20, 'INSTITUTO TECNOLOGICO DE NUEVO LAREDO');
-    doc.setFontSize(16);
-    doc.text(15, 33, ('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()));
-    doc.setFontSize(12);
-    doc.text(15, 39, ('GRUPO DE TUTORIAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()));
+   
+   var estudiantesLista = [];
+   this.miGrupo.estudiantes.forEach(e => {
+     var n = [e.numeroDeControl, e.usuario.nombreCompleto, e.semestre, '________________', e.sesiones];
+     estudiantesLista.push(n);
+   });
+
+
+    doc.autoTable({
+       head: [['Numero de control', 'Nombre', 'Semestre', 'Firma', 'Sesiones']],
+       body:  estudiantesLista,
+       theme: 'grid'
+   })
+   
+   
+   
+   doc.save('a4.pdf');
+ }
+ generarLista(){
+  
+  var s = this.sesiones.find(x => x.id == this.sesionSeleccionada);
+   var doc = new jsPDF();   
+   //header of pdf
+   doc.setFontSize(18);
+   doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
+   doc.setFontSize(16);
+   doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
+   doc.setFontSize(12);
+   doc.text(('GRUPO DE TUTORIAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
+   doc.setFontSize(12);
+   doc.text(20, 50, "Fecha: " + s.fecha);
+   
+   //body
+
+  var estudiantesLista = [];
+  this.miGrupo.estudiantes.forEach(e => {
+    var estado: string = "";
+    if(e.estado == "A"){
+     estado = "Activo";
+    }else if(e.estado == "T"){
+      estado = "Liberado"
+    }
+    var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones];
+    estudiantesLista.push(n);
+  });
+   
+
+   doc.autoTable({
+      head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Firma']],
+      body:  estudiantesLista,
+      theme: 'grid',
+      styles : {fillColor: [0, 79, 122]},
+      stylesDef : {fontSize : 8},
+      columnStyles:  {
+         0: { fillColor: [255, 255, 255], columnWidth: 30},
+         1: { fillColor: [255, 255, 255], columnWidth: 80},
+         2: { fillColor: [255, 255, 255], columnWidth: 12},
+         3: { fillColor: [255, 255, 255], columnWidth: 12},
+         4: { fillColor: [255, 255, 255]},
+       },
+       margin: {top: 60},
+  })
+
+
+  let finalY = doc.lastAutoTable.finalY; // posición y 
+  doc.text(20, finalY+25, "ACTIVIDADES DE LA SESIÓN: " );
+  doc.text(20, finalY+30, s.accionTutorial.contenido);
+  var widthActividad = doc.getTextWidth(s.accionTutorial.contenido)+finalY+30;
+  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, widthActividad+15, null, null, 'center');
+  doc.text("__________________________________________________", doc.internal.pageSize.width/2, widthActividad+25, null, null, 'center');
+  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, widthActividad+35, null, null, 'center');
+ 
+ 
+   
+  doc.save('Lista.pdf');
+}
+ generarReporteSemestral(){
+   var doc =new jsPDF('landscape');
+   doc.setFontSize(12);
+   doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
+   doc.text(("DEPARTAMENTO DE " +this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 28, null, null, 'center');
+   doc.text("REPORTE DEL TUTOR",doc.internal.pageSize.width/2, 36, null, null, 'center');
+   doc.text(("NOMBRE DEL TUTOR: " +this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
+   doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
+   doc.text(("PROGRAMA ACADÉMICO: " +this.miGrupo.personal.departamento.titulo.toUpperCase()), 20, 54)
+
+       
    var estudiantesLista = [];
    this.miGrupo.estudiantes.forEach(e => {
      var estado: string = "";
@@ -213,31 +277,65 @@ export class GrupoComponent implements OnInit {
      }else if(e.estado == "T"){
        estado = "Liberado"
      }
-     var n = [e.numeroDeControl, e.usuario.nombreCompleto, e.semestre, e.sesiones, e.cantidadDeCreditos, estado];
+     var n = [e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones, e.sesionesIndividuales,e.sesionesIniciales,e.canalizaciones];
      estudiantesLista.push(n);
    });
 
+   
 
-    doc.autoTable({
-       head: [['Numero de control', 'Nombre', 'Semestre',  'Sesiones', 'Creditos', 'Estado']],
-       body:  estudiantesLista,
-       theme: 'grid',
-       styles : {fillColor: [0, 79, 122]},
-       columnStyles:  {
-          0: { fillColor: [255, 255, 255]},
-          1: { fillColor: [255, 255, 255]},
-          2: { fillColor: [255, 255, 255]},
-          3: { fillColor: [255, 255, 255]},
-          4: { fillColor: [255, 255, 255]},
-          5: { fillColor: [255, 255, 255]}
-        },
-        margin: {top: 45},
-   })
-   
-   
-   
-   doc.save('a4.pdf');
- }
+   doc.autoTable({
+     head: [[ 'Nombre', 'Sem.',  'Ses.', 'Ses. Indiv.','Ses. Inicial','Can.','Áreas de canalización']],
+     body:  estudiantesLista,
+     theme: 'grid',
+     styles : {fillColor: [0, 79, 122]},
+     stylesDef : {fontSize : 8},
+     columnStyles:  {
+        0: { fillColor: [255, 255, 255], columnWidth: 80},
+        1: { fillColor: [255, 255, 255]},
+        2: { fillColor: [255, 255, 255]},
+        3: { fillColor: [255, 255, 255]},
+        4: { fillColor: [255, 255, 255]},
+        5: { fillColor: [255, 255, 255]},
+        6: { fillColor: [255, 255, 255]},//Cómo obtengo las areas de canalizacion??
+      },
+      margin: {top: 60},
+ })
+ let finalY = doc.lastAutoTable.finalY + 20;
+ var pageHeight= doc.internal.pageSize.height;
+   //no hay suficientes tutorados registrados como para comprobar el funcionamiento del 2do if 
+   //pero no debe haber problemo creo xdxd
+   if (finalY >= pageHeight) {
+     doc.addPage();
+     finalY=30;
+     doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
+     doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
+     doc.text("___________________________________________", 20, finalY+30);
+     doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
+     doc.text("___________________________________________", 170, finalY+30);
+     doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+   } 
+   if (finalY+50 >= pageHeight) {
+     doc.addPage();
+     finalY=30;
+     doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
+     doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
+     doc.text("___________________________________________", 20, finalY+30);
+     doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
+     doc.text("___________________________________________", 170, finalY+30);
+     doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+   }
+   else {
+     doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
+     doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
+     doc.text("___________________________________________", 20, finalY+30);
+     doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
+     doc.text("___________________________________________", 170, finalY+30);
+     doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+   }
+
+ doc.save('Reporte.pdf');
+
+}
   Canalizar() {
     Swal.fire({
       title: 'Canalizar',
@@ -312,4 +410,38 @@ export class GrupoComponent implements OnInit {
     );
   }
   mostrarCanalizaciones( x){}
+
+
+
+
+  public async asignarSesiones(numeroDeControl: string) {
+    const { value: sesiones } = await Swal.fire({
+      title: "Introduce la cantidad inicial de sesiones",
+      input: "text",
+      inputValue: "",
+      showCancelButton: true,
+      inputValidator: value => {
+        if (!value) {
+          return "el campo esta vacio!";
+        }
+      }
+    });
+    if (sesiones) {
+      this.estudianteService
+        .asignarSesiones(numeroDeControl, sesiones)
+        .subscribe(r => {
+          if (r.code == 200) {
+            Swal.fire(
+              "Se ha logrado cambiar las sesiones iniciales",
+               "Exito",
+              "success"
+            );
+            this.miGrupo.estudiantes.find(f => f.numeroDeControl == numeroDeControl).sesionesIniciales = sesiones;
+          } else {
+            Swal.fire("Ha ocurrido un error", r.mensaje, "error");
+          }
+        });
+    }
+  }
+
 }

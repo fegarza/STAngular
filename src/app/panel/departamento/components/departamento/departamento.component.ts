@@ -23,6 +23,7 @@ export class DepartamentoComponent implements OnInit {
   //Formularios
   public personalesForm: FormGroup;
   sesionesForm: FormGroup;
+  sesionesEditarForm: FormGroup;
   
   public loading: boolean = false;
   public formAlert: string = "none";
@@ -61,11 +62,11 @@ export class DepartamentoComponent implements OnInit {
   // Sesiones
   public sesiones : Array<Sesion> = new Array<Sesion>();
   sesionesDataSource = new MatTableDataSource(this.sesiones);
-  sesionesColumns: string[] = ['fecha', 'editar'];
+  sesionesColumns: string[] = ['accion','fecha', 'visible', 'eliminar'];
   sesionesLength = 100;
   sesionesPageSize = 10;
   sesionesPageSizeOptions: number[] = [10,20,30,40,50];
-
+  sesionSeleccionada: Sesion;
 
 
 
@@ -161,6 +162,9 @@ export class DepartamentoComponent implements OnInit {
       accionTutorial: new FormControl('', [Validators.required]),
       fecha: new FormControl('', [Validators.required])
     });
+    this.sesionesEditarForm = new FormGroup({
+      fecha: new FormControl('', [Validators.required])
+    });
   }
   onSubmitPersonal() {
     this.loading = true;
@@ -240,26 +244,130 @@ export class DepartamentoComponent implements OnInit {
             this.sesionesDataSource = new MatTableDataSource(this.sesiones);
           }
         });
+        this.departamentoService.showAcciones(this.id.toString()).subscribe(
+          s => {
+            this.acciones = s.data as Array<Accion>;
+          }
+        );
         Swal.fire(
           'Se ha insertado con exito',
           r.mensaje,
           'success'
         );
-        
+        this.formAlert = 'none';
       } else {
         this.loading = false;
-        var errores: Array<String> = r.data as Array<String>;
-        var cadena: string = "";
-        errores.forEach(e => {
-          cadena += (e + '<br>')
-        });
         Swal.fire(
           r.mensaje,
-          cadena,
+          "¡La fecha ya existe!",
           'error'
         );
       }
     });
   }
- 
+
+  eliminarSesion(id: number){
+    this.sesionService.delete(id).subscribe(r=>{
+      if(r.code == 200){
+        this.departamentoService.showSesiones(this.id.toString()).subscribe(r=>{
+          if(r.code == 200){
+            this.sesiones = r.data as Array<Sesion>;
+            this.sesionesDataSource = new MatTableDataSource(this.sesiones);
+            this.departamentoService.showAcciones(this.id.toString()).subscribe(
+              s => {
+                this.acciones = s.data as Array<Accion>;
+              }
+            );
+          }
+        });
+        Swal.fire(
+          'Se ha eliminado con exito',
+          r.mensaje,
+          'success'
+        );
+      }else{
+
+      }
+    });
+  }
+  establecerSesion(id: number){
+    this.sesiones.forEach(e => {
+      if(e.id == id){
+        this.sesionSeleccionada = e;
+        var date = new Date(new Date(e.fecha).getTime())
+        this.sesionesEditarForm.controls.fecha.setValue(date);
+      }
+    });
+    this.formAlert='editarSesion';
+    
+  }
+  editarSesion(values:any, id: any){
+   console.log(id);
+    var sesionTemp: Sesion ;
+    this.loading = true;
+    var count  = 1;
+    sesionTemp =  this.sesiones.find(x => x.id == id);
+    if(sesionTemp.visible){
+      sesionTemp.visible = false;
+    }else{
+      sesionTemp.visible = true;
+    }
+     var sesion = new Sesion();
+     sesion.id = sesionTemp.id;
+     sesion.accionTutorialId = sesionTemp.accionTutorialId;
+     sesion.departamentoId = this.id;
+     sesion.fecha = sesionTemp.fecha;
+     sesion.visible = sesionTemp.visible;
+    this.sesionService.put(sesion).subscribe(r => {
+      if (r.code == 200) {
+        this.loading = false;
+        Swal.fire(
+          'Se ha actualizado con exito',
+          r.mensaje,
+          'success'
+        );
+        this.formAlert = 'none';
+      } else {
+        this.loading = false;
+        Swal.fire(
+          r.mensaje,
+          "!Error!",
+          'error'
+        );
+      }
+    });
+     
+  }
+  onSubmitEditarSesiones() {
+    this.loading = true;
+    var sesion: Sesion = new Sesion();
+    sesion.id = this.sesionSeleccionada.id;
+    sesion.fecha = this.sesionesEditarForm.controls.fecha.value;
+    
+    this.sesionService.put(sesion).subscribe(r => {
+      if (r.code == 200) {
+        this.loading = false;
+        this.sesionesEditarForm.reset();
+        this.departamentoService.showSesiones(this.id.toString()).subscribe(r=>{
+          if(r.code == 200){
+            this.sesiones = r.data as Array<Sesion>;
+            this.sesionesDataSource = new MatTableDataSource(this.sesiones);
+          }
+        });
+        Swal.fire(
+          'Se ha actualizado con exito',
+          r.mensaje,
+          'success'
+        );
+        this.formAlert = 'none';
+      } else {
+        this.loading = false;
+        Swal.fire(
+          r.mensaje,
+          "¡La fecha ya existe!",
+          'error'
+        );
+      }
+    });
+  }
 }

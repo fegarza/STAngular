@@ -78,7 +78,32 @@
     </form>
   </div>
 </div>
-
+<div class="formAlert" *ngIf="formAlert == 'departamento'">
+  <div class="cont">
+    <form [formGroup]="departamentoFormGroup" (ngSubmit)="onSubmitDepartamento()">
+      <mat-form-field>
+        <mat-label>Seleccione el nuevo departamento</mat-label>
+        <mat-select formControlName="departamento">
+          <mat-option *ngFor="let c of departamentos" [value]="c.id">
+            {{ c.titulo }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button
+        type="button"
+        class="btn float-dark"
+        (click)="formAlert = ' none'"
+      >
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
+</div>
 <header>
   <div class="settings" [matMenuTriggerFor]="appMenu" >
     <mat-menu #appMenu="matMenu">
@@ -98,9 +123,13 @@
         <i class="fas fa-envelope"></i>
         <p>Cambiar correo electrónico</p>
       </button>
+      <button mat-menu-item (click)="cambiarDepartamento()" *ngIf="miUsuario.personal.id == miPersonal.id || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C' || (miUsuario.personal.cargo == 'J' && miUsuario.personal.departamentoId == miPersonal.departamento.id)  || (miUsuario.personal.cargo == 'D' && miUsuario.personal.departamentoId == miPersonal.departamento.id)">
+        <i class="fas fa-envelope"></i>
+        <p>Cambiar departamento</p>
+      </button>
     </mat-menu>
 
-    <button class="btn float-white" *ngIf="miUsuario.personal.cargo != 'A'">
+    <button class="btn float-white" *ngIf="miPersonal.cargo != 'A'">
       <i class="fas fa-chevron-circle-down"></i>
       <p>Mostrar opciones</p>
     </button>

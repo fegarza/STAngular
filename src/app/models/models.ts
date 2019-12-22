@@ -72,6 +72,7 @@ export class Sesion {
     accionTutorialId: number;
     departamentoId: number;
     fecha: string;
+    visible: boolean;
     asistencia: Array<Estudiante>;
     accionTutorial: Accion = new Accion();
     departamento: Departamento = new Departamento();

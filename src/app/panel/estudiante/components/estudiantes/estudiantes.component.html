@@ -67,7 +67,7 @@
           {{
             element.grupo.tutor == null || element.grupo.tutor == ""
               ? "Sin asignar"
-              : element.grupo.tutor.usuario.nombreCompleto
+              : element.grupo.tutor.usuario.nombreCompleto |  titlecase 
           }}
         </td>
       </ng-container>

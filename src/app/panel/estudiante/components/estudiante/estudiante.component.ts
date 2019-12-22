@@ -107,7 +107,7 @@ export class EstudianteComponent implements OnInit {
         .subscribe(r => {
           if (r.code == 200) {
             Swal.fire(
-              "Se ha logrado cambiar el grupo",
+              "Se ha logrado cambiar las sesiones iniciales",
               "Ahora el alumno: " +
                 this.miEstudiante.usuario.nombreCompleto +
                 " tiene " +

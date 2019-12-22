@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Personal, Usuario, Cargo } from 'src/app/models/models';
+import { Personal, Usuario, Cargo, Departamento } from 'src/app/models/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalService } from 'src/app/services/personal.service';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { DepartamentoService } from 'src/app/services/departamento.service';
 
 @Component({
   selector: 'app-personal',
@@ -14,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class PersonalComponent implements OnInit {
 
+  public departamentos: Array<Departamento> = new Array<Departamento>();
   public id: number;
   private sub: any;
   public miPersonal: Personal = new Personal();
@@ -33,10 +35,11 @@ export class PersonalComponent implements OnInit {
   cargoFormGroup: FormGroup;
   claveFormGroup: FormGroup;
   correoFormGroup: FormGroup;
+  departamentoFormGroup: FormGroup;
 
 
 
-  constructor(private usuarioService: UsuarioService, private route: ActivatedRoute, private personalService: PersonalService,  private router: Router, private authService: AuthService) 
+  constructor(private departamentoService: DepartamentoService, private usuarioService: UsuarioService, private route: ActivatedRoute, private personalService: PersonalService,  private router: Router, private authService: AuthService) 
   {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];  
@@ -60,6 +63,11 @@ export class PersonalComponent implements OnInit {
             }
            
           });
+          this.departamentoService.showAll().subscribe(r=>{
+            if(r.code==200){
+              this.departamentos  = r.data as Array<Departamento>;
+            }
+          })
       }
     }else{
       this.personalService.get(this.id.toString()).subscribe(
@@ -71,6 +79,11 @@ export class PersonalComponent implements OnInit {
           }
          
         });
+        this.departamentoService.showAll().subscribe(r=>{
+          if(r.code==200){
+            this.departamentos  = r.data as Array<Departamento>;
+          }
+        })
     }
     if(this.miUsuario.tipo == 'P'){
       if(
@@ -81,7 +94,6 @@ export class PersonalComponent implements OnInit {
       }
     }
    }
-
   ngOnInit() {
     this.cargoFormGroup = new FormGroup({
       cargo: new FormControl('', [Validators.required]),
@@ -92,8 +104,10 @@ export class PersonalComponent implements OnInit {
     this.correoFormGroup = new FormGroup({
       correo: new FormControl('', [Validators.required, Validators.email]),
     });
+    this.departamentoFormGroup = new FormGroup({
+      departamento: new FormControl('', [Validators.required]),
+    });
   }
-
   cambiarClave(){
     this.formAlert = "clave";
   }
@@ -174,6 +188,35 @@ export class PersonalComponent implements OnInit {
       Swal.fire(
         'Error',
         'El correo dado no es valido',
+        'error'
+      );
+    }
+  }
+  cambiarDepartamento(){
+    this.formAlert = "departamento"; 
+  }
+  onSubmitDepartamento(){
+    if(this.departamentoFormGroup.valid){
+       this.personalService.asignarDepartamento(this.miPersonal.id, this.departamentoFormGroup.controls.departamento.value).subscribe(r=> {
+        if(r.code == 200){
+          Swal.fire(
+            'Se ha cambiado el departamento correctamente',
+            r.mensaje,
+            'success'
+          );
+          this.miPersonal.departamento.titulo = this.departamentos[this.departamentoFormGroup.controls.departamento.value - 1].titulo;
+        }else{
+          Swal.fire(
+            'ha ocurrido un error',
+            r.mensaje,
+            'error'
+          );
+        }
+      })
+    }else{
+      Swal.fire(
+        'Error',
+        'No se ha seleccionado ningun departamento',
         'error'
       );
     }

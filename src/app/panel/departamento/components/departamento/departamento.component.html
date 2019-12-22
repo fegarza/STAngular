@@ -57,7 +57,7 @@
         <mat-label>Título del empleado</mat-label>
         <mat-select formControlName="titulo">
           <mat-option *ngFor="let d of titulos" [value]="d.id">
-            {{ d.titulo }}
+            {{ d.titulo | uppercase }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -65,7 +65,7 @@
         <mat-label>Cargo</mat-label>
         <mat-select formControlName="cargo">
           <mat-option *ngFor="let c of cargos" [value]="c.tipo">
-            {{ c.titulo }}
+            {{ c.titulo  }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -82,7 +82,7 @@
       </button>
       <button class="btn float-white" (click)="formAlert = 'none'">
         <i class="fas fa-sign-in-alt"></i>
-        <p>CANCELAR</p>
+        <p>SALIR</p>
       </button>
     </form>
   </div>
@@ -121,7 +121,37 @@
       </button>
       <button class="btn float-white" (click)="formAlert = 'none'">
         <i class="fas fa-sign-in-alt"></i>
-        <p>CANCELAR</p>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="formAlert" *ngIf="formAlert == 'editarSesion'">
+  <div class="cont x2">
+      <div class="title leftBlue">
+        <h1><i class="far fa-edit"></i> Ingrese los datos de la acción tutorial</h1>
+      </div>
+    <form [formGroup]="sesionesEditarForm" (ngSubmit)="onSubmitEditarSesiones()">
+      <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="myPicker2"
+          placeholder="Seleccione la fecha"
+          formControlName="fecha"
+        />
+        <mat-datepicker-toggle
+          [for]="myPicker2"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #myPicker2></mat-datepicker>
+      </mat-form-field>
+      <button class="btn float">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR</p>
+      </button>
+      <button class="btn float-white" (click)="formAlert = 'none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
       </button>
     </form>
   </div>
@@ -276,6 +306,24 @@
           matSort
           class="mat-elevation-z8"
         >
+        <ng-container matColumnDef="visible">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            ¿Pueden verla los tutores?
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.visible" (change)="editarSesion($event, element.id)">
+            </mat-checkbox>
+           
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Accion</th>
+          <td mat-cell *matCellDef="let element">
+            <a>
+              {{element.accionTutorial.titulo | titlecase}}
+            </a>
+          </td>
+        </ng-container>
           <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
             <td mat-cell *matCellDef="let element">
@@ -284,12 +332,22 @@
               </a>
             </td>
           </ng-container>
-          <ng-container matColumnDef="editar">
+          <!--<ng-container matColumnDef="editar">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Editar</th>
             <td mat-cell *matCellDef="let element">
-              <a>
-                Editar
-              </a>
+              <button class="btn float" (click)="establecerSesion(element.id) ">
+                <i class="fas fa-edit"></i>
+                  <p>Editar</p>
+                </button>
+            </td>
+          </ng-container>-->
+          <ng-container matColumnDef="eliminar">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Eliminar</th>
+            <td mat-cell *matCellDef="let element">
+              <button class="btn float-dark" (click)="eliminarSesion(element.id)">
+                <i class="fas fa-trash-alt"></i>
+                  <p>Eliminar</p>
+                </button>
             </td>
           </ng-container>
 
