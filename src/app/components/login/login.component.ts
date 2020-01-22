@@ -64,6 +64,14 @@ export class LoginComponent  {
               )
             }
           },
+          error => {
+            this.loading = false;
+            Swal.fire(
+             'Error con el sistema',
+             'El servicio de tutorías no se encuentra disponible por el momento',
+              "error"
+           )
+          },
     );
     
 

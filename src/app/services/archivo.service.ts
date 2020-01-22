@@ -32,4 +32,7 @@ export class ArchivoService {
     .set('Accept', 'application/json');
    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Archivos/",  JSON.stringify(archivo),   { headers: headers } );
   }
+  count() {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Archivos/count" );
+  }
 }

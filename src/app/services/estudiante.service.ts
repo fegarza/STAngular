@@ -71,5 +71,19 @@ export class EstudianteService {
       .set('Accept', 'application/json');
     return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), { headers: headers });
   }
+  asignarCarrera(numeroDeControl: string, carreraId: number) {
+    var estudianteEditar: Estudiante = new Estudiante();
 
+    estudianteEditar.numeroDeControl = numeroDeControl;
+    estudianteEditar.carreraId = carreraId;
+
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
+    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), { headers: headers });
+  }
+  count() {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/count" );
+  }
 }

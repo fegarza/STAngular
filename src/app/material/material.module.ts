@@ -19,7 +19,8 @@ import {
   MatCheckboxModule,
   MatExpansionModule,
   MatMenuModule,
-  MatIconModule
+  MatIconModule,
+  MAT_DATE_LOCALE
 } from '@angular/material';  
  
 const Componentes =  [
@@ -45,6 +46,9 @@ const Componentes =  [
 
 
 @NgModule({
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'es-MX'},
+  ],
   imports: [
     Componentes
   ],

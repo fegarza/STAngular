@@ -50,4 +50,17 @@ export class DepartamentoService {
   getPageSesiones(id: string, cant: number, pag: number) {
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Sesiones?cant=" + cant + "&pag=" + pag);
   }
+  countSesiones(id: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Sesiones/Count" );
+  }
+  countCanalizaciones(id: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Canalizaciones/Count" );
+  }
+  countPersonales(id: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Personales/Count" );
+  }
+
+
+
+
 }

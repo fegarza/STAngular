@@ -115,6 +115,15 @@
         ></mat-datepicker-toggle>
         <mat-datepicker #myPicker2></mat-datepicker>
       </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Hora"
+          formControlName="tiempo"
+          type="time"
+          value=""
+        />
+      </mat-form-field>
       <button class="btn float">
         <i class="fas fa-sign-in-alt"></i>
         <p>GUARDAR</p>
@@ -160,7 +169,7 @@
 <section class="titulo">
   <div class="cont">
     <div class="title leftBlue">
-      <i class="fas fa-flag"></i>
+      <i class="fas fa-building"></i>
       <h1>Departamento de {{ departamento.titulo | titlecase }}</h1>
     </div>
   </div>
@@ -170,7 +179,7 @@
   <div class="cont">
     <div class="box simple shadow">
       <div class="title solidBlue ">
-        <i class="fas fa-flag"></i>
+        <i class="fas fa-user-tie"></i>
         <h1>Empleados</h1>
       </div>
       <div class="boxCont">
@@ -214,7 +223,7 @@
             <p>Agregar nuevo empleado</p>
           </button>
           <mat-paginator
-            [length]="100"
+            [length]="personalesLength"
             [pageSize]="personalesPageSize"
             [pageSizeOptions]="personalesPageSizeOptions"
             (page)="pageEvent = mostrarPersonales($event)"
@@ -230,7 +239,7 @@
   <div class="cont">
     <div class="box simple shadow">
       <div class="title solidBlue ">
-        <i class="fas fa-flag"></i>
+        <i class="fas fa-exclamation-circle"></i>
         <h1>Canalizaciones</h1>
       </div>
       <div class="boxCont">
@@ -280,7 +289,7 @@
 
         <div class="cont">
           <mat-paginator
-            [length]="100"
+            [length]="canalizacionesLength"
             [pageSize]="canalizacionesPageSize"
             [pageSizeOptions]="canalizacionesPageSizeOptions"
             (page)="pageEvent = mostrarCanalizaciones($event)"
@@ -292,11 +301,78 @@
   </div>
 </section>
 
+
+
+<section class="acciones">
+  <div class="cont">
+    <div class="box simple shadow">
+      <div class="title solidBlue ">
+        <i class="fas fa-clipboard"></i>
+        <h1>Acciones tutoriales</h1>
+      </div>
+      <div class="boxCont">
+        <table mat-table [dataSource]="accionesSource" matSort class="mat-elevation-z8">
+
+          <ng-container matColumnDef="visible">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Visible
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.activo == true ? 'Sí' : 'No'}}
+            </td>
+          </ng-container>
+            <ng-container matColumnDef="obligatorio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Obligatorio
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.obligatorio == true ? 'Sí' : 'No'}}
+                </td>
+              </ng-container>
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.fecha | date:'shortDate'}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Titulo
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.titulo}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{(element.tipo | lowercase) == 'i'? 'Individual' : 'Grupal'}}
+              </td>
+            </ng-container>
+         
+        
+          <tr mat-header-row *matHeaderRowDef="accionesColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: accionesColumns;"></tr>
+        </table>
+        <div class="paginator">
+          <mat-paginator 
+          [length]="accionLength"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="pageEvent = mostrarAcciones($event)">
+          </mat-paginator>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section class="sesiones">
   <div class="cont">
     <div class="box simple shadow">
       <div class="title solidBlue ">
-        <i class="fas fa-flag"></i>
+        <i class="fas fa-clipboard"></i>
         <h1>Sesiones</h1>
       </div>
       <div class="boxCont">
@@ -319,17 +395,25 @@
         <ng-container matColumnDef="accion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Accion</th>
           <td mat-cell *matCellDef="let element">
-            <a>
+            
               {{element.accionTutorial.titulo | titlecase}}
-            </a>
+            
           </td>
         </ng-container>
           <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
             <td mat-cell *matCellDef="let element">
-              <a>
+              
                 {{element.fecha | date:'shortDate'}}
-              </a>
+              
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="hora">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora</th>
+            <td mat-cell *matCellDef="let element">
+              
+                {{element.fecha | date:'shortTime'}}
+              
             </td>
           </ng-container>
           <!--<ng-container matColumnDef="editar">
@@ -356,12 +440,12 @@
         </table>
 
         <div class="paginator">
-          <button class="btn float-white" (click)="formAlert = 'sesiones'">
+          <button class="btn float-white" *ngIf="acciones.length > 0" (click)="formAlert = 'sesiones'">
             <i class="fas fa-plus"></i>
             <p>Agregar nueva sesión</p>
           </button>
           <mat-paginator
-            [length]="100"
+            [length]="sesionesLength"
             [pageSize]="sesionesPageSize"
             [pageSizeOptions]="sesionesPageSizeOptions"
             (page)="pageEvent = mostrarSesiones($event)"

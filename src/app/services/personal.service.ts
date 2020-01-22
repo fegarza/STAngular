@@ -69,5 +69,8 @@ export class PersonalService {
     .set('Accept', 'application/json');    
      return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Personales/",  JSON.stringify(personal),   { headers: headers } );
    }
+   count() {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Personales/count" );
+  }
 
 }

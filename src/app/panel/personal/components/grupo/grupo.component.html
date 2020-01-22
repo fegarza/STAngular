@@ -143,7 +143,7 @@
 
                 <mat-select formControlName="sesion" (ngModelChange)="cargarAsistencias($event)">
                   <mat-option *ngFor="let s of sesiones" [value]="s.id">
-                    {{ s.fecha }} {{s.accionTutorial.titulo}}
+                    {{ s.fecha | date:'shortDate'}} {{s.accionTutorial.titulo}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>

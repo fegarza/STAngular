@@ -33,4 +33,7 @@ export class AccionService {
    eliminar(id: number){
     return this.http.delete<IRespuesta>(this.constants.apiUrl + "api/Acciones/"+id);
   }
+  count() {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Acciones/count" );
+  }
 }

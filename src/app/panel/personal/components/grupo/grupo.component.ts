@@ -14,7 +14,8 @@ import { CanalizacionService } from 'src/app/services/canalizacion.service';
 import { PageEvent } from '@angular/material';
 import { formatDate } from '@angular/common';
 import { EstudianteService } from 'src/app/services/estudiante.service';
- 
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-grupo',
   templateUrl: './grupo.component.html',
@@ -54,18 +55,28 @@ export class GrupoComponent implements OnInit {
 
   canalizacionSeleccionada: Canalizacion;
   establecerCanalizacion(id: number){
+    
     this.canalizaciones.forEach(f => {
       if(f.id == id){
         this.canalizacionSeleccionada = f;
         this.canalizacionForm.controls.descripcion.setValue(f.descripcion);
         this.canalizacionForm.controls.estatus.setValue(f.estado);
-
+        var date = new Date(new Date(f.fecha).getTime())
+        this.canalizacionForm.controls.fecha.setValue(date);
       }
     });
     this.formAlert = "editarCanalizacion";
   }
 
-  constructor(private estudianteService: EstudianteService, private canalizacionService:CanalizacionService, private router: Router, private authService: AuthService, private route: ActivatedRoute, private grupoService: GrupoService, private personalService : PersonalService) {
+  constructor(
+    private datePipe: DatePipe,
+    private estudianteService: EstudianteService,
+    private canalizacionService:CanalizacionService,
+    private router: Router, 
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private grupoService: GrupoService,
+    private personalService : PersonalService) {
     this.sesionesForm = new FormGroup({
       sesion: new FormControl('', [Validators.required]),
     });
@@ -212,7 +223,7 @@ export class GrupoComponent implements OnInit {
    doc.setFontSize(12);
    doc.text(('GRUPO DE TUTORIAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
    doc.setFontSize(12);
-   doc.text(20, 50, "Fecha: " + s.fecha);
+   doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
    
    //body
 
@@ -224,23 +235,24 @@ export class GrupoComponent implements OnInit {
     }else if(e.estado == "T"){
       estado = "Liberado"
     }
-    var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones];
+    var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
     estudiantesLista.push(n);
   });
    
 
    doc.autoTable({
-      head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Firma']],
+      head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
       body:  estudiantesLista,
       theme: 'grid',
       styles : {fillColor: [0, 79, 122]},
       stylesDef : {fontSize : 8},
       columnStyles:  {
-         0: { fillColor: [255, 255, 255], columnWidth: 30},
+         0: { fillColor: [255, 255, 255], columnWidth: 27},
          1: { fillColor: [255, 255, 255], columnWidth: 80},
          2: { fillColor: [255, 255, 255], columnWidth: 12},
          3: { fillColor: [255, 255, 255], columnWidth: 12},
-         4: { fillColor: [255, 255, 255]},
+         4: { fillColor: [255, 255, 255], columnWidth: 12},
+         5: { fillColor: [255, 255, 255]},
        },
        margin: {top: 60},
   })
@@ -372,12 +384,13 @@ export class GrupoComponent implements OnInit {
     this.canalizacionSeleccionada.descripcion = this.canalizacionForm.controls.descripcion.value;
     this.canalizacionSeleccionada.estado = this.canalizacionForm.controls.estatus.value;
     this.canalizacionSeleccionada.fecha = this.canalizacionForm.controls.fecha.value;
+    
     this.canalizacionService.editar(this.canalizacionSeleccionada).subscribe(r=>{
       if(r.code == 200){
         Swal.fire("Exito","Se ha editado la canalizacion con exito", "success");
         this.formAlert = 'none';
         this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
-          console.log("Se ejecuta canalizacion");
+         // console.log("Se ejecuta canalizacion");
           if(r.code == 200){
             this.canalizaciones = r.data as Array<Canalizacion>;
             this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
@@ -385,6 +398,8 @@ export class GrupoComponent implements OnInit {
             Swal.fire("Error","No se han completado todos los datos", "error");
           }
         });
+      }else{
+        Swal.fire("Error","No se han completado todos los datos o se ha puesto una fecha que aún no existe", "error");
       }
     });
   }else{
@@ -392,20 +407,19 @@ export class GrupoComponent implements OnInit {
   }
   }
   eliminarCanalizacion(id: number){
+this.canalizaciones = new Array<Canalizacion>();
+this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
+    console.log(id);
     this.canalizacionService.eliminar(id).subscribe(r=>{
       if(r.code == 200){
         Swal.fire("Exito","Se ha eliminado la canalizacion con exito", "success");
-        this.formAlert = 'none';
         this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
-          console.log("Se ejecuta canalizacion");
           if(r.code == 200){
             this.canalizaciones = r.data as Array<Canalizacion>;
             this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
-          }else{
-            Swal.fire("Error","No se han completado todos los datos", "error");
-          }
+          } 
         });
-      }
+      } 
     }
     );
   }

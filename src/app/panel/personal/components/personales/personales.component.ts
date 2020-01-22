@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource, PageEvent } from '@angular/material';
-import { Personal } from 'src/app/models/models';
+import { Personal, Count } from 'src/app/models/models';
 import { PersonalService } from 'src/app/services/personal.service';
 
 @Component({
@@ -27,13 +27,19 @@ export class PersonalesComponent implements OnInit {
     
   }
   ngOnInit(){
+    this.personalService.count().subscribe(r=>{
+      if(r.code == 200){
+        var c = r.data as Count;
+        this.length = c.count;
+        
+      }
+    });
     this.personalService.showAll().subscribe(
       r => { 
         if(r.code == 200){
           this.personales  = r.data as Array<Personal>;
           this.dataSource = new MatTableDataSource(this.personales);
-          console.log("PERSONALES:");
-          console.log(this.personales);
+         
         }else{
           console.log("Error: \n");
           console.log(r.data);

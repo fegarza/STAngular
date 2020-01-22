@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { IRespuesta } from '../models/respuesta';
 import { Usuario } from '../models/models';
 import { ConstantsService } from './constants.service';
@@ -63,10 +63,13 @@ export class AuthService {
   }
   //LOGIN
   entrar(user: string, pw: string) {
-    const params = new HttpParams()
-                      .set('email', user)
-                      .set('clave', pw);
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Usuarios/Login", { params });
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');
+    var miUser = new Usuario();
+    miUser.email = user;
+    miUser.clave = pw;
+    return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Usuarios/Login",  JSON.stringify(miUser),   { headers: headers });
   }
   //LOGOUT
   salir(){

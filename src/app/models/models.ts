@@ -49,6 +49,7 @@ export class Personal {
     canalizaciones: number;
     posts: number;
     grupoId: number;
+    grupo: Grupo;
     cve: string;
     tituloId: number;
     titulo: Titulo;
@@ -71,7 +72,7 @@ export class Sesion {
     id: number;
     accionTutorialId: number;
     departamentoId: number;
-    fecha: string;
+    fecha: Date;
     visible: boolean;
     asistencia: Array<Estudiante>;
     accionTutorial: Accion = new Accion();
@@ -130,7 +131,7 @@ export class Actividad {
 }
 export class Carrera {
     id: number;
-    nombre: string = "";
+    titulo: string = "";
     clave: string = "";
 }
 export class Archivo {
@@ -184,18 +185,21 @@ export class EstudianteDatos {
     prescripcionSistemaOtro: boolean;
     tratamientoPsicologicoPsiquiatrico: boolean;
     tratamientoPsicologicoPsiquiatricoExplicacion: boolean;
-    manosPiesHinchados: boolean;
-    doloresVientre: boolean;
-    doloresCabezaVomito: boolean;
-    perdidaEquilibrio: boolean;
-    fatigaAgotamiento: boolean;
-    perdidaVistaOido: boolean;
-    dificultadDormir: boolean;
-    pesadillasTerroresNocturnos: boolean;
-    pesadillasTerroresNocturnosAque: boolean;
-    incontinencia: boolean;
-    tartamudeos: boolean;
-    miedosIntensos: boolean;
+    manosPiesHinchados: number;
+    doloresVientre: number;
+    doloresCabezaVomito: number;
+    perdidaEquilibrio: number;
+    fatigaAgotamiento: number;
+    perdidaVistaOido: number;
+    dificultadDormir: number;
+    pesadillasTerroresNocturnos: number;
+    pesadillasTerroresNocturnosAque: number;
+    incontinencia: number;
+    tartamudeos: number;
+    miedosIntensos: number;
     observacionesHigiene: string;
     fechaModificacion: string;
+}
+export class Count{
+    count: number;
 }

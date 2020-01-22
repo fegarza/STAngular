@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IRespuesta } from '../models/respuesta';
 import { ConstantsService } from './constants.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Estudiante } from '../models/models';
+import { Estudiante, Grupo } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,11 @@ export class GrupoService {
      .set('Content-Type', 'application/json')
      .set('Accept', 'application/json');
     return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Grupos/"+id+"/Sesiones/"+sesionId,  JSON.stringify(estudiantes),   { headers: headers } );
+  }
+  editar(grupo: Grupo){
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');
+   return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Grupos/",  JSON.stringify(grupo),   { headers: headers } );
   }
 }

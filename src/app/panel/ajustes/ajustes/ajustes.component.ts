@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
-import { Usuario, Departamento, Cargo, Personal, Accion, Sesion, Titulo } from 'src/app/models/models';
+import { Usuario, Departamento, Cargo, Personal, Accion, Sesion, Titulo, Count } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { DepartamentoService } from 'src/app/services/departamento.service';
 import { PersonalService } from 'src/app/services/personal.service';
@@ -86,12 +86,14 @@ export class AjustesComponent implements OnInit {
 
   //acciones dattable
   todasAcciones: Array<Accion> = new Array<Accion>();
+  accionLength: number = 100;
   accionesSource = new MatTableDataSource(this.todasAcciones);
   accionesColumns: string[] = ['visible', 'obligatorio', 'fecha', 'titulo', 'tipo', 'editar', 'eliminar'];
 
   //archivos datatable
   public archivos: Array<Archivo> = new Array<Archivo>();
   archivosSource = new MatTableDataSource(this.archivos);
+  public archivoLength: number = 100;
   archivosColumns: string[] = ['titulo', 'editar', 'eliminar'];
 
   // MatPaginator Inputs
@@ -136,9 +138,25 @@ export class AjustesComponent implements OnInit {
     this.formAlert = 'editarArchivos';
   }
   constructor(private archivoService: ArchivoService, private accionService: AccionService, private estudianteService: EstudianteService, private tituloService: TituloService, private sesionService: SesionService, private accionesService: AccionService, private authService: AuthService, private departamentoServices: DepartamentoService, private personalService: PersonalService) {
-
   }
+
   ngOnInit() {
+
+
+
+    
+    this.accionService.count().subscribe(r=>{
+      if(r.code == 200){
+        var c = r.data as Count;
+        this.accionLength = c.count;
+      }
+    });
+    this.archivoService.count().subscribe(r=>{
+      if(r.code == 200){
+        var c = r.data as Count;
+        this.archivoLength = c.count;
+      }
+    });
     //Cargar datos del usuario
     this.miUsuario = this.authService.traerUsuario();
     //-> En caso de ser estudiante
@@ -259,9 +277,6 @@ export class AjustesComponent implements OnInit {
 
   }
 
-
-
-
   /*
     POR PARTE DE LOS ESTUDIANTES
   */
@@ -270,7 +285,7 @@ export class AjustesComponent implements OnInit {
     //Datos personales
     this.miUsuario.estudiante.estudianteDatos.fechaNacimiento = this.settingsForm.controls.fechaNacimiento.value;
     this.miUsuario.estudiante.estudianteDatos.estadoNacimiento = this.settingsForm.controls.estadoDeNacimiento.value;
-    this.miUsuario.estudiante.estudianteDatos.ciudadNacimiento = this.settingsForm.controls.estadoDeNacimiento.value;
+    this.miUsuario.estudiante.estudianteDatos.ciudadNacimiento = this.settingsForm.controls.ciudadDeNacimiento.value;
     this.miUsuario.estudiante.estudianteDatos.telefonoMovil = this.settingsForm.controls.telefonoMovil.value;
     //Domicilio
     this.miUsuario.estudiante.estudianteDatos.telefonoDomicilio = this.settingsForm.controls.telefonoDomicilio.value;
@@ -424,8 +439,6 @@ export class AjustesComponent implements OnInit {
   }
   onSubmit() {
   }
-
-
 
   /*
     POR PARTE DE LOS PERSONALES
@@ -625,6 +638,7 @@ export class AjustesComponent implements OnInit {
       sesion.departamento = null;
       sesion.accionTutorial = null;
       sesion.departamento = null;
+    
       this.sesionService.add(sesion).subscribe(r => {
         if (r.code == 200) {
           this.loading = false;

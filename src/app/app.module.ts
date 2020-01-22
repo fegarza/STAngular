@@ -7,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
  import { GestureConfig } from '@angular/material';
+ import { DatePipe } from '@angular/common';
 /*
   External Modules
 */
@@ -71,6 +72,7 @@ import { CanalizacionService } from './services/canalizacion.service';
     
   ],
   providers: [
+    DatePipe,
     //AuthService,
     /*EstudianteService,
     PersonalService,

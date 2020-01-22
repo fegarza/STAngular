@@ -815,7 +815,7 @@
                 <p>Agregar nueva acción tutorial</p>
               </button>
               <mat-paginator 
-              [length]="100"
+              [length]="accionLength"
               [pageSize]="pageSize"
               [pageSizeOptions]="pageSizeOptions"
               (page)="pageEvent = mostrarAcciones($event)">
@@ -903,7 +903,7 @@
                 <i class="fas fa-plus"></i>
                 <p>Agregar un nuevo archivo</p>
               </button>
-              <mat-paginator [length]="100" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+              <mat-paginator [length]="archivoLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 (page)="pageEvent = mostrarAcciones($event)">
               </mat-paginator>
             </div>
