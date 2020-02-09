@@ -1,40 +1,46 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Personal, Departamento, Canalizacion, Sesion, Usuario, Titulo, Cargo, Accion, Count } from '../../../../models/models';
+import { Personal, Departamento, Canalizacion, Sesion, Usuario, Titulo, Cargo, Accion, Count, SesionIndividual } from '../../../../models/models';
 import { MatTableDataSource, MatSort, PageEvent } from '@angular/material';
 import { DepartamentoService } from '../../../../services/departamento.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { PersonalService } from 'src/app/services/personal.service';
 import { TituloService } from 'src/app/services/titulo.service';
-
 import Swal from 'sweetalert2';
 import { SesionService } from 'src/app/services/sesion.service';
 import { AccionService } from 'src/app/services/accion.service';
-
+import { SesionIndividualService } from 'src/app/services/sesion-individual.service';
+import { DatePipe } from '@angular/common'  // Import this
 @Component({
   selector: 'app-departamento',
   templateUrl: './departamento.component.html',
-  styleUrls: ['./departamento.component.sass']
+  styleUrls: ['./departamento.component.sass'],
+  providers: [DatePipe] // Add this
 })
 export class DepartamentoComponent implements OnInit {
   
-  acciones: Array<Accion> = new Array<Accion>();
-  pageEvent: PageEvent;
+  //Variables auxiliares
+  public loading: boolean = false;
+  public formAlert: string = "none";
 
   //Formularios
   public personalesForm: FormGroup;
-  sesionesForm: FormGroup;
-  sesionesEditarForm: FormGroup;
+  public sesionesForm: FormGroup;
+  public sesionesIndividualesForm: FormGroup;
+  public sesionesEditarForm: FormGroup;
   
-  public loading: boolean = false;
-  public formAlert: string = "none";
   //Departamento
   public id: number;
   private sub: any;
   public departamento : Departamento = new Departamento();
+
+  //Titulos del personal
   public titulos: Array<Titulo> = new Array<Titulo>();
-
-
+  
+  //acciones individuales
+  accionesIndividuales: Array<Accion> = new Array<Accion>();
+  acciones: Array<Accion> = new Array<Accion>();
+  pageEvent: PageEvent;
 
    //acciones dattable
    todasAcciones: Array<Accion> = new Array<Accion>();
@@ -78,12 +84,30 @@ export class DepartamentoComponent implements OnInit {
   sesionSeleccionada: Sesion;
   pageSize = 10;
   pageSizeOptions: number[] = [10, 20, 30, 40, 50];
+   // SesionesIndividuales
+   public sesionesIndividuales : Array<SesionIndividual> = new Array<SesionIndividual>();
+   sesionesIndividualesDataSource = new MatTableDataSource(this.sesionesIndividuales);
+   sesionesIndividualesColumns: string[] = ['accion','fecha','hora', 'visible', 'eliminar'];
+   sesionesIndividualesLength = 100;
+   sesionesIndividualesPageSize = 10;
+   sesionesIndividualesPageSizeOptions: number[] = [10,20,30,40,50];
+   sesionIndividualesSeleccionada: SesionIndividual;
+    
 
  
-  constructor( private accionService: AccionService, private sesionService: SesionService, private tituloService: TituloService, private route: ActivatedRoute, private departamentoService: DepartamentoService, private personalService: PersonalService ) 
+  constructor(
+    private datePipe: DatePipe,
+     private accionService: AccionService,
+     private sesionService: SesionService, 
+     private sesionIndividualService: SesionIndividualService, 
+     private tituloService: TituloService, 
+     private route: ActivatedRoute, 
+     private departamentoService: DepartamentoService,
+      private personalService: PersonalService ) 
   {
-
-      this.accionService.count().subscribe(r=>{
+     
+    //TODO LO DE ACCIONES TUTORIALES EN GENERAL
+    this.accionService.count().subscribe(r=>{
       if(r.code == 200){
         var c = r.data as Count;
         this.accionLength = c.count;
@@ -93,9 +117,11 @@ export class DepartamentoComponent implements OnInit {
       if (r.code == 200) {
         this.todasAcciones = r.data as Array<Accion>;
         this.accionesSource = new MatTableDataSource(this.todasAcciones);
+        
       }
     });
-
+    
+    //TODOS LOS DATOS DEL DEPARTAMENTO
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];  
     });
@@ -116,11 +142,16 @@ export class DepartamentoComponent implements OnInit {
         this.canalizacionesDataSource = new MatTableDataSource(this.canalizaciones);
       }
     });
-
     this.departamentoService.countSesiones(this.id.toString()).subscribe(r=>{
       if(r.code == 200){
         var c = r.data as Count;
         this.sesionesLength = c.count;
+      }
+    });
+    this.departamentoService.countSesionesIndividuales(this.id.toString()).subscribe(r=>{
+      if(r.code == 200){
+        var c = r.data as Count;
+        this.sesionesIndividualesLength = c.count;
       }
     });
     this.departamentoService.countCanalizaciones(this.id.toString()).subscribe(r=>{
@@ -141,6 +172,12 @@ export class DepartamentoComponent implements OnInit {
         this.sesionesDataSource = new MatTableDataSource(this.sesiones);
       }
     });
+    this.departamentoService.showSesionesIndividuales(this.id.toString()).subscribe(r=>{
+      if(r.code == 200){
+        this.sesionesIndividuales = r.data as Array<SesionIndividual>;
+        this.sesionesIndividualesDataSource = new MatTableDataSource(this.sesionesIndividuales);
+      }
+    });
     this.personalService.showAllTec().subscribe(r => {
       if(r.code == 200){ 
         this.personalesDataForm = r.data as Array<Personal>;
@@ -148,16 +185,39 @@ export class DepartamentoComponent implements OnInit {
         console.log("error");
       }
     });
-    this.tituloService.showAll().subscribe(
-      s => {
+    this.tituloService.showAll().subscribe(s => {
         this.titulos = s.data as Array<Titulo>;
-      }
-    );
-    this.departamentoService.showAcciones(this.id.toString()).subscribe(
-      s => {
+    });
+    this.departamentoService.showAcciones(this.id.toString()).subscribe(s => {
         this.acciones = s.data as Array<Accion>;
-      }
-    );
+    });
+    this.departamentoService.showAccionesIndividuales(this.id.toString()).subscribe(s => {
+      this.accionesIndividuales = s.data as Array<Accion>;
+      
+  });
+}
+  ngOnInit() {
+    this.personalesForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.min(6)]),
+      cargo: new FormControl('', [Validators.required]),
+      genero: new FormControl('', [Validators.required]),
+      titulo: new FormControl('', [Validators.required]),
+      cve: new FormControl('', [Validators.required])
+    });
+    this.sesionesForm = new FormGroup({
+      accionTutorial: new FormControl('', [Validators.required]),
+      fecha: new FormControl('', [Validators.required]),
+      tiempo: new FormControl('', [Validators.required]),
+    });
+    this.sesionesIndividualesForm = new FormGroup({
+      accionTutorial: new FormControl('', [Validators.required]),
+      fecha: new FormControl('', [Validators.required]),
+      tiempo: new FormControl('', [Validators.required]),
+    });
+    this.sesionesEditarForm = new FormGroup({
+      fecha: new FormControl('', [Validators.required])
+    });
     
     
   }
@@ -188,25 +248,16 @@ export class DepartamentoComponent implements OnInit {
     });
     return event;
   }
-  
-  ngOnInit() {
-    this.personalesForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.min(6)]),
-      cargo: new FormControl('', [Validators.required]),
-      genero: new FormControl('', [Validators.required]),
-      titulo: new FormControl('', [Validators.required]),
-      cve: new FormControl('', [Validators.required])
+  mostrarSesionesIndividuales( event?:PageEvent ){
+    this.departamentoService.getPageSesionesIndividuales(this.id.toString(), event.pageSize, (event.pageIndex+1)).subscribe(r=>{
+      if(r.code == 200){
+        this.sesionesIndividuales = r.data as Array<SesionIndividual>;
+        this.sesionesIndividualesDataSource = new MatTableDataSource(this.sesionesIndividuales);
+      }
     });
-    this.sesionesForm = new FormGroup({
-      accionTutorial: new FormControl('', [Validators.required]),
-      fecha: new FormControl('', [Validators.required]),
-      tiempo: new FormControl('', [Validators.required]),
-    });
-    this.sesionesEditarForm = new FormGroup({
-      fecha: new FormControl('', [Validators.required])
-    });
+    return event;
   }
+ 
   onSubmitPersonal() {
     this.loading = true;
     if (this.personalesForm.valid) {
@@ -265,17 +316,25 @@ export class DepartamentoComponent implements OnInit {
       );
     }
   }
-
   onSubmitSesiones() {
 
     if(this.sesionesForm.valid){
       this.loading = true;
-      console.log("Valor del campo: " + this.sesionesForm.controls.tiempo.value);
       var fecha: Date = new Date(this.sesionesForm.controls.fecha.value);
-      fecha.setHours(this.sesionesForm.controls.tiempo.value.split(":")[0]);
-      fecha.setMinutes(this.sesionesForm.controls.tiempo.value.split(":")[1]);
+      fecha.setHours( parseInt( this.sesionesForm.controls.tiempo.value.split(":")[0]), parseInt(this.sesionesForm.controls.tiempo.value.split(":")[1]),0,0);
       var sesion: Sesion = new Sesion();
-      sesion.fecha = fecha;
+      
+      var day =  fecha.getUTCDate();
+      var month =  fecha.getUTCMonth() + 1;
+      var year = fecha.getFullYear();
+      var hour = fecha.getHours();      
+      var minute = fecha.getMinutes();  
+      var second = fecha.getSeconds(); 
+
+
+      //dd/MM/yyyy HH:mm tt
+      //sesion.fecha =day+"/"+ month +"/"+ year +" "+ hour + ':' + minute; 
+      sesion.fecha = this.datePipe.transform(fecha, 'MM/dd/yyyy HH:mm:ss');
       sesion.departamentoId = this.id;
       sesion.accionTutorialId = this.sesionesForm.controls.accionTutorial.value;
       sesion.departamento = null;
@@ -322,7 +381,69 @@ export class DepartamentoComponent implements OnInit {
 
   
   }
+  onSubmitSesionesIndividuales() {
 
+    if(this.sesionesIndividualesForm.valid){
+      this.loading = true;
+       var fecha: Date = new Date(this.sesionesIndividualesForm.controls.fecha.value);
+      fecha.setHours( parseInt( this.sesionesIndividualesForm.controls.tiempo.value.split(":")[0]), parseInt(this.sesionesIndividualesForm.controls.tiempo.value.split(":")[1]));
+     // fecha.setMinutes( parseInt(this.sesionesForm.controls.tiempo.value.split(":")[1]));
+      //console.log("Hora: "+ this.sesionesForm.controls.tiempo.value.split(":")[0]);
+      //console.log("Minutos: "+ this.sesionesForm.controls.tiempo.value.split(":")[1]);
+      //console.log("Sesion anterior");
+      //console.log(fecha);
+      var sesion: SesionIndividual = new SesionIndividual();
+      sesion.fecha = this.datePipe.transform(fecha, 'MM/dd/yyyy HH:mm:ss');
+
+      
+      //console.log("Sesion asignada");
+      //console.log(sesion.fecha);
+      sesion.departamentoId = this.id;
+      sesion.accionTutorialId = this.sesionesIndividualesForm.controls.accionTutorial.value;
+      sesion.departamento = null;
+      sesion.accionTutorial = null;
+      sesion.departamento = null;
+      this.sesionIndividualService.add(sesion).subscribe(r => {
+        if (r.code == 200) {
+          this.loading = false;
+          this.sesionesIndividualesForm.reset();
+          this.departamentoService.showSesionesIndividuales(this.id.toString()).subscribe(r=>{
+            if(r.code == 200){
+              this.sesionesIndividuales = r.data as Array<SesionIndividual>;
+              this.sesionesIndividualesDataSource = new MatTableDataSource(this.sesionesIndividuales);
+            }
+          });
+          this.departamentoService.showAccionesIndividuales(this.id.toString()).subscribe(
+            s => {
+              this.accionesIndividuales = s.data as Array<Accion>;
+            }
+          );
+          Swal.fire(
+            'Se ha insertado con exito',
+            r.mensaje,
+            'success'
+          );
+          this.formAlert = 'none';
+        } else {
+          this.loading = false;
+          Swal.fire(
+            r.mensaje,
+            "¡La fecha ya existe!",
+            'error'
+          );
+        }
+      });
+    }else{
+      Swal.fire(
+        "Error en el formulario",
+        "No se han llenado todos los campos",
+        'error'
+      );
+    }
+
+
+  
+  }
   eliminarSesion(id: number){
     this.sesionService.delete(id).subscribe(r=>{
       if(r.code == 200){
@@ -343,7 +464,39 @@ export class DepartamentoComponent implements OnInit {
           'success'
         );
       }else{
-
+        Swal.fire(
+          'No se puede eliminar la sesión',
+         'Ya existen pases de listas en esta sesión',
+          'error'
+        );
+      }
+    });
+  }
+  eliminarSesionIndividual(id: number){
+    this.sesionIndividualService.delete(id).subscribe(r=>{
+      if(r.code == 200){
+        this.departamentoService.showSesionesIndividuales(this.id.toString()).subscribe(r=>{
+          if(r.code == 200){
+            this.sesionesIndividuales = r.data as Array<SesionIndividual>;
+            this.sesionesIndividualesDataSource = new MatTableDataSource(this.sesionesIndividuales);
+            this.departamentoService.showAccionesIndividuales(this.id.toString()).subscribe(
+              s => {
+                this.accionesIndividuales = s.data as Array<Accion>;
+              }
+            );
+          }
+        });
+        Swal.fire(
+          'Se ha eliminado con exito',
+          r.mensaje,
+          'success'
+        );
+      }else{
+        Swal.fire(
+          'No se puede eliminar la sesión',
+         'Ya existen pases de listas en esta sesión',
+          'error'
+        );
       }
     });
   }
@@ -359,7 +512,7 @@ export class DepartamentoComponent implements OnInit {
     
   }
   editarSesion(values:any, id: any){
-   console.log(id);
+   
     var sesionTemp: Sesion ;
     this.loading = true;
     var count  = 1;
@@ -395,6 +548,43 @@ export class DepartamentoComponent implements OnInit {
     });
      
   }
+  editarSesionIndividual(values:any, id: any){
+    
+     var sesionTemp: SesionIndividual ;
+     this.loading = true;
+     var count  = 1;
+     sesionTemp =  this.sesionesIndividuales.find(x => x.id == id);
+     if(sesionTemp.visible){
+       sesionTemp.visible = false;
+     }else{
+       sesionTemp.visible = true;
+     }
+      var sesion = new SesionIndividual();
+      sesion.id = sesionTemp.id;
+      sesion.accionTutorialId = sesionTemp.accionTutorialId;
+      sesion.departamentoId = this.id;
+      sesion.fecha = sesionTemp.fecha;
+      sesion.visible = sesionTemp.visible;
+     this.sesionIndividualService.put(sesion).subscribe(r => {
+       if (r.code == 200) {
+         this.loading = false;
+         Swal.fire(
+           'Se ha actualizado con exito',
+           r.mensaje,
+           'success'
+         );
+         this.formAlert = 'none';
+       } else {
+         this.loading = false;
+         Swal.fire(
+           r.mensaje,
+           "!Error!",
+           'error'
+         );
+       }
+     });
+      
+   }
   mostrarAcciones(event?:PageEvent) {
     this.accionService.getPage(event.pageSize, (event.pageIndex+1)).subscribe(r => {
       if (r.code == 200) {

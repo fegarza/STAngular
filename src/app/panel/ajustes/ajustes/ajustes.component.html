@@ -79,8 +79,8 @@
         <div class="radio">
           <p>Obligatorio</p>
           <mat-radio-group aria-label="Genero" formControlName="obligatorio">
-            <mat-radio-button value="true"  [checked]="accionSeleccionada.obligatorio == 1"> Sí</mat-radio-button>
-            <mat-radio-button value="false" [checked]="accionSeleccionada.obligatorio == 0">No</mat-radio-button>
+            <mat-radio-button value="true"  [checked]="accionSeleccionada.obligatorio == 1 || accionSeleccionada.obligatorio == true"> Sí   </mat-radio-button>
+            <mat-radio-button value="false" [checked]="accionSeleccionada.obligatorio ==  0 || accionSeleccionada.obligatorio == false">No</mat-radio-button>
           </mat-radio-group>
         </div>
         <button class="btn float">
@@ -762,7 +762,7 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Obligatorio
                     </th>
                     <td mat-cell *matCellDef="let element">
-                      {{element.obligatorio == true ? 'Sí' : 'No'}}
+                      {{element.obligatorio  ==  true ? 'Sí' : 'No'}}
                     </td>
                   </ng-container>
               <ng-container matColumnDef="fecha">

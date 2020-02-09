@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GrupoService } from 'src/app/services/grupo.service';
-import { Grupo, Sesion, Estudiante, Usuario, Canalizacion } from 'src/app/models/models';
+import { Grupo, Sesion, Estudiante, Usuario, Canalizacion, SesionIndividual } from 'src/app/models/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -32,6 +32,10 @@ export class GrupoComponent implements OnInit {
   //Variables publicas
   public loading: boolean = false;
   public miGrupo: Grupo = new Grupo();
+  public sesionesIndividuales: Array<SesionIndividual> = new Array<SesionIndividual>();
+  public sesionIndividualSeleccionada: number = 0;
+  public asistenciaIndividual :Array<Estudiante> = new Array<Estudiante>();
+
   public sesiones: Array<Sesion> = new Array<Sesion>();
   public seleccionado: boolean = false;
   public asistencia :Array<Estudiante> = new Array<Estudiante>();
@@ -47,10 +51,13 @@ export class GrupoComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'numeroDeControl','semestre' ,'creditos', 'sesiones', 'sesionesIniciales', 'estatus'];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   asistenciaSource = new MatTableDataSource(this.asistencia);
+  asistenciaIndividualSource = new MatTableDataSource(this.asistencia);
   asistenciaColumns : string[] = ['presente', 'nombre', 'numeroDeControl'];
+  asistenciaIndividualColumns : string[] = ['presente', 'nombre', 'numeroDeControl'];
 
   //Formularios
   sesionesForm: FormGroup;
+  sesionesIndividualesForm: FormGroup;
   canalizacionForm: FormGroup;
 
   canalizacionSeleccionada: Canalizacion;
@@ -78,6 +85,9 @@ export class GrupoComponent implements OnInit {
     private grupoService: GrupoService,
     private personalService : PersonalService) {
     this.sesionesForm = new FormGroup({
+      sesion: new FormControl('', [Validators.required]),
+    });
+    this.sesionesIndividualesForm = new FormGroup({
       sesion: new FormControl('', [Validators.required]),
     });
     this.canalizacionForm = new FormGroup({
@@ -115,6 +125,13 @@ export class GrupoComponent implements OnInit {
                       console.log("error: ", r.data)
                     }
                   });
+                  this.grupoService.showSesionesIndividuales(this.miGrupo.id.toString()).subscribe(r => {
+                    if (r.code == 200) {
+                      this.sesionesIndividuales = r.data as Array<SesionIndividual>;
+                    } else {
+                      console.log("error: ", r.data)
+                    }
+                  });
                   this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
                     console.log("Se ejecuta canalizacion");
                     if(r.code == 200){
@@ -144,6 +161,13 @@ export class GrupoComponent implements OnInit {
                 this.grupoService.showSesiones(this.miGrupo.id.toString()).subscribe(r => {
                   if (r.code == 200) {
                     this.sesiones = r.data as Array<Sesion>;
+                  } else {
+                    console.log("error: ", r.data)
+                  }
+                });
+                this.grupoService.showSesionesIndividuales(this.miGrupo.id.toString()).subscribe(r => {
+                  if (r.code == 200) {
+                    this.sesionesIndividuales = r.data as Array<SesionIndividual>;
                   } else {
                     console.log("error: ", r.data)
                   }
@@ -178,6 +202,15 @@ export class GrupoComponent implements OnInit {
       this.asistencia.find(x => x.id == id).presente = false;
     }
   }
+  AsignarAsistenciaIndividual(values:any, id: any){
+    if(values.checked){
+      console.log("-> se ha agregado asistencia a estudiante con el ID: " + id);
+      this.asistenciaIndividual.find(x => x.id == id).presente = true;
+    }else{
+      console.log("-> se ha quitado asistencia a estudiante con el ID: " + id);
+      this.asistenciaIndividual.find(x => x.id == id).presente = false;
+    }
+  }
   cargarAsistencias(value) {
     this.sesionSeleccionada = value;
      this.grupoService.showAsistencias(this.miGrupo.id.toString(), value).subscribe(
@@ -189,6 +222,18 @@ export class GrupoComponent implements OnInit {
       }
     );
   }
+  cargarAsistenciasIndividuales(value) {
+    this.sesionIndividualSeleccionada = value;
+     this.grupoService.showAsistenciasIndividuales(this.miGrupo.id.toString(), value).subscribe(
+      r => {
+        if (r.code == 200) {
+          this.asistenciaIndividual = r.data as Array<Estudiante>;
+          this.asistenciaIndividualSource = new MatTableDataSource(this.asistenciaIndividual);
+        }
+      }
+    );
+  }
+
 
  
   generarReporte(){
@@ -214,6 +259,67 @@ export class GrupoComponent implements OnInit {
  generarLista(){
   
   var s = this.sesiones.find(x => x.id == this.sesionSeleccionada);
+  var doc = new jsPDF();
+  var pageHeight= doc.internal.pageSize.height;   
+  //header of pdf
+  doc.setFontSize(18);
+  doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
+  doc.setFontSize(16);
+  doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
+  doc.setFontSize(12);
+  doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
+  doc.setFontSize(12);
+  doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
+  
+  //body
+
+ var estudiantesLista = [];
+ this.miGrupo.estudiantes.forEach(e => {
+   var estado: string = "";
+   if(e.estado == "A"){
+    estado = "Activo";
+   }else if(e.estado == "T"){
+     estado = "Liberado"
+   }
+   var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
+   estudiantesLista.push(n);
+ });
+  
+
+  doc.autoTable({
+     head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
+     body:  estudiantesLista,
+     theme: 'grid',
+     styles : {fillColor: [0, 79, 122]},
+     stylesDef : {fontSize : 8},
+     columnStyles:  {
+        0: { fillColor: [255, 255, 255], columnWidth: 27},
+        1: { fillColor: [255, 255, 255], columnWidth: 80},
+        2: { fillColor: [255, 255, 255], columnWidth: 12},
+        3: { fillColor: [255, 255, 255], columnWidth: 12},
+        4: { fillColor: [255, 255, 255], columnWidth: 12},
+        5: { fillColor: [255, 255, 255]},
+      },
+      margin: {top: 60},
+ })
+
+
+ let finalY = doc.lastAutoTable.finalY; // posición y 
+ doc.text(20, finalY+15, "ACTIVIDADES DE LA SESIÓN: " );
+ var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+ doc.text(20, finalY+20, split);
+ //5pt height????
+ var heightActividad = finalY+95;
+
+ doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+5, null, null, 'center');
+ doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+15, null, null, 'center');
+ doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+20, null, null, 'center');
+
+ doc.save('Lista.pdf');
+}
+generarListaIndividual(){
+  
+   var s = this.sesionesIndividuales.find(x => x.id == this.sesionIndividualSeleccionada);
    var doc = new jsPDF();   
    //header of pdf
    doc.setFontSize(18);
@@ -379,6 +485,29 @@ export class GrupoComponent implements OnInit {
     }
 
   }
+  GuardarIndividual(){
+    var nuevaAsistencia: Array<Estudiante> = new Array<Estudiante>();
+    this.asistenciaIndividual.forEach(e => {
+      if(e.presente){
+        nuevaAsistencia.push(e)
+      }
+    });
+    if(this.sesionIndividualSeleccionada != 0 ){
+      this.grupoService.AgregarAsistenciasIndividuales(this.miGrupo.id.toString(), this.sesionIndividualSeleccionada.toString(), nuevaAsistencia)
+      .subscribe(s=>{
+        if(s.code == 200){
+          Swal.fire(
+            'Se ha pasado lista correctamente',
+            'la lista de esta sesion ha sido actualizada' ,
+            'success'
+          );
+        }else{
+
+        }
+      });
+    }
+
+  }
   editarCanalizacion(){
     if(this.canalizacionForm.valid){
     this.canalizacionSeleccionada.descripcion = this.canalizacionForm.controls.descripcion.value;
@@ -457,5 +586,38 @@ this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
         });
     }
   }
+  public async asignarEstatus(numeroDeControl: string) {
+    console.log("alo");
+    var opciones: Map<string, string> = new Map();
+     opciones.set("A", "Activo");
+     opciones.set("E", "Egresado");
+     opciones.set("T", "Terminado");
+     
+    const { value: estado } = await Swal.fire({
+      title: 'Selecciona el nuevo estado',
+      input: 'select',
+      inputOptions: opciones,
+      inputPlaceholder: 'Estados',
+      showCancelButton: true
+    });
+ 
+     if(estado != null && estado != undefined){
+       this.estudianteService.asignarEstado(numeroDeControl, estado).subscribe(r=>{
+        if (r.code == 200) {
+          Swal.fire(
+            "Se ha logrado cambiar el estado del alumno",
+             "Exito",
+            "success"
+          );
+          this.miGrupo.estudiantes.find(f => f.numeroDeControl == numeroDeControl).estado = estado;
+        } else {
+          Swal.fire("Ha ocurrido un error", r.mensaje, "error");
+        }
+       });
+     }
+  }
 
+
+
+  
 }

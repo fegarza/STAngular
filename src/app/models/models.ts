@@ -66,19 +66,26 @@ export class Cargo {
     tipo: string;
     titulo: string;
 }
-
-
 export class Sesion {
     id: number;
     accionTutorialId: number;
     departamentoId: number;
-    fecha: Date;
+    fecha: string;
     visible: boolean;
     asistencia: Array<Estudiante>;
     accionTutorial: Accion = new Accion();
     departamento: Departamento = new Departamento();
 }
-
+export class SesionIndividual{
+    id: number;
+    accionTutorialId: number;
+    departamentoId: number;
+    fecha: string;
+    visible: boolean;
+    asistencia: Array<Estudiante>;
+    accionTutorial: Accion = new Accion();
+    departamento: Departamento = new Departamento();
+}
 export class Grupo {
     id: number;
     salon: string;
@@ -87,7 +94,6 @@ export class Grupo {
     estudiantes: Array<Estudiante>;
     sesiones: Array<Sesion>;
 }
-
 export class Accion {
     id: number;
     personalId: number;
@@ -98,13 +104,11 @@ export class Accion {
     activo: boolean;
     tipo: string;
 }
-
 export class Atencion {
     id: number;
     areaId: number;
     titulo: string;
 }
-
 export class Canalizacion {
     id: number;
     personalId: number;

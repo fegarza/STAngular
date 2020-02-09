@@ -12,6 +12,7 @@ import { EstudianteDatos, Archivo } from '../../../models/models';
 import { EstudianteService } from '../../../services/estudiante.service';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { ArchivoService } from 'src/app/services/archivo.service';
+import { DatePipe } from '@angular/common'  // Import this
 
 
 @Component({
@@ -107,10 +108,7 @@ export class AjustesComponent implements OnInit {
   public establecerAccion(id: number) {
     this.todasAcciones.forEach(f => {
       if (f.id == id) {
-        console.log("-> Accion seleccionada:");
-        console.log(f);
         var date = new Date(new Date(f.fecha).getTime())
-        console.log(date);
         this.accionesEditarForm.controls.titulo.setValue(f.titulo);
         this.accionesEditarForm.controls.contenido.setValue(f.contenido);
         this.accionesEditarForm.controls.tipo.setValue(f.tipo);
@@ -137,7 +135,9 @@ export class AjustesComponent implements OnInit {
 
     this.formAlert = 'editarArchivos';
   }
-  constructor(private archivoService: ArchivoService, private accionService: AccionService, private estudianteService: EstudianteService, private tituloService: TituloService, private sesionService: SesionService, private accionesService: AccionService, private authService: AuthService, private departamentoServices: DepartamentoService, private personalService: PersonalService) {
+  constructor(
+    private datePipe: DatePipe, 
+    private archivoService: ArchivoService, private accionService: AccionService, private estudianteService: EstudianteService, private tituloService: TituloService, private sesionService: SesionService, private accionesService: AccionService, private authService: AuthService, private departamentoServices: DepartamentoService, private personalService: PersonalService) {
   }
 
   ngOnInit() {
@@ -145,18 +145,7 @@ export class AjustesComponent implements OnInit {
 
 
     
-    this.accionService.count().subscribe(r=>{
-      if(r.code == 200){
-        var c = r.data as Count;
-        this.accionLength = c.count;
-      }
-    });
-    this.archivoService.count().subscribe(r=>{
-      if(r.code == 200){
-        var c = r.data as Count;
-        this.archivoLength = c.count;
-      }
-    });
+  
     //Cargar datos del usuario
     this.miUsuario = this.authService.traerUsuario();
     //-> En caso de ser estudiante
@@ -238,6 +227,18 @@ export class AjustesComponent implements OnInit {
     }
     //-> En caso de ser personal
     else {
+      this.accionService.count().subscribe(r=>{
+        if(r.code == 200){
+          var c = r.data as Count;
+          this.accionLength = c.count;
+        }
+      });
+      this.archivoService.count().subscribe(r=>{
+        if(r.code == 200){
+          var c = r.data as Count;
+          this.archivoLength = c.count;
+        }
+      });
       this.archivoService.showAll().subscribe(r => {
         if (r.code == 200) {
           this.archivos = r.data as Array<Archivo>;
@@ -632,7 +633,8 @@ export class AjustesComponent implements OnInit {
     this.loading = true;
     if (this.sesionesForm.valid) {
       var sesion: Sesion = new Sesion();
-      sesion.fecha = this.sesionesForm.controls.fecha.value;
+      sesion.fecha = this.datePipe.transform(this.sesionesForm.controls.fecha.value, 'MM/dd/yyyy HH:mm:ss');
+
       sesion.departamentoId = this.sesionesForm.controls.departamento.value;
       sesion.accionTutorialId = this.sesionesForm.controls.accionTutorial.value;
       sesion.departamento = null;
@@ -760,15 +762,23 @@ export class AjustesComponent implements OnInit {
     if (this.accionesEditarForm.valid) {
       this.accionSeleccionada.titulo = this.accionesEditarForm.controls.titulo.value;
       this.accionSeleccionada.fecha = this.accionesEditarForm.controls.fecha.value;
-      this.accionSeleccionada.obligatorio = this.accionesEditarForm.controls.obligatorio.value;
-      this.accionSeleccionada.activo = this.accionesEditarForm.controls.activo.value;
+      
+     if(this.accionesEditarForm.controls.obligatorio.value == "true"){
+      this.accionSeleccionada.obligatorio = true;
+     }else{
+      this.accionSeleccionada.obligatorio = false;
+     }
+     if( this.accionesEditarForm.controls.activo.value == "true"){
+      this.accionSeleccionada.activo = true;
+     }else{
+      this.accionSeleccionada.activo = false;
+     }
+      
+      
+     
       this.accionSeleccionada.tipo = this.accionesEditarForm.controls.tipo.value;
       this.accionSeleccionada.contenido = this.accionesEditarForm.controls.contenido.value;
-      if (this.accionesEditarForm.controls.obligatorio.value == "1") {
-        this.accionSeleccionada.obligatorio = true;
-      } else {
-        this.accionSeleccionada.obligatorio = false;
-      }
+       
       this.accionService.editarAccion(this.accionSeleccionada).subscribe(r => {
         if (r.code == 200) {
           this.loading = false

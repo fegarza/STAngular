@@ -25,7 +25,10 @@ export class DepartamentoService {
 
   //Acciones tutoriales
   showAcciones(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales");
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales/Grupales");
+  }
+  showAccionesIndividuales(id: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales/Individuales");
   }
 
   //Personales
@@ -60,7 +63,15 @@ export class DepartamentoService {
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Personales/Count" );
   }
 
-
+  showSesionesIndividuales(id: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales");
+  }
+  getPageSesionesIndividuales(id: string, cant: number, pag: number) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales?cant=" + cant + "&pag=" + pag);
+  }
+  countSesionesIndividuales(id: string) {
+    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/SesionesIndividuales/Count" );
+  }
 
 
 }

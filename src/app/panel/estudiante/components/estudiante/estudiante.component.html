@@ -155,7 +155,9 @@
                     <i class="fas fa-exclamation-circle"></i>
                     <p>Editar</p>
                   </button>
-                  <button mat-menu-item (click)="asignarClave()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')" >
+                  <button mat-menu-item (click)="asignarClave()" *ngIf=" 
+                  miUsuario.estudiante.numeroDeControl == miEstudiante.numeroDeControl || 
+                  (miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A'))" >
                     <i class="fas fa-exclamation-circle"></i>
                     <p>Cambiar clave</p>
                   </button>

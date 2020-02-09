@@ -45,7 +45,8 @@ export class EstudianteComponent implements OnInit {
     private carreraService: CarreraService,
     private usuarioService: UsuarioService
   ) {
-
+    this.miEstudiante = new Estudiante();
+    this.miUsuario.estudiante =  new Estudiante();;
     this.miEstudiante.estudianteDatos = new EstudianteDatos();
     this.miEstudiante.carrera = new Carrera();
     this.miEstudiante.grupo = new Grupo();
@@ -173,11 +174,12 @@ export class EstudianteComponent implements OnInit {
     if (clave) {
       this.miEstudiante.usuario.clave = clave;
       this.usuarioService
-        .editar(this.miEstudiante.usuario)
+        .editarClaveEstudiante(this.miEstudiante)
         .subscribe(r => {
           if (r.code == 200) {
             Swal.fire(
               "Se ha logrado cambiar la contraseña",
+              "Ahora podrás acceder con tu nueva contraseña",
               "success"
             );
           } else {
@@ -267,6 +269,7 @@ export class EstudianteComponent implements OnInit {
       r => {
         grupos = r.data as Array<Grupo>;
         if (grupos != null) {
+          opciones.set("0", "Sin asignar");
           grupos.map(g => {
             opciones.set(g.id.toString(), g.personal.usuario.nombreCompleto);
           });
@@ -293,6 +296,7 @@ export class EstudianteComponent implements OnInit {
               .asignarGrupo(this.miEstudiante.numeroDeControl, gId)
               .subscribe(r => {
                 if (r.code == 200) {
+                  this.miEstudiante.grupo.personal.usuario.nombreCompleto = opciones.get(gId);
                   Swal.fire(
                     "Se ha logrado cambiar el grupo",
                     "Ahora el alumno: " +

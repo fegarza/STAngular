@@ -87,11 +87,11 @@
     </form>
   </div>
 </div>
-
+<!--SESIONES-->
 <div class="formAlert" *ngIf="formAlert == 'sesiones'">
   <div class="cont x2">
       <div class="title leftBlue">
-        <h1><i class="far fa-edit"></i> Ingrese los datos de la acción tutorial</h1>
+        <h1><i class="far fa-edit"></i> Ingrese los datos de la sesion </h1>
       </div>
     <form [formGroup]="sesionesForm" (ngSubmit)="onSubmitSesiones()">
       <mat-form-field>
@@ -135,6 +135,55 @@
     </form>
   </div>
 </div>
+<!--SESIONES INDIVIDUALES-->
+<div class="formAlert" *ngIf="formAlert == 'sesionesIndividuales'">
+  <div class="cont x2">
+      <div class="title leftBlue">
+        <h1><i class="far fa-edit"></i> Ingrese los datos de la sesion individual</h1>
+      </div>
+    <form [formGroup]="sesionesIndividualesForm" (ngSubmit)="onSubmitSesionesIndividuales()">
+      <mat-form-field>
+        <mat-label>Seleccione la Acción Tutorial</mat-label>
+        <mat-select formControlName="accionTutorial">
+          <mat-option *ngFor="let d of accionesIndividuales" [value]="d.id">
+            {{ d.titulo }} - {{ d.fecha }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="myPicker2"
+          placeholder="Seleccione la fecha"
+          formControlName="fecha"
+        />
+        <mat-datepicker-toggle
+          [for]="myPicker2"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #myPicker2></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Hora"
+          formControlName="tiempo"
+          type="time"
+          value=""
+        />
+      </mat-form-field>
+      <button class="btn float">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR</p>
+      </button>
+      <button class="btn float-white" (click)="formAlert = 'none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
+</div>
+
 <div class="formAlert" *ngIf="formAlert == 'editarSesion'">
   <div class="cont x2">
       <div class="title leftBlue">
@@ -449,6 +498,87 @@
             [pageSize]="sesionesPageSize"
             [pageSizeOptions]="sesionesPageSizeOptions"
             (page)="pageEvent = mostrarSesiones($event)"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sesionesIndividuales">
+  <div class="cont">
+    <div class="box simple shadow">
+      <div class="title solidBlue ">
+        <i class="fas fa-clipboard"></i>
+        <h1>Sesiones individuales</h1>
+      </div>
+      <div class="boxCont">
+        <table
+          mat-table
+          [dataSource]="sesionesIndividualesDataSource"
+          matSort
+          class="mat-elevation-z8"
+        >
+        <ng-container matColumnDef="visible">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            ¿Pueden verla los tutores?
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.visible" (change)="editarSesionIndividual($event, element.id)">
+            </mat-checkbox>
+           
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Accion</th>
+          <td mat-cell *matCellDef="let element">
+            
+              {{element.accionTutorial.titulo | titlecase}}
+            
+          </td>
+        </ng-container>
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+            <td mat-cell *matCellDef="let element">
+              
+                {{element.fecha | date:'shortDate'}}
+              
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="hora">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora</th>
+            <td mat-cell *matCellDef="let element">
+              
+                {{element.fecha | date:'shortTime'}}
+              
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="eliminar">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Eliminar</th>
+            <td mat-cell *matCellDef="let element">
+              <button class="btn float-dark" (click)="eliminarSesionIndividual(element.id)">
+                <i class="fas fa-trash-alt"></i>
+                  <p>Eliminar</p>
+                </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="sesionesColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: sesionesColumns"></tr>
+        </table>
+
+        <div class="paginator">
+          <button class="btn float-white" *ngIf="accionesIndividuales.length > 0" (click)="formAlert = 'sesionesIndividuales'">
+            <i class="fas fa-plus"></i>
+            <p>Agregar nueva sesión</p>
+          </button>
+          <mat-paginator
+            [length]="sesionesIndividualesLength"
+            [pageSize]="sesionesIndividualesPageSize"
+            [pageSizeOptions]="sesionesIndividualesPageSizeOptions"
+            (page)="pageEvent = mostrarSesionesIndividuales($event)"
           >
           </mat-paginator>
         </div>
