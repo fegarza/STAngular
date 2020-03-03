@@ -12,8 +12,8 @@ import { EstudianteDatos, Archivo } from '../../../models/models';
 import { EstudianteService } from '../../../services/estudiante.service';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { ArchivoService } from 'src/app/services/archivo.service';
-import { DatePipe } from '@angular/common'  // Import this
-
+import { DatePipe } from '@angular/common'   
+import {Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-ajustes',
@@ -90,7 +90,7 @@ export class AjustesComponent implements OnInit {
   accionLength: number = 100;
   accionesSource = new MatTableDataSource(this.todasAcciones);
   accionesColumns: string[] = ['visible', 'obligatorio', 'fecha', 'titulo', 'tipo', 'editar', 'eliminar'];
-
+  accionesSort: Accion[];
   //archivos datatable
   public archivos: Array<Archivo> = new Array<Archivo>();
   archivosSource = new MatTableDataSource(this.archivos);
@@ -907,4 +907,26 @@ export class AjustesComponent implements OnInit {
       }
     });
   }
+
+  //Sortear la tabla de acciones tutoriales
+   sortAcciones(sort: Sort){
+    const data = this.acciones.slice();
+    if (!sort.active || sort.direction === '') {
+      this.acciones = data;
+      return;
+    }
+
+    this.accionesSort = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'titulo': return compare(a.titulo, b.titulo, isAsc);
+        default: return 0;
+      }
+    });
+  }
+  
+   
+}
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

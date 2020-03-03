@@ -46,6 +46,7 @@ export class EstudianteComponent implements OnInit {
     private usuarioService: UsuarioService
   ) {
     this.miEstudiante = new Estudiante();
+    this.miUsuario = new Usuario();
     this.miUsuario.estudiante =  new Estudiante();;
     this.miEstudiante.estudianteDatos = new EstudianteDatos();
     this.miEstudiante.carrera = new Carrera();

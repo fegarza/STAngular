@@ -257,82 +257,8 @@ export class GrupoComponent implements OnInit {
    doc.save('a4.pdf');
  }
  generarLista(){
-  
+  var doc = new jsPDF()
   var s = this.sesiones.find(x => x.id == this.sesionSeleccionada);
-  var doc = new jsPDF();
-  var pageHeight= doc.internal.pageSize.height;   
-  //header of pdf
-  doc.setFontSize(18);
-  doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
-  doc.setFontSize(16);
-  doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
-  doc.setFontSize(12);
-  doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
-  doc.setFontSize(12);
-  doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
-  
-  //body
-
- var estudiantesLista = [];
- this.miGrupo.estudiantes.forEach(e => {
-   var estado: string = "";
-   if(e.estado == "A"){
-    estado = "Activo";
-   }else if(e.estado == "T"){
-     estado = "Liberado"
-   }
-   var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
-   estudiantesLista.push(n);
- });
-  
-
-  doc.autoTable({
-     head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
-     body:  estudiantesLista,
-     theme: 'grid',
-     styles : {fillColor: [0, 79, 122]},
-     stylesDef : {fontSize : 8},
-     columnStyles:  {
-        0: { fillColor: [255, 255, 255], columnWidth: 27},
-        1: { fillColor: [255, 255, 255], columnWidth: 80},
-        2: { fillColor: [255, 255, 255], columnWidth: 12},
-        3: { fillColor: [255, 255, 255], columnWidth: 12},
-        4: { fillColor: [255, 255, 255], columnWidth: 12},
-        5: { fillColor: [255, 255, 255]},
-      },
-      margin: {top: 60},
- })
-
-
- let finalY = doc.lastAutoTable.finalY; // posición y 
- doc.text(20, finalY+15, "ACTIVIDADES DE LA SESIÓN: " );
- var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
- doc.text(20, finalY+20, split);
- //5pt height????
- var heightActividad = finalY+95;
-
- doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+5, null, null, 'center');
- doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+15, null, null, 'center');
- doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+20, null, null, 'center');
-
- doc.save('Lista.pdf');
-}
-generarListaIndividual(){
-  
-   var s = this.sesionesIndividuales.find(x => x.id == this.sesionIndividualSeleccionada);
-   var doc = new jsPDF();   
-   //header of pdf
-   doc.setFontSize(18);
-   doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
-   doc.setFontSize(16);
-   doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
-   doc.setFontSize(12);
-   doc.text(('GRUPO DE TUTORIAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
-   doc.setFontSize(12);
-   doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
-   
-   //body
-
   var estudiantesLista = [];
   this.miGrupo.estudiantes.forEach(e => {
     var estado: string = "";
@@ -344,38 +270,129 @@ generarListaIndividual(){
     var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
     estudiantesLista.push(n);
   });
-   
+  var pageHeight= doc.internal.pageSize.height;   
+  doc.setFontSize(18);
+  doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
+  doc.setFontSize(16);
+  doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
+  doc.setFontSize(12);
+  doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
+  doc.setFontSize(10);
+  doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
+  doc.autoTable({
+    head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
+    body:  estudiantesLista,
+    theme: 'grid',
+    styles : {fillColor: [0, 79, 122]},
+    stylesDef : {fontSize : 8},
+    columnStyles:  {
+       0: { fillColor: [255, 255, 255], columnWidth: 27},
+       1: { fillColor: [255, 255, 255], columnWidth: 80},
+       2: { fillColor: [255, 255, 255], columnWidth: 12},
+       3: { fillColor: [255, 255, 255], columnWidth: 12},
+       4: { fillColor: [255, 255, 255], columnWidth: 12},
+       5: { fillColor: [255, 255, 255]},
+     },
+     startY: 55,
+})
+let finalY = doc.lastAutoTable.finalY;
+var dimen = doc.getTextDimensions(s.accionTutorial.contenido);
 
-   doc.autoTable({
-      head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
-      body:  estudiantesLista,
-      theme: 'grid',
-      styles : {fillColor: [0, 79, 122]},
-      stylesDef : {fontSize : 8},
-      columnStyles:  {
-         0: { fillColor: [255, 255, 255], columnWidth: 27},
-         1: { fillColor: [255, 255, 255], columnWidth: 80},
-         2: { fillColor: [255, 255, 255], columnWidth: 12},
-         3: { fillColor: [255, 255, 255], columnWidth: 12},
-         4: { fillColor: [255, 255, 255], columnWidth: 12},
-         5: { fillColor: [255, 255, 255]},
-       },
-       margin: {top: 60},
-  })
-
-
-  let finalY = doc.lastAutoTable.finalY; // posición y 
-  doc.text(20, finalY+25, "ACTIVIDADES DE LA SESIÓN: " );
-  doc.text(20, finalY+30, s.accionTutorial.contenido);
-  var widthActividad = doc.getTextWidth(s.accionTutorial.contenido)+finalY+30;
-  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, widthActividad+15, null, null, 'center');
-  doc.text("__________________________________________________", doc.internal.pageSize.width/2, widthActividad+25, null, null, 'center');
-  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, widthActividad+35, null, null, 'center');
- 
- 
-   
-  doc.save('Lista.pdf');
+if (finalY >= (doc.internal.pageSize.height/2)) {
+  doc.addPage();
+  doc.text(20, 35, "ACTIVIDADES DE LA SESIÓN: " );
+  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+  doc.text(20, 45, split);
+  var heightActividad = (doc.getTextDimensions(split).h)+10;
+ console.log('holaxd',heightActividad);
+  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+35, null, null, 'center');
+  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
+  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');
 }
+else{
+  doc.text(20, finalY+15, "ACTIVIDADES DE LA SESIÓN: " );
+  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+  doc.text(20, finalY+20, split);
+  var heightActividad = finalY+(doc.getTextDimensions(split).h);
+ 
+  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+25, null, null, 'center');
+  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
+  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');  
+}
+var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+
+  doc.save('Lista.pdf');
+
+ }
+ generarListaIndividual(){
+  var doc = new jsPDF()
+   var s = this.sesionesIndividuales.find(x => x.id == this.sesionIndividualSeleccionada);
+  var estudiantesLista = [];
+  this.miGrupo.estudiantes.forEach(e => {
+    var estado: string = "";
+    if(e.estado == "A"){
+     estado = "Activo";
+    }else if(e.estado == "T"){
+      estado = "Liberado"
+    }
+    var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
+    estudiantesLista.push(n);
+  });
+  var pageHeight= doc.internal.pageSize.height;   
+  doc.setFontSize(18);
+  doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
+  doc.setFontSize(16);
+  doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
+  doc.setFontSize(12);
+  doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
+  doc.setFontSize(10);
+  doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "M/d/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
+  doc.autoTable({
+    head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
+    body:  estudiantesLista,
+    theme: 'grid',
+    styles : {fillColor: [0, 79, 122]},
+    stylesDef : {fontSize : 8},
+    columnStyles:  {
+       0: { fillColor: [255, 255, 255], columnWidth: 27},
+       1: { fillColor: [255, 255, 255], columnWidth: 80},
+       2: { fillColor: [255, 255, 255], columnWidth: 12},
+       3: { fillColor: [255, 255, 255], columnWidth: 12},
+       4: { fillColor: [255, 255, 255], columnWidth: 12},
+       5: { fillColor: [255, 255, 255]},
+     },
+     startY: 55,
+})
+let finalY = doc.lastAutoTable.finalY;
+var dimen = doc.getTextDimensions(s.accionTutorial.contenido);
+
+if (finalY >= (doc.internal.pageSize.height/2)) {
+  doc.addPage();
+  doc.text(20, 35, "ACTIVIDADES DE LA SESIÓN: " );
+  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+  doc.text(20, 45, split);
+  var heightActividad = (doc.getTextDimensions(split).h)+10;
+ console.log('holaxd',heightActividad);
+  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+35, null, null, 'center');
+  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
+  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');
+}
+else{
+  doc.text(20, finalY+15, "ACTIVIDADES DE LA SESIÓN: " );
+  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+  doc.text(20, finalY+20, split);
+  var heightActividad = finalY+(doc.getTextDimensions(split).h);
+ 
+  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+25, null, null, 'center');
+  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
+  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');  
+}
+var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+
+  doc.save('Lista.pdf');
+
+ }
+ 
  generarReporteSemestral(){
    var doc =new jsPDF('landscape');
    doc.setFontSize(12);

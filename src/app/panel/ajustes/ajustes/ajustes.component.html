@@ -219,7 +219,6 @@
                   <i class="fas fa-money-check"></i>
                   <h1>BECA Y SEGURO SOCIAL</h1>
                 </div>
-
                 <div class="radio">
                   <p>Tiene beca</p>
                   <mat-radio-group aria-label="Trabaja" formControlName="tieneBeca" >
@@ -230,7 +229,8 @@
                 </div>
                 <mat-form-field class="example-full-width">
                   <input matInput placeholder="Seguro social" value="" formControlName="seguroSocial">
-                </mat-form-field>
+                </mat-form-field>       
+      
                 <mat-form-field>
                   <mat-label>Tipo de beca</mat-label>
                   <mat-select formControlName="tipoDeBeca">
@@ -239,8 +239,9 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-
-
+                <div class="ask">
+                <a href="https://download1512.mediafire.com/0srcjx5dhqbg/lagfg4qq5dzbbyd/Pasos+para+tramitar+seguro+facultativo.pdf"><i class="fas fa-question"></i> ¿Cómo obtengo mi número de seguro social?</a>
+              </div>
 
                 <mat-divider></mat-divider>
 
@@ -749,7 +750,7 @@
             </ng-template>
 
 
-            <table mat-table [dataSource]="accionesSource" matSort class="mat-elevation-z8">
+            <table mat-table [dataSource]="accionesSource" matSort (matSortChange)="sortAcciones($event)" class="mat-elevation-z8">
 
               <ng-container matColumnDef="visible">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Visible
@@ -773,7 +774,7 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="titulo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Titulo
+                <th mat-header-cell *matHeaderCellDef   mat-sort-header="name" > Titulo
                 </th>
                 <td mat-cell *matCellDef="let element">
                   {{element.titulo}}
@@ -823,7 +824,7 @@
             </div>
 
           </mat-tab>
-          <mat-tab
+          <!--<mat-tab
             *ngIf="miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'A' || miUsuario.personal.cargo == 'C'">
             <ng-template mat-tab-label>
               <i class="fas fa-user-circle" style="margin-right: 15px"></i> Sesiones
@@ -862,7 +863,7 @@
 
             </form>
 
-          </mat-tab>
+          </mat-tab>-->
           <mat-tab>
             <ng-template mat-tab-label>
               <i class="fas fa-user-circle" style="margin-right: 15px"></i> Subir archivos

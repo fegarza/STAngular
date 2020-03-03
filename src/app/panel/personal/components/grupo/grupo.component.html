@@ -108,10 +108,16 @@
               Sesiones iniciales
             </th>
             <td mat-cell *matCellDef="let element">
-                <button class="btn float" (click)="asignarSesiones(element.numeroDeControl)">
+
+                <button *ngIf="
+                usuario.personal.cargo != 'T' 
+               " class="btn float" (click)="asignarSesiones(element.numeroDeControl)">
                     
                     <p> {{ element.sesionesIniciales }}</p>
                   </button>
+                  <p *ngIf="
+                  usuario.personal.cargo == 'T' 
+                 " > {{ element.sesionesIniciales }}</p>
              
             </td>
           </ng-container>
