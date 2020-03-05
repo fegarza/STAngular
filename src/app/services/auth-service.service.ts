@@ -4,7 +4,6 @@ import { IRespuesta } from '../models/respuesta';
 import { Usuario } from '../models/models';
 import { ConstantsService } from './constants.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -12,70 +11,77 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 
 
 export class AuthService {
-  
-  constructor(private http: HttpClient,private constants: ConstantsService ) {
 
+  constructor(private http: HttpClient, private constants: ConstantsService) {
   }
+
   isAuthorized(allowedRoles: string[]): boolean {
-    // check if the list of allowed roles is empty, if empty, authorize the user to access the page
+    
+    //Verifica si la lista de los roles autorizados esta vacia, si se encuentra vacia autoriza al usuario a acceder a la pag.
     if (allowedRoles == null || allowedRoles.length === 0) {
       return true;
     }
-
-    
-    // get token from local storage or state management
-   const token = this.traerUsuario().token;
-  
+    // obtener el token del localstorage
+    const token = this.traerUsuario().token;
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
-  
-  // check if it was decoded successfully, if not the token is not valid, deny access
+
+    //verificar si se decodifico correctamente, si no lo saca
     if (!decodedToken) {
       console.log('Invalid token');
       return false;
     }
-  // check if the user roles is in the list of allowed roles, return true if allowed and false if not allowed
+    // Checar si existe el rol
     return allowedRoles.includes(decodedToken['rol']);
   }
 
-  mostrarInformacionToken(token: string){
+  mostrarInformacionToken(token: string) {
+    
     console.log("-> Mostrando datos del tokenn");
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
     const expirationDate = helper.getTokenExpirationDate(token);
     const isExpired = helper.isTokenExpired(token);
-    console.log("Token: " );
+    console.log("Token: ");
     console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
-    console.log("Fecha de expiracion: "+ expirationDate );
-    console.log("Esta expirado? : "+ isExpired );
+    console.log("Fecha de expiracion: " + expirationDate);
+    console.log("Esta expirado? : " + isExpired);
+    
   }
+
   comprobarToken(token: string) {
     const params2 = new HttpParams()
       .set('token', token);
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Usuarios/type", { params: params2 });
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Usuarios/type", {
+      params: params2
+    });
   }
-  traerUsuario() : Usuario{
-    if(localStorage.getItem("usuario") != null){
+
+  traerUsuario(): Usuario {
+    if (localStorage.getItem("usuario") != null) {
       return JSON.parse(localStorage.getItem("usuario")) as Usuario;
-    }else{
+    } else {
       return null;
     }
   }
-  //LOGIN
+  
   entrar(user: string, pw: string) {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
     var miUser = new Usuario();
     miUser.email = user;
     miUser.clave = pw;
-    return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Usuarios/Login",  JSON.stringify(miUser),   { headers: headers });
+    return this.http.post < IRespuesta > (this.constants.apiUrl + "api/Usuarios/Login", JSON.stringify(miUser), {
+      headers: headers
+    });
   }
-  //LOGOUT
-  salir(){
-    if(localStorage.getItem("usuario") != null){
+   
+  salir() {
+    if (localStorage.getItem("usuario") != null) {
       localStorage.removeItem("usuario");
-      
+
     }
   }
+  
 }

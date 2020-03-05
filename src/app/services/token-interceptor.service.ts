@@ -10,8 +10,6 @@ export class TokenInterceptorService implements HttpInterceptor {
   constructor(authService: AuthService) {
     this.authService = authService;
   }
-
-
   intercept(req, next) {
     var tokenizedRequest;
     if (this.authService.traerUsuario() == null) {
@@ -29,4 +27,5 @@ export class TokenInterceptorService implements HttpInterceptor {
     }
     return next.handle(tokenizedRequest);
   }
+  
 }

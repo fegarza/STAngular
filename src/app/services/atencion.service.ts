@@ -9,12 +9,12 @@ import { IRespuesta } from '../models/respuesta';
 
 export class AtencionService {
 
-  
-  constructor(private constants: ConstantsService,private http: HttpClient) {
+  constructor(private constants: ConstantsService, private http: HttpClient) {
 
   }
 
-  showAll(){
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Atenciones/" );
+  showAll() {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Atenciones/");
   }
+
 }

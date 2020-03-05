@@ -9,25 +9,28 @@ import { Canalizacion } from '../models/models';
 })
 export class CanalizacionService {
 
-  constructor(private constants: ConstantsService,private http: HttpClient) {
-
+  constructor(private constants: ConstantsService, private http: HttpClient) {
   }
 
-
-  add(canalizacion: Canalizacion){
+  add(canalizacion: Canalizacion) {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
-   return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Canalizaciones/",  JSON.stringify(canalizacion),   { headers: headers } );
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
+    return this.http.post < IRespuesta > (this.constants.apiUrl + "api/Canalizaciones/", JSON.stringify(canalizacion), {
+      headers: headers
+    });
   }
-  editar(canalizacion: Canalizacion){
+
+  editar(canalizacion: Canalizacion) {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');    
-     return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Canalizaciones/",  JSON.stringify(canalizacion),   { headers: headers } );
-   }
-   eliminar(id: number){
-    
-     return this.http.delete<IRespuesta>(this.constants.apiUrl + "api/Canalizaciones/"+id);
-   }
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/Canalizaciones/", JSON.stringify(canalizacion), {
+      headers: headers
+    });
+  }
+
+  eliminar(id: number) {
+    return this.http.delete < IRespuesta > (this.constants.apiUrl + "api/Canalizaciones/" + id);
+  }
 }

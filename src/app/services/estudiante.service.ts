@@ -7,31 +7,23 @@ import { Estudiante, Grupo, EstudianteDatos } from '../models/models';
 @Injectable({
   providedIn: 'root'
 })
+
 export class EstudianteService {
 
   constructor(private constants: ConstantsService, private http: HttpClient) {
 
   }
-  guardarDatos(datos: EstudianteDatos) {
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
-    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/Datos", JSON.stringify(datos), { headers: headers });
 
-  }
-  mostrarDatos(numeroControl: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl+"/Datos");
-  }
-  mostrarCanalizaciones(numeroControl: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl+"/Canalizaciones");
-  }
+  //Estudiante en general
   get(numeroControl: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/" + numeroControl);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/" + numeroControl);
+  }
+  count() {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/count");
   }
   getPage(cant: number, pag: number) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes?cant=" + cant + "&pag=" + pag);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes?cant=" + cant + "&pag=" + pag);
   }
-
   add(miEstudiante: Estudiante) {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -44,9 +36,29 @@ export class EstudianteService {
         email: miEstudiante.usuario.email
       }
     };
-    return this.http.post<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(registro), { headers: headers });
+    return this.http.post < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(registro), {
+      headers: headers
+    });
   }
 
+  //Datos del estudiante
+  mostrarDatos(numeroControl: string) {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/" + numeroControl + "/Datos");
+  }
+  mostrarCanalizaciones(numeroControl: string) {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/" + numeroControl + "/Canalizaciones");
+  }
+  guardarDatos(datos: EstudianteDatos) {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/Datos", JSON.stringify(datos), {
+      headers: headers
+    });
+
+  }
+
+  //Acciones al estudiante
   asignarSesiones(numeroDeControl: string, sesiones: number) {
     var estudianteEditar: Estudiante = new Estudiante();
 
@@ -57,7 +69,9 @@ export class EstudianteService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
-    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), { headers: headers });
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), {
+      headers: headers
+    });
   }
   asignarGrupo(numeroDeControl: string, grupoId: number) {
     var estudianteEditar: Estudiante = new Estudiante();
@@ -69,7 +83,9 @@ export class EstudianteService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
-    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), { headers: headers });
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), {
+      headers: headers
+    });
   }
   asignarCarrera(numeroDeControl: string, carreraId: number) {
     var estudianteEditar: Estudiante = new Estudiante();
@@ -81,7 +97,9 @@ export class EstudianteService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
-    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), { headers: headers });
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), {
+      headers: headers
+    });
   }
   asignarEstado(numeroDeControl: string, estado: string) {
     var estudianteEditar: Estudiante = new Estudiante();
@@ -93,9 +111,9 @@ export class EstudianteService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
-    return this.http.put<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), { headers: headers });
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/", JSON.stringify(estudianteEditar), {
+      headers: headers
+    });
   }
-  count() {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Estudiantes/count" );
-  }
+
 }

@@ -11,7 +11,9 @@ export class TituloService {
   constructor(private constants: ConstantsService,private http: HttpClient) {
 
   }
+
   showAll(){
     return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Titulos/" );
    }
+   
 }

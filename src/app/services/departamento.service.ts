@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstantsService } from './constants.service';
 import { IRespuesta } from '../models/respuesta';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -12,65 +11,65 @@ export class DepartamentoService {
 
   }
 
-  //Solo departamentos
+  //Solo departementos
   showAll() {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/");
   }
   getPage(cant: number, pag: number) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos?cant=" + cant + "&pag=" + pag);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos?cant=" + cant + "&pag=" + pag);
   }
   get(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id);
   }
 
-  //Acciones tutoriales
+  //Acciones tutoriales de los departamentos
   showAcciones(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales/Grupales");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales/Grupales");
   }
   showAccionesIndividuales(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales/Individuales");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/AccionesTutoriales/Individuales");
   }
 
-  //Personales
+  //Personales de los departamentos
   showPersonales(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Personales");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Personales");
   }
   getPagePersonales(id: string, cant: number, pag: number) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Personales?cant=" + cant + "&pag=" + pag);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Personales?cant=" + cant + "&pag=" + pag);
   }
-  //Canalizaciones
+  countPersonales(id: string) {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Personales/Count");
+  }
+
+  //Canalizaciones de los departamentos
   showCanalizaciones(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Canalizaciones");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Canalizaciones");
   }
   getPageCanalizaciones(id: string, cant: number, pag: number) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Canalizaciones?cant=" + cant + "&pag=" + pag);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Canalizaciones?cant=" + cant + "&pag=" + pag);
+  }
+  countCanalizaciones(id: string) {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Canalizaciones/Count");
   }
 
   //Sesiones
   showSesiones(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Sesiones");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Sesiones");
   }
   getPageSesiones(id: string, cant: number, pag: number) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/Sesiones?cant=" + cant + "&pag=" + pag);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Sesiones?cant=" + cant + "&pag=" + pag);
   }
   countSesiones(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Sesiones/Count" );
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/Sesiones/Count");
   }
-  countCanalizaciones(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Canalizaciones/Count" );
-  }
-  countPersonales(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/Personales/Count" );
-  }
-
   showSesionesIndividuales(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales");
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales");
   }
   getPageSesionesIndividuales(id: string, cant: number, pag: number) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales?cant=" + cant + "&pag=" + pag);
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales?cant=" + cant + "&pag=" + pag);
   }
   countSesionesIndividuales(id: string) {
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/Departamentos/" + id +"/SesionesIndividuales/Count" );
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Departamentos/" + id + "/SesionesIndividuales/Count");
   }
 
 

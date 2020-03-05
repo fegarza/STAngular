@@ -9,28 +9,36 @@ import { IRespuesta } from '../models/respuesta';
 })
 export class SesionIndividualService {
 
-  constructor(private constants: ConstantsService,private http: HttpClient) {
+  constructor(private constants: ConstantsService, private http: HttpClient) {
 
   }
-  add(sesion: SesionIndividual){
+
+  add(sesion: SesionIndividual) {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
     console.log(sesion);
     console.log(JSON.stringify(sesion));
-   return this.http.post<IRespuesta>(this.constants.apiUrl + "api/SesionesIndividuales/",  JSON.stringify(sesion),   { headers: headers } );
+    return this.http.post < IRespuesta > (this.constants.apiUrl + "api/SesionesIndividuales/", JSON.stringify(sesion), {
+      headers: headers
+    });
   }
-  put(sesion: SesionIndividual){
+
+  put(sesion: SesionIndividual) {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
-   return this.http.put<IRespuesta>(this.constants.apiUrl + "api/SesionesIndividuales/",  JSON.stringify(sesion),   { headers: headers } );
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
+    return this.http.put < IRespuesta > (this.constants.apiUrl + "api/SesionesIndividuales/", JSON.stringify(sesion), {
+      headers: headers
+    });
   }
-  delete(id: number){
-     
-   return this.http.delete<IRespuesta>(this.constants.apiUrl + "api/SesionesIndividuales/"+id.toString() );
+
+  delete(id: number) {
+    return this.http.delete < IRespuesta > (this.constants.apiUrl + "api/SesionesIndividuales/" + id.toString());
   }
-  showAll(){
-    return this.http.get<IRespuesta>(this.constants.apiUrl + "api/SesionesIndividuales/");
+
+  showAll() {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/SesionesIndividuales/");
   }
+  
 }
