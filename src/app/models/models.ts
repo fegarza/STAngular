@@ -24,6 +24,7 @@ export class Estudiante {
     sesionesIniciales: number;
     sesionesIndividuales: number;
     sesiones: number;
+    sesionesEspeciales: number;
     semestre: number;
     carrera: Carrera;
     estado: string;
@@ -86,6 +87,17 @@ export class SesionIndividual{
     accionTutorial: Accion = new Accion();
     departamento: Departamento = new Departamento();
 }
+export class SesionEspecial {
+    id: number;
+    fecha: string;
+    personal: Personal;
+    estudiante: Estudiante;
+    estudianteId: number;
+    personalId: number;
+    comentarios: string;
+    
+  
+}
 export class Grupo {
     id: number;
     salon: string;
@@ -106,6 +118,7 @@ export class Accion {
 }
 export class Atencion {
     id: number;
+    area: string;
     areaId: number;
     titulo: string;
 }
@@ -117,6 +130,7 @@ export class Canalizacion {
     descripcion: string;
     fecha: string;
     estado: string;
+    area:string
     personal: Personal;
     atencion: Atencion;
     estudiante: Estudiante;
@@ -206,4 +220,27 @@ export class EstudianteDatos {
 }
 export class Count{
     count: number;
+}
+
+
+
+export class ReporteSemestralGrupo{
+    id: number;
+    salon: string;
+    personalId: number;
+    personal: Personal = new Personal();
+    estudiantes: Array<Estudiante>;
+    sesiones: Array<Sesion>;
+    estudiantesH1: number;
+    estudiantesM1: number;
+    estudiantesM: number;
+    estudiantesH: number;
+}
+
+
+export class ReporteSemestralDepartamento{
+    id: number;
+    jefeId: number;
+    jefe: Personal = new Personal();
+    personales: Array<Personal>;
 }

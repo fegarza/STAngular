@@ -1,76 +1,88 @@
 <!--FORM ALERT PARA CAMBIAR DATOS DEL ESTUDIANTE-->
 <div class="formAlert" *ngIf="formAlert == 'correo'">
-    <div class="cont">
-      <form [formGroup]="estudianteForm" (ngSubmit)="onSubmitEditarEstudiante()">
-        <h1>Nuevo correo</h1>
-        <mat-form-field class="example-full-width">
-          <input
-            matInput
-            placeholder="Nuevo correo"
-            formControlName="correo"
-            value=""
-          />
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <input
-              matInput
-              placeholder="Nueva contraseña"
-              formControlName="clave"
-              value=""
-            />
-          </mat-form-field>
-        <button type="submit" class="btn float-dark">
-          <i class="fas fa-sign-in-alt"></i>
-          <p>GUARDAR CAMBIOS</p>
-        </button>
-        <button
-          type="button"
-          class="btn float-dark"
-          (click)="formAlert = ' none'"
-        >
-          <i class="fas fa-sign-in-alt"></i>
-          <p>SALIR</p>
-        </button>
-      </form>
-    </div>
+  <div class="cont">
+    <form [formGroup]="estudianteForm" (ngSubmit)="onSubmitEditarEstudiante()">
+      <h1>Nuevo correo</h1>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Nuevo correo" formControlName="correo" value="" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Nueva contraseña" formControlName="clave" value="" />
+      </mat-form-field>
+      <button type="submit" class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button type="button" class="btn float-dark" (click)="formAlert = ' none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
   </div>
+</div>
+<!--FORM ALERT PARA ASIGNAR SESION ESPECIAL-->
+<div class="formAlert" *ngIf="formAlert == 'especial'">
+  <div class="cont">
+    <form [formGroup]="sesionEspecialForm" (ngSubmit)="onSubmitSesionEspecial()">
+      <h1>Fecha de la sesión</h1>
+      <mat-form-field>
+        <input matInput [matDatepicker]="myPicker" placeholder="fecha de la sesión" formControlName="fecha">
+        <mat-datepicker-toggle [for]="myPicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #myPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Detalles de la sesión</mat-label>
+        <textarea matInput formControlName="observaciones"></textarea>
+      </mat-form-field>
+      
+      <button type="submit" class="btn float-dark">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GUARDAR CAMBIOS</p>
+      </button>
+      <button type="button" class="btn float-dark" (click)="formAlert = 'none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
+</div>
 
-  <header>
-    
-    </header>
+<header>
+
+</header>
 <div class="perfil">
   <div class="left">
     <div class="profImg" [style.background]="'url: ' + miEstudiante.fotoLink"></div>
     <div class="box">
-        <div class="boxCont">
-          <div class="box idea">
-            <div class="title idea">
-              <p>Información</p>
-              <div class="line">
-                <div class="l"></div>
-              </div>
+      <div class="boxCont">
+        <div class="box idea">
+          <div class="title idea">
+            <p>Información</p>
+            <div class="line">
+              <div class="l"></div>
             </div>
-            <div class="boxCont">
-                <div class="logro">
-                  <i class="fas fa-glasses"></i>
-                    <p>Número de control: </p>
-                    <h1>{{ miEstudiante.numeroDeControl }}</h1>
-                  </div>
-                <div class="logro">
-                  <i class="fas fa-graduation-cap"></i>
-                    <p>Semestre: </p>
-                    <h1>{{ miEstudiante.semestre }}</h1>
-                  </div>
-                  <div class="logro">
-                      <i class="fas fa-clipboard-check"></i>
-                      <p>Número de seguro social: </p>
-                      <h1> {{ miEstudiante.estudianteDatos.nss }} </h1>
-                    </div>
-                  
+          </div>
+          <div class="boxCont">
+            <div class="logro">
+              <i class="fas fa-glasses"></i>
+              <p>Número de control: </p>
+              <h1>{{ miEstudiante.numeroDeControl }}</h1>
             </div>
+            <div class="logro">
+              <i class="fas fa-graduation-cap"></i>
+              <p>Semestre: </p>
+              <h1>{{ miEstudiante.semestre }}</h1>
+            </div>
+            <div class="logro">
+              <i class="fas fa-clipboard-check"></i>
+              <p>Número de seguro social: </p>
+              <h1> {{ miEstudiante.estudianteDatos.nss }} </h1>
+            </div>
+
           </div>
         </div>
       </div>
+    </div>
     <div class="box">
       <div class="boxCont">
         <div class="box idea">
@@ -81,16 +93,21 @@
             </div>
           </div>
           <div class="boxCont">
-              <div class="logro">
-                  <i class="fas fa-clipboard-check"></i>
-                  <p>Sesiones iniciales: </p>
-                  <h1>{{ miEstudiante.sesionesIniciales }}</h1>
-                </div>
-                <div class="logro">
-                    <i class="fas fa-clipboard-check"></i>
-                    <p>Sesiones obtenidas: </p>
-                    <h1>{{ miEstudiante.sesiones }}</h1>
-                  </div>
+            <div class="logro">
+              <i class="fas fa-clipboard-check"></i>
+              <p>Sesiones iniciales: </p>
+              <h1>{{ miEstudiante.sesionesIniciales }}</h1>
+            </div>
+            <div class="logro">
+              <i class="fas fa-clipboard-check"></i>
+              <p>Sesiones individuales: </p>
+              <h1>{{ miEstudiante.sesionesEspeciales }}</h1>
+            </div>
+            <div class="logro">
+              <i class="fas fa-clipboard-check"></i>
+              <p>Sesiones: </p>
+              <h1>{{ miEstudiante.sesiones + miEstudiante.sesionesIndividuales }}</h1>
+            </div>
             <div class="logro">
               <i class="fas fa-clipboard-check"></i>
               <p>Sesiones en total: </p>
@@ -98,336 +115,387 @@
             </div>
             <div class="logro">
               <i class="fas fa-trophy"></i>
-                <p>Créditos</p>
-                <h1>{{ miEstudiante.cantidadDeCreditos }}</h1>
-              </div>
+              <p>Créditos</p>
+              <h1>{{ miEstudiante.cantidadDeCreditos }}</h1>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="box">
-        <div class="boxCont">
-          <div class="box idea">
-            <div class="title idea">
-              <p>Historial</p>
-              <div class="line">
-                <div class="l"></div>
-              </div>
+      <div class="boxCont">
+        <div class="box idea">
+          <div class="title idea">
+            <p>Historial</p>
+            <div class="line">
+              <div class="l"></div>
             </div>
-            <div class="boxCont">
-                <div class="logro">
-                  <i class="fas fa-exclamation-circle"></i>
-                    <p>Canalizaciones: </p>
-                    <h1>{{ miEstudiante.canalizaciones }}</h1>
-                  </div>
+          </div>
+          <div class="boxCont">
+            <div class="logro">
+              <i class="fas fa-exclamation-circle"></i>
+              <p>Canalizaciones: </p>
+              <h1>{{ miEstudiante.canalizaciones }}</h1>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
   <div class="right">
-        <div class="profImg" [style.background]="'url: ' + miEstudiante.fotoLink"></div>
+    <div class="profImg" [style.background]="'url: ' + miEstudiante.fotoLink"></div>
 
-      <section class="estudianteTitulo">
-          <h1>
-              {{ miEstudiante.usuario.nombreCompleto | titlecase }}
-          </h1>
-          <b>Estudiante de {{ miEstudiante.carrera.titulo | titlecase }}</b>
-          <div class="settings" [matMenuTriggerFor]="appMenu">
-              <mat-menu #appMenu="matMenu">
-                <button mat-menu-item (click)="asignarGrupo()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
-                  <i class="fas fa-users-cog"></i>
-                  <p>Asignar grupo</p>
-                </button>
-                <button mat-menu-item (click)="asignarCarrera()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
-                  <i class="fas fa-users-cog"></i>
-                  <p>Cambiar de carrera</p>
-                </button>
-                <button mat-menu-item (click)="asignarSesiones()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
-                  <i class="fas fa-flag"></i>
-                  <p>Establecer sesiones iniciales</p>
-                </button>
-                <button mat-menu-item (click)="canalizar()" *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A' ||  (miUsuario.personal.cargo == 'T' && miEstudiante.grupo.personal.id == miUsuario.personal.id))">
-                  <i class="fas fa-exclamation-circle"></i>
-                  <p>Canalizar</p>
-                </button>
-                <button mat-menu-item [routerLink]="['/panel/ajustes']" *ngIf="miUsuario.estudiante != null" >
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p>Editar</p>
-                  </button>
-                  <button mat-menu-item (click)="asignarClave()" *ngIf=" 
+    <section class="estudianteTitulo">
+      <h1>
+        {{ miEstudiante.usuario.nombreCompleto | titlecase }}
+      </h1>
+      <b>Estudiante de {{ miEstudiante.carrera.titulo | titlecase }}</b>
+      <div class="settings" [matMenuTriggerFor]="appMenu">
+        <mat-menu #appMenu="matMenu">
+          <button mat-menu-item (click)="asignarGrupo()"
+            *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
+            <i class="fas fa-users-cog"></i>
+            <p>Asignar grupo</p>
+          </button>
+          <button mat-menu-item (click)="asignarCarrera()"
+            *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
+            <i class="fas fa-users-cog"></i>
+            <p>Cambiar de carrera</p>
+          </button>
+          <button mat-menu-item (click)="asignarSesiones()"
+            *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')">
+            <i class="fas fa-flag"></i>
+            <p>Establecer sesiones iniciales</p>
+          </button>
+
+          <button mat-menu-item (click)="crearSesionIndividual()"
+            *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A' ||  (miUsuario.personal.cargo == 'T' && miEstudiante.grupo.personal.id == miUsuario.personal.id))">
+            <i class="fas fa-clipboard-check"></i>
+            <p>Asignar una sesión individual</p>
+          </button>
+          <button mat-menu-item (click)="canalizar()"
+            *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A' ||  (miUsuario.personal.cargo == 'T' && miEstudiante.grupo.personal.id == miUsuario.personal.id))">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Canalizar</p>
+          </button>
+        
+
+
+          <button mat-menu-item [routerLink]="['/panel/ajustes']" *ngIf="miUsuario.estudiante != null">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Editar</p>
+          </button>
+          <button mat-menu-item (click)="asignarClave()" *ngIf=" 
                   (miUsuario.estudiante != null &&
                   miUsuario.estudiante.numeroDeControl == miEstudiante.numeroDeControl )
                   || 
                   ( miUsuario.personal != null 
                     && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')
-                  )" >
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p>Cambiar clave</p>
-                  </button>
-              </mat-menu>
-              <button class="btn float">
-                <i class="fas fa-chevron-circle-down"></i>
-                <p>Modificar estudiante</p>
+                  )">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Cambiar clave</p>
+          </button>
+        </mat-menu>
+        <button class="btn float">
+          <i class="fas fa-chevron-circle-down"></i>
+          <p>Modificar estudiante</p>
+        </button>
+      </div>
+    </section>
+    <section class="infor">
+
+      <div class="textBox lineBlue">
+        <h1><i class="fas fa-info-circle"></i>Información del estudiante</h1>
+        <p>
+
+          <br />
+          <b>Tutor:
+          </b>{{miEstudiante.grupo.personal.id != 0 ? (miEstudiante.grupo.personal.usuario.nombreCompleto | titlecase) : 'Sin asignar'}}
+          <br />
+          <b>Correo electrónico personal: </b>{{miEstudiante.usuario.email}}
+          <br />
+          <b>Sesiones iniciales: </b>{{miEstudiante.sesionesIniciales}}
+          <br />
+          <b>Sesiones individuales: </b>{{miEstudiante.sesionesEspeciales}}
+          <br />
+          <b>Sesiones: </b>{{miEstudiante.sesiones + miEstudiante.sesionesIndividuales}}
+          <br />
+          <b>Número de seguro social: </b>{{miEstudiante.estudianteDatos.nss}}
+        </p>
+      </div>
+
+    </section>
+    <section class="advices">
+      <div class="advice blue horizontal">
+        <i class="fas fa-trophy"></i>
+        <div class="info">
+          <h1>{{ miEstudiante.cantidadDeCreditos }}</h1>
+          <p>Créditos</p>
+        </div>
+      </div>
+      <div class="advice blue horizontal">
+        <i class="fas fa-clipboard-check"></i>
+        <div class="info">
+          <h1>{{ sesionesTotales }}</h1>
+          <p>Sesiones</p>
+        </div>
+      </div>
+      <div class="advice blue horizontal">
+        <i class="fas fa-graduation-cap"></i>
+        <div class="info">
+          <h1>{{ miEstudiante.semestre }}</h1>
+          <p>Semestre</p>
+        </div>
+      </div>
+      <div class="advice blue horizontal">
+        <i class="fas fa-exclamation-circle"></i>
+        <div class="info">
+          <h1>{{ miEstudiante.canalizaciones }}</h1>
+          <p>Canalizaciones</p>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="datos">
+      <mat-tab-group>
+
+        <mat-tab label="Mis datos clínicos">
+          <div class="boxCont">
+
+
+            <div class="title idea">
+              <p>DATOS PERSONALES</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+              Teléfono de domicilio: {{miEstudiante.estudianteDatos.telefonoDomicilio}} <br>
+              Fecha de nacimiento: {{ miEstudiante.estudianteDatos.fechaNacimiento }}<br>
+              Ciudad de nacimiento: {{ miEstudiante.estudianteDatos.ciudadNacimiento }}<br>
+              Estado de nacimiento: {{ miEstudiante.estudianteDatos.estadoNacimiento }}<br>
+            </p>
+
+            <div class="title idea">
+              <p>ESTADO CIVIL</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              Estado civil: {{ miEstudiante.estudianteDatos.estadoCivil }}<br>
+              Numero de hijos: {{ miEstudiante.estudianteDatos.numeroHijos }}<br>
+              Dependencia ecnómica: {{ miEstudiante.estudianteDatos.cependenciaEconomica }}<br>
+            </p>
+            <div class="title idea">
+              <p>DOMICILIO</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+              Calle: {{ miEstudiante.estudianteDatos.calleDomicilio }}<br>
+              Número: {{ miEstudiante.estudianteDatos.numDomicilio }}<br>
+              Colonia: {{ miEstudiante.estudianteDatos.coloniaDomicilio }}<br>
+              Código postal: {{ miEstudiante.estudianteDatos.codigoPostalDomicilio }}<br>
+            </p>
+            <div class="title idea">
+              <p>TRABAJO</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿Trabaja?: {{ miEstudiante.estudianteDatos.trabaja == true ? 'Sí' : 'No'}}<br>
+              Nombre de la empresa donde trabaja: {{ miEstudiante.estudianteDatos.empresa }}<br>
+              Horario: {{ miEstudiante.estudianteDatos.horario }}<br>
+              Lugar de trabajo familiar: {{ miEstudiante.estudianteDatos.lugarTrabajoFamiliar }}<br>
+              Teléfono del trabajo familiar: {{ miEstudiante.estudianteDatos.telefonoTrabajoFamiliar }}<br>
+
+            </p>
+            <div class="title idea">
+              <p>DATOS DEL PADRE</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+              ¿El padre vive?: {{ miEstudiante.estudianteDatos.padreVive == true ? 'Sí' : 'No'}}<br>
+              Estudios del padre: {{ miEstudiante.estudianteDatos.estudiosPadre }}<br>
+              Lugar de trabajo del padre: {{ miEstudiante.estudianteDatos.lugarTrabajoPadre }}<br>
+              Teléfono del trabajo del padre: {{ miEstudiante.estudianteDatos.telefonoTrabajoPadre }}<br>
+            </p>
+            <div class="title idea">
+              <p>DATOS DE LA MADRE</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿La madre vive?: {{ miEstudiante.estudianteDatos.madreVive == true ? 'Sí' : 'No'}}<br>
+              Estudios de la madre: {{ miEstudiante.estudianteDatos.estudiosMadre }}<br>
+              Lugar de trabajo de la madre: {{ miEstudiante.estudianteDatos.lugarTrabajoMadre }}<br>
+              Teléfono del trabajo de la madre: {{ miEstudiante.estudianteDatos.telefonoTrabajoMadre }}<br>
+
+            </p>
+            <div class="title idea">
+              <p>BECA Y SEGURO SOCIAL</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿Tiene beca?: {{ miEstudiante.estudianteDatos.tieneBeca == true ? 'Sí' : 'No'}}<br>
+              Es becado por: {{ miEstudiante.estudianteDatos.becadoPor }}<br>
+              Número de seguro social: {{ miEstudiante.estudianteDatos.nss }}<br>
+            </p>
+            <div class="title idea">
+              <p>DEFICIENCIAS SENSORIALES O FUNCIONALES</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿Tiene problemas de la vista?:
+              {{ miEstudiante.estudianteDatos.prescripcionVista == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas del oído?: {{ miEstudiante.estudianteDatos.prescripcionOido == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas de lenguaje?:
+              {{ miEstudiante.estudianteDatos.prescripcionLenguaje == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problema motriz?: {{ miEstudiante.estudianteDatos.prescripcionMotriz == true ? 'Sí' : 'No'}}<br>
+            </p>
+            <div class="title idea">
+              <p>PADECIMIENTOS O DEFICIENCIAS DE SISTEMA ORGÁNICO</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿Tiene problemas en el sistema nervioso?:
+              {{ miEstudiante.estudianteDatos.prescripcionSistemaNervioso == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas en el sistema circulatorio?:
+              {{ miEstudiante.estudianteDatos.prescripcionSistemaCirculatorio == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas en el sistema digestivo?:
+              {{ miEstudiante.estudianteDatos.prescripcionSistemaDigestivo == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas en el sistema respiratorio?:
+              {{ miEstudiante.estudianteDatos.prescripcionSistemaRespiratorio == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas en el sistema oseo?:
+              {{ miEstudiante.estudianteDatos.prescripcionSistemaOseo == true ? 'Sí' : 'No'}}<br>
+              ¿Tiene problemas en otro sistema?:
+              {{ miEstudiante.estudianteDatos.prescripcionSistemaOtro == true ? 'Sí' : 'No'}}<br>
+            </p>
+            <div class="title idea">
+              <p>LLEVA O HA LLEVADO TRATAMIENTO PSICOLÓGICO O PSIQUIÁTRICO</p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿Ha llevado tratamiento pricológico o psiquiátrico?:
+              {{ miEstudiante.estudianteDatos.tratamientoPsicologicoPsiquiatrico == true ? 'Sí' : 'No'}}<br>
+              ¿A qué?: {{ miEstudiante.estudianteDatos.tratamientoPsicologicoPsiquiatricoExplicacion }}<br>
+            </p>
+            <div class="title idea">
+              <p>ESTADO PSICOFISIOLÓGICO </p>
+              <div class="line">
+                <div class="l"></div>
+              </div>
+            </div>
+            <p>
+
+
+              ¿Tiene problemas con manos y/o pies hinchados ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.manosPiesHinchados)  }}<br>
+              ¿Tiene problemas con dolores en el vientre ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.doloresVientre) }}<br>
+              ¿Tiene problemas con dolores de cabeza y/o vómitos ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.doloresCabezaVomito) }}<br>
+              ¿Tiene problemas con pérdida del equilibrio ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.perdidaEquilibrio) }}<br>
+              ¿Tiene problemas con la fatiga y agotamiento ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.fatigaAgotamiento) }}<br>
+              ¿Tiene problemas con la pérdida de vista u oído ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.perdidaVistaOido) }}<br>
+              ¿Tiene problemas con dificultades para dormir ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.dificultadDormir) }}<br>
+              ¿Tiene problemas con pesadillas o terrores nocturnos ?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.pesadillasTerroresNocturnos) }}<br>
+              ¿Pesadillas a qué?: {{ miEstudiante.estudianteDatos.pesadillasTerroresNocturnosAque }}<br>
+              ¿Tiene problemas con inconsistencias?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.incontinencia) }}<br>
+              ¿Tiene problemas con tartamudeos?: {{ traducirOpcion(miEstudiante.estudianteDatos.tartamudeos) }}<br>
+              ¿Tiene problemas con miedos intensos?:
+              {{ traducirOpcion(miEstudiante.estudianteDatos.miedosIntensos)}}<br>
+            </p>
+          </div>
+        </mat-tab>
+        <mat-tab label="Mis créditos">
+          <div class="boxCont creditos">
+            <div class="credito" *ngFor="let i of miEstudiante.creditos">
+              <b>Título del crédito</b>
+              <p> {{ i.actividad.titulo }}</p>
+              <b>Fecha</b>
+              <p> {{i.fechaDeOficio | date:'shortDate'}}</p>
+              <b>Estatus de la actividad</b>
+              <p> {{ i.estadoDeLaActividad == 'T' ? 'Terminada' : 'En proceso' }} </p>
+            </div>
+          </div>
+
+        </mat-tab>
+        <mat-tab label="Mis canalizaciones">
+          <div class="boxCont canalizaciones">
+            <div class="canalizacion" *ngFor="let i of canalizaciones">
+              <b>Tutor</b>
+              <p>{{ i.personal.usuario.nombreCompleto | titlecase }} </p>
+              <b>Asunto</b>
+              <p> {{ i.atencion.titulo }}</p>
+              <b>Fecha</b>
+              <p>{{i.fecha | date:'shortDate'}}</p>
+              <b>Descripción</b>
+              <p>{{ i.descripcion }} </p>
+              <b>Estatus de la canalización</b>
+              <p>{{ i.estado == 'T' ? 'Terminada' : 'En proceso' }} </p>
+            </div>
+          </div>
+
+        </mat-tab>
+        <mat-tab label="Mis sesiones individuales">
+          <div class="boxCont canalizaciones">
+            <div class="canalizacion" *ngFor="let i of especiales">
+              <b>Fecha</b>
+              <p>{{i.fecha | date:'shortDate'}}</p>
+              <b>Tutor</b>
+              <p>{{i.personal.usuario.nombreCompleto | titlecase }}</p>
+              <b>Contenido</b>
+              <p>{{i.comentarios  }}</p>
+              <button type="button" class="btn float-dark" (click)="eliminarSesionEspecial( i.id )"
+              *ngIf="miUsuario.personal != null && (miUsuario.personal.cargo == 'C' || miUsuario.personal.cargo == 'D' || miUsuario.personal.cargo == 'J' || miUsuario.personal.cargo == 'A')"
+              >
+                <i class="fas fa-sign-in-alt"></i>
+                <p>ELIMINAR</p>
               </button>
             </div>
-        </section>
-        <section class="infor">
-               
-            <div class="textBox lineBlue">
-              <h1><i class="fas fa-info-circle"></i>Información del estudiante</h1>
-              <p>
-                 
-                <br />
-                <b>Tutor: </b>{{miEstudiante.grupo.personal.id != 0 ? (miEstudiante.grupo.personal.usuario.nombreCompleto | titlecase) : 'Sin asignar'}}
-                <br />
-                <b>Correo electrónico personal: </b>{{miEstudiante.usuario.email}}
-                <br />
-                <b>Sesiones iniciales: </b>{{miEstudiante.sesionesIniciales}}
-                <br />
-                <b>Sesiones individuales: </b>{{miEstudiante.sesionesIndividuales}}
-                <br />
-                <b>Sesiones grupales: </b>{{miEstudiante.sesiones}}
-                <br />
-                <b>Número de seguro social: </b>{{miEstudiante.estudianteDatos.nss}}
-              </p>
-            </div>
-          
-        </section>
-        <section class="advices">
-              <div class="advice blue horizontal">
-                <i class="fas fa-trophy"></i>
-                <div class="info">
-                  <h1>{{ miEstudiante.cantidadDeCreditos }}</h1>
-                  <p>Créditos</p>
-                </div>
-              </div>
-              <div class="advice blue horizontal">
-                <i class="fas fa-clipboard-check"></i>
-                <div class="info">
-                  <h1>{{ sesionesTotales }}</h1>
-                  <p>Sesiones</p>
-                </div>
-              </div>
-              <div class="advice blue horizontal">
-                <i class="fas fa-graduation-cap"></i>
-                <div class="info">
-                  <h1>{{ miEstudiante.semestre }}</h1>
-                  <p>Semestre</p>
-                </div>
-              </div>
-              <div class="advice blue horizontal">
-                <i class="fas fa-exclamation-circle"></i>
-                <div class="info">
-                  <h1>{{ miEstudiante.canalizaciones }}</h1>
-                  <p>Canalizaciones</p>
-                </div>
-              </div>
-            
-          </section>
-         
-    <section class="datos">
-        <mat-tab-group>
-            
-            <mat-tab label="Mis datos clínicos">
-                <div class="boxCont">
-                  
-                   
-                    <div class="title idea">
-                      <p>DATOS PERSONALES</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                   <p>
-                    Teléfono de domicilio: {{miEstudiante.estudianteDatos.telefonoDomicilio}} <br>
-                    Fecha de nacimiento: {{ miEstudiante.estudianteDatos.fechaNacimiento }}<br>
-                    Ciudad de nacimiento: {{ miEstudiante.estudianteDatos.ciudadNacimiento }}<br>
-                    Estado de nacimiento: {{ miEstudiante.estudianteDatos.estadoNacimiento }}<br>
-                  </p>
+          </div>
 
-                    <div class="title idea">
-                      <p>ESTADO CIVIL</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
+        </mat-tab>
 
-                    
-                    Estado civil: {{ miEstudiante.estudianteDatos.estadoCivil }}<br>
-                    Numero de hijos: {{ miEstudiante.estudianteDatos.numeroHijos }}<br>
-                    Dependencia ecnómica: {{ miEstudiante.estudianteDatos.cependenciaEconomica }}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>DOMICILIO</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-                     Calle: {{ miEstudiante.estudianteDatos.calleDomicilio }}<br>
-                     Número: {{ miEstudiante.estudianteDatos.numDomicilio }}<br>
-                     Colonia: {{ miEstudiante.estudianteDatos.coloniaDomicilio }}<br>
-                     Código postal: {{ miEstudiante.estudianteDatos.codigoPostalDomicilio }}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>TRABAJO</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                   
-                    ¿Trabaja?: {{ miEstudiante.estudianteDatos.trabaja == true ? 'Sí' : 'No'}}<br>
-                    Nombre de la empresa donde trabaja: {{ miEstudiante.estudianteDatos.empresa }}<br>
-                    Horario: {{ miEstudiante.estudianteDatos.horario }}<br>
-                    Lugar de trabajo familiar: {{ miEstudiante.estudianteDatos.lugarTrabajoFamiliar }}<br>
-                    Teléfono del trabajo familiar: {{ miEstudiante.estudianteDatos.telefonoTrabajoFamiliar }}<br>
-                 
-                  </p>
-                    <div class="title idea">
-                      <p>DATOS DEL PADRE</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-                    ¿El padre vive?: {{ miEstudiante.estudianteDatos.padreVive == true ? 'Sí' : 'No'}}<br>
-                    Estudios del padre: {{ miEstudiante.estudianteDatos.estudiosPadre }}<br>
-                    Lugar de trabajo del padre: {{ miEstudiante.estudianteDatos.lugarTrabajoPadre }}<br>
-                    Teléfono del trabajo del padre: {{ miEstudiante.estudianteDatos.telefonoTrabajoPadre }}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>DATOS DE LA MADRE</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                   
-                    ¿La madre vive?: {{ miEstudiante.estudianteDatos.madreVive == true ? 'Sí' : 'No'}}<br>
-                    Estudios de la madre: {{ miEstudiante.estudianteDatos.estudiosMadre }}<br>
-                    Lugar de trabajo de la madre: {{ miEstudiante.estudianteDatos.lugarTrabajoMadre }}<br>
-                    Teléfono del trabajo de la madre: {{ miEstudiante.estudianteDatos.telefonoTrabajoMadre }}<br>
-                    
-                     </p>
-                    <div class="title idea">
-                      <p>BECA Y SEGURO SOCIAL</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                   
-                    ¿Tiene beca?: {{ miEstudiante.estudianteDatos.tieneBeca == true ? 'Sí' : 'No'}}<br>
-                    Es becado por: {{ miEstudiante.estudianteDatos.becadoPor }}<br>
-                    Número de seguro social: {{ miEstudiante.estudianteDatos.nss }}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>DEFICIENCIAS SENSORIALES O FUNCIONALES</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                  
-                    ¿Tiene problemas de la vista?: {{ miEstudiante.estudianteDatos.prescripcionVista == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas del oído?: {{ miEstudiante.estudianteDatos.prescripcionOido == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas de lenguaje?: {{ miEstudiante.estudianteDatos.prescripcionLenguaje == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problema motriz?: {{ miEstudiante.estudianteDatos.prescripcionMotriz == true ? 'Sí' : 'No'}}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>PADECIMIENTOS O DEFICIENCIAS DE SISTEMA ORGÁNICO</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                   
-                    ¿Tiene problemas en el sistema nervioso?: {{ miEstudiante.estudianteDatos.prescripcionSistemaNervioso == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas en el sistema circulatorio?: {{ miEstudiante.estudianteDatos.prescripcionSistemaCirculatorio == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas en el sistema digestivo?: {{ miEstudiante.estudianteDatos.prescripcionSistemaDigestivo == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas en el sistema respiratorio?: {{ miEstudiante.estudianteDatos.prescripcionSistemaRespiratorio == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas en el sistema oseo?: {{ miEstudiante.estudianteDatos.prescripcionSistemaOseo == true ? 'Sí' : 'No'}}<br>
-                    ¿Tiene problemas en otro sistema?: {{ miEstudiante.estudianteDatos.prescripcionSistemaOtro == true ? 'Sí' : 'No'}}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>LLEVA O HA LLEVADO TRATAMIENTO PSICOLÓGICO O PSIQUIÁTRICO</p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                   
-                    ¿Ha llevado tratamiento pricológico o psiquiátrico?: {{ miEstudiante.estudianteDatos.tratamientoPsicologicoPsiquiatrico == true ? 'Sí' : 'No'}}<br>
-                    ¿A qué?: {{ miEstudiante.estudianteDatos.tratamientoPsicologicoPsiquiatricoExplicacion }}<br>
-                  </p>
-                    <div class="title idea">
-                      <p>ESTADO PSICOFISIOLÓGICO </p>
-                      <div class="line">
-                        <div class="l"></div>
-                      </div>
-                    </div>
-                    <p>
-
-                   
-                    ¿Tiene problemas con  manos y/o pies hinchados ?: 
-                    {{ traducirOpcion(miEstudiante.estudianteDatos.manosPiesHinchados)  }}<br>
-                    ¿Tiene problemas con  dolores en el vientre  ?: {{ traducirOpcion(miEstudiante.estudianteDatos.doloresVientre) }}<br>
-                    ¿Tiene problemas con  dolores de cabeza y/o vómitos ?: {{ traducirOpcion(miEstudiante.estudianteDatos.doloresCabezaVomito) }}<br>
-                    ¿Tiene problemas con  pérdida del equilibrio  ?: {{ traducirOpcion(miEstudiante.estudianteDatos.perdidaEquilibrio) }}<br>
-                    ¿Tiene problemas con  la fatiga y agotamiento ?: {{ traducirOpcion(miEstudiante.estudianteDatos.fatigaAgotamiento) }}<br>
-                    ¿Tiene problemas con  la  pérdida de vista u oído ?: {{ traducirOpcion(miEstudiante.estudianteDatos.perdidaVistaOido) }}<br>
-                    ¿Tiene problemas con  dificultades para dormir ?: {{ traducirOpcion(miEstudiante.estudianteDatos.dificultadDormir) }}<br>
-                    ¿Tiene problemas con  pesadillas o terrores nocturnos ?: {{ traducirOpcion(miEstudiante.estudianteDatos.pesadillasTerroresNocturnos) }}<br>
-                    ¿Pesadillas a qué?: {{ miEstudiante.estudianteDatos.pesadillasTerroresNocturnosAque }}<br>
-                    ¿Tiene problemas con  inconsistencias?: {{ traducirOpcion(miEstudiante.estudianteDatos.incontinencia) }}<br>
-                    ¿Tiene problemas con  tartamudeos?: {{ traducirOpcion(miEstudiante.estudianteDatos.tartamudeos) }}<br>
-                    ¿Tiene problemas con  miedos intensos?: {{ traducirOpcion(miEstudiante.estudianteDatos.miedosIntensos)}}<br>
-                  </p>
-                </div>
-            </mat-tab>
-            <mat-tab label="Mis créditos">
-                <div class="boxCont creditos">
-                    <div class="credito" *ngFor="let i of miEstudiante.creditos">
-                        <b>Título del crédito</b>
-                        <p> {{ i.actividad.titulo }}</p>
-                        <b>Fecha</b>
-                        <p> {{i.fechaDeOficio | date:'shortDate'}}</p>
-                        <b>Estatus de la actividad</b>
-                        <p> {{ i.estadoDeLaActividad == 'T' ? 'Terminada' : 'En proceso' }} </p>
-                    </div>
-                  </div>
-                
-            </mat-tab>
-            <mat-tab label="Mis canalizaciones">
-                <div class="boxCont canalizaciones">
-                    <div class="canalizacion" *ngFor="let i of canalizaciones">
-                        <b>Tutor</b>
-                        <p>{{ i.personal.usuario.nombreCompleto | titlecase }} </p>
-                        <b>Asunto</b>
-                        <p> {{ i.atencion.titulo }}</p>
-                        <b>Fecha</b>
-                        <p>{{i.fecha | date:'shortDate'}}</p>
-                        <b>Descripción</b>
-                        <p>{{ i.descripcion }} </p>
-                        <b>Estatus de la canalización</b>
-                        <p>{{ i.estado == 'T' ? 'Terminada' : 'En proceso' }} </p>
-                    </div>
-                </div>
-               
-              </mat-tab>
-            
-          </mat-tab-group>
+      </mat-tab-group>
     </section>
-  
+
   </div>
 </div>
 

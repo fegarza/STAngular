@@ -48,6 +48,9 @@ export class EstudianteService {
   mostrarCanalizaciones(numeroControl: string) {
     return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/" + numeroControl + "/Canalizaciones");
   }
+  mostrarSesionesEspeciales(numeroControl: string) {
+    return this.http.get < IRespuesta > (this.constants.apiUrl + "api/Estudiantes/" + numeroControl + "/SesionesEspeciales");
+  }
   guardarDatos(datos: EstudianteDatos) {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')

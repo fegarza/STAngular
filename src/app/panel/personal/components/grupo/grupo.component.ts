@@ -394,83 +394,130 @@ var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
  }
  
  generarReporteSemestral(){
-   var doc =new jsPDF('landscape');
-   doc.setFontSize(12);
-   doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
-   doc.text(("DEPARTAMENTO DE " +this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 28, null, null, 'center');
-   doc.text("REPORTE DEL TUTOR",doc.internal.pageSize.width/2, 36, null, null, 'center');
-   doc.text(("NOMBRE DEL TUTOR: " +this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
-   doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
-   doc.text(("PROGRAMA ACADÉMICO: " +this.miGrupo.personal.departamento.titulo.toUpperCase()), 20, 54)
+  var temporal : Grupo;
+  
 
-       
-   var estudiantesLista = [];
-   this.miGrupo.estudiantes.forEach(e => {
-     var estado: string = "";
-     if(e.estado == "A"){
-      estado = "Activo";
-     }else if(e.estado == "T"){
-       estado = "Liberado"
-     }
-     var n = [e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones, e.sesionesIndividuales,e.sesionesIniciales,e.canalizaciones];
-     estudiantesLista.push(n);
-   });
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; 
+    var year = dateObj.getUTCFullYear();
+    var periodo: number = 2;
+    if(month >= 1 && month <= 7){
+      periodo = 1;
+    } 
 
-   
+  this.grupoService.getReporteSemestral(this.miGrupo.id.toString(), periodo, year).subscribe(
+    r => {
+      if (r.code == 200) {
+        temporal = r.data as Grupo;
+              
+        var doc =new jsPDF('landscape');
+        doc.setFontSize(12);
+        doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
+        doc.text(("DEPARTAMENTO DE " +this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 28, null, null, 'center');
+        doc.text("REPORTE DEL TUTOR",doc.internal.pageSize.width/2, 36, null, null, 'center');
+        doc.text(("NOMBRE DEL TUTOR: " +this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
+        doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
+        doc.text(("PROGRAMA ACADÉMICO: " +this.miGrupo.personal.departamento.titulo.toUpperCase()), 20, 54)
+        //como se consigue el total de tutorados? se que hay una entidad llamada miPersonal o algo asi y ahi esta pero
+        //no parece que pueda usarlo aquí O_o
+        // doc.text("TOTAL: " +(totalTutoradosxdd), 240,54)
+            
+        var estudiantesLista = [];
+        temporal.estudiantes.forEach(e => {
+          var estado: string = "";
+          if(e.estado == "A"){
+          estado = "Activo";
+          }else if(e.estado == "T"){
+            estado = "Liberado"
+          }
+          else if(e.estado == "E"){
+            estado = "Egresado"
+          }
+          else if(e.estado == "B"){
+            estado = "Baja"
+          }
+          else if(e.estado == "V"){
+            estado = "Baja temporal"
+          }
+          
+          var areasStr = "";
+          var x:number = 0;
+          e.canalizacionesLista.forEach(c => {
+            if(x == 0){
+              areasStr+=c.area+" ";
+            }else{
+              areasStr+=", "+ c.area;
+            }
+            x++;
+          });
 
-   doc.autoTable({
-     head: [[ 'Nombre', 'Sem.',  'Ses.', 'Ses. Indiv.','Ses. Inicial','Can.','Áreas de canalización']],
-     body:  estudiantesLista,
-     theme: 'grid',
-     styles : {fillColor: [0, 79, 122]},
-     stylesDef : {fontSize : 8},
-     columnStyles:  {
-        0: { fillColor: [255, 255, 255], columnWidth: 80},
-        1: { fillColor: [255, 255, 255]},
-        2: { fillColor: [255, 255, 255]},
-        3: { fillColor: [255, 255, 255]},
-        4: { fillColor: [255, 255, 255]},
-        5: { fillColor: [255, 255, 255]},
-        6: { fillColor: [255, 255, 255]},//Cómo obtengo las areas de canalizacion??
-      },
-      margin: {top: 60},
- })
- let finalY = doc.lastAutoTable.finalY + 20;
- var pageHeight= doc.internal.pageSize.height;
-   //no hay suficientes tutorados registrados como para comprobar el funcionamiento del 2do if 
-   //pero no debe haber problemo creo xdxd
-   if (finalY >= pageHeight) {
-     doc.addPage();
-     finalY=30;
-     doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
-     doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
-     doc.text("___________________________________________", 20, finalY+30);
-     doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
-     doc.text("___________________________________________", 170, finalY+30);
-     doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
-   } 
-   if (finalY+50 >= pageHeight) {
-     doc.addPage();
-     finalY=30;
-     doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
-     doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
-     doc.text("___________________________________________", 20, finalY+30);
-     doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
-     doc.text("___________________________________________", 170, finalY+30);
-     doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
-   }
-   else {
-     doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
-     doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
-     doc.text("___________________________________________", 20, finalY+30);
-     doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
-     doc.text("___________________________________________", 170, finalY+30);
-     doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
-   }
+          var n = [e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones, e.sesionesIndividuales,e.sesionesIniciales,e.canalizacionesLista.length, areasStr];
 
- doc.save('Reporte.pdf');
+          estudiantesLista.push(n);
+        });
+
+        
+
+        doc.autoTable({
+          head: [[ 'Nombre', 'Sem.',  'Ses.', 'Ses. Indiv.','Ses. Inicial','Can.','Áreas de canalización']],
+          body:  estudiantesLista,
+          theme: 'grid',
+          styles : {fillColor: [0, 79, 122]},
+          stylesDef : {fontSize : 8},
+          columnStyles:  {
+            0: { fillColor: [255, 255, 255], columnWidth: 80},
+            1: { fillColor: [255, 255, 255]},
+            2: { fillColor: [255, 255, 255]},
+            3: { fillColor: [255, 255, 255]},
+            4: { fillColor: [255, 255, 255]},
+            5: { fillColor: [255, 255, 255]},
+            6: { fillColor: [255, 255, 255]},//Cómo obtengo las areas de canalizacion??
+          },
+          margin: {top: 60},
+      })
+      let finalY = doc.lastAutoTable.finalY + 20;
+      var pageHeight= doc.internal.pageSize.height;
+        //no hay suficientes tutorados registrados como para comprobar el funcionamiento del 2do if 
+        //pero no debe haber problemo creo xdxd
+        if (finalY >= pageHeight) {
+          doc.addPage();
+          finalY=30;
+          doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
+          doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
+          doc.text("___________________________________________", 20, finalY+30);
+          doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
+          doc.text("___________________________________________", 170, finalY+30);
+          doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+        } 
+        if (finalY+50 >= pageHeight) {
+          doc.addPage();
+          finalY=30;
+          doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
+          doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
+          doc.text("___________________________________________", 20, finalY+30);
+          doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
+          doc.text("___________________________________________", 170, finalY+30);
+          doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+        }
+        else {
+          doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
+          doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
+          doc.text("___________________________________________", 20, finalY+30);
+          doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
+          doc.text("___________________________________________", 170, finalY+30);
+          doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+        }
+
+      doc.save('Reporte.pdf');
+      }
+    }
+  );
+
+
+
 
 }
+
   Canalizar() {
     Swal.fire({
       title: 'Canalizar',
@@ -609,6 +656,8 @@ this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
      opciones.set("A", "Activo");
      opciones.set("E", "Egresado");
      opciones.set("T", "Terminado");
+     opciones.set("B", "Baja");
+     opciones.set("V", "Baja temporal");
      
     const { value: estado } = await Swal.fire({
       title: 'Selecciona el nuevo estado',

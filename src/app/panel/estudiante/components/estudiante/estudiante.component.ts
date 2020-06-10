@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { EstudianteService } from "src/app/services/estudiante.service";
-import { Estudiante, Grupo, Usuario, Atencion, Canalizacion, EstudianteDatos, Carrera } from "src/app/models/models";
+import { SesionEspecialService } from "src/app/services/sesion-especial.service";
+
+import { Estudiante, Grupo, Usuario, Atencion, Canalizacion, EstudianteDatos, Carrera, SesionEspecial } from "src/app/models/models";
 import { GrupoService } from "src/app/services/grupo.service";
 import Swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth-service.service";
@@ -11,6 +13,8 @@ import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { Router } from '@angular/router';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { DatePipe } from '@angular/common'   
+
 @Component({
   selector: "app-estudiante",
   templateUrl: "./estudiante.component.html",
@@ -30,16 +34,20 @@ export class EstudianteComponent implements OnInit {
 
   //Variables globales
   public canalizaciones: Array<Canalizacion> = new Array<Canalizacion>();
+  public especiales: Array<SesionEspecial> = new Array<SesionEspecial>();
 
   //Forms
   estudianteForm: FormGroup;
+  sesionEspecialForm: FormGroup;
 
   constructor(
+    private datePipe: DatePipe, 
     private canalizacionService: CanalizacionService,
     private atencionService: AtencionService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private estudianteService: EstudianteService,
+    private sesionEspecialService: SesionEspecialService,
     private grupoService: GrupoService,
     private router: Router,
     private carreraService: CarreraService,
@@ -64,7 +72,7 @@ export class EstudianteComponent implements OnInit {
     this.estudianteService.get(id.toString()).subscribe(r => {
       if (r.code == 200) {
         this.miEstudiante = r.data as Estudiante;
-        this.sesionesTotales = this.miEstudiante.sesiones + this.miEstudiante.sesionesIniciales;
+        this.sesionesTotales = this.miEstudiante.sesiones + this.miEstudiante.sesionesIniciales + this.miEstudiante.sesionesEspeciales + this.miEstudiante.sesionesIndividuales;
         this.miUsuario = this.authService.traerUsuario();
        
         if(this.miUsuario.tipo == "E"){
@@ -89,6 +97,10 @@ export class EstudianteComponent implements OnInit {
       correo: new FormControl(this.miEstudiante.usuario.email, [Validators.required]),
       clave: new FormControl('', [Validators.required]),
     });
+    this.sesionEspecialForm = new FormGroup({
+      fecha: new FormControl('', [Validators.required]),
+      observaciones: new FormControl('', [Validators.required])
+    });
 
 
     this.estudianteService.mostrarCanalizaciones(id).subscribe(r => {
@@ -96,10 +108,50 @@ export class EstudianteComponent implements OnInit {
         this.canalizaciones = r.data as Array<Canalizacion>;
       }
     });
+    this.estudianteService.mostrarSesionesEspeciales(id).subscribe(r => {
+      if (r.code == 200) {
+        this.especiales = r.data as Array<SesionEspecial>;
+        console.log( this.especiales);
+      }
+    });
 
   }
-
+  public cargarSesionesEspeciales() {
+     //Traer elID
+     var id: string;
+     this.sub = this.route.params.subscribe(params => {
+       id = params["id"].toString();
+     });
+    this.estudianteService.mostrarSesionesEspeciales(id).subscribe(r => {
+      if (r.code == 200) {
+        this.especiales = r.data as Array<SesionEspecial>;
+        console.log( this.especiales);
+      }
+    });
+  }
   public onSubmitEditarEstudiante() {
+  }
+  public onSubmitSesionEspecial() {
+    var sesionEspecial: SesionEspecial = new SesionEspecial();
+    sesionEspecial.estudianteId = this.miEstudiante.id;
+    sesionEspecial.personalId =  this.miUsuario.personal.id;;
+    sesionEspecial.fecha = this.datePipe.transform(this.sesionEspecialForm.controls.fecha.value, 'MM/dd/yyyy HH:mm:ss');
+    sesionEspecial.comentarios = this.sesionEspecialForm.controls.observaciones.value;
+    console.log(sesionEspecial);
+    this.sesionEspecialService.add(sesionEspecial).subscribe(r => {
+      if (r.code == 200) {
+       this.cargarSesionesEspeciales();
+
+        Swal.fire(
+          "Se ha insertado la sesion especial con exito",
+          "Ahora el alumno tiene una sesion individual más.",
+          "success"
+        );
+          this.formAlert ="none";
+      } else {
+        Swal.fire("Ha ocurrido un error", r.mensaje, "error");
+      }
+    });
   }
 
   public traducirOpcion(id: number) {
@@ -370,6 +422,26 @@ export class EstudianteComponent implements OnInit {
 
   public editar() {
   }
+  public crearSesionIndividual(){
+      this.formAlert = "especial";
+  }
+  public eliminarSesionEspecial(id: number){
 
- 
+    this.sesionEspecialService.eliminar(id).subscribe(r => {
+      if(r.code == 200){
+        Swal.fire(
+          "Exito",
+          "Se ha borrado con exito la sesión individual",
+          "success"
+        );
+        this.cargarSesionesEspeciales();
+      }else{
+        Swal.fire(
+          "Error",
+          "No se ha logrado borrar la sesion individual",
+          "error"
+        );
+      }
+    });
+  }
 }
