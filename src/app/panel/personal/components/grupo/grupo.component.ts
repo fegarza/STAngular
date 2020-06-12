@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GrupoService } from 'src/app/services/grupo.service';
-import { Grupo, Sesion, Estudiante, Usuario, Canalizacion, SesionIndividual } from 'src/app/models/models';
+import { Grupo, Sesion, Estudiante, Usuario, Canalizacion, SesionIndividual, ReporteSemestralGrupo } from 'src/app/models/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -10,6 +10,7 @@ import 'jspdf-autotable';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PersonalService } from 'src/app/services/personal.service';
 import { AuthService } from 'src/app/services/auth-service.service';
+import { ReporteService } from 'src/app/services/reporte.service';
 import { CanalizacionService } from 'src/app/services/canalizacion.service';
 import { PageEvent } from '@angular/material';
 import { formatDate } from '@angular/common';
@@ -83,7 +84,8 @@ export class GrupoComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private grupoService: GrupoService,
-    private personalService : PersonalService) {
+    private personalService : PersonalService,
+    private reporteService: ReporteService) {
     this.sesionesForm = new FormGroup({
       sesion: new FormControl('', [Validators.required]),
     });
@@ -394,33 +396,153 @@ var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
  }
  
  generarReporteSemestral(){
-  var temporal : Grupo;
+    var temporal : ReporteSemestralGrupo;
   
 
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; 
     var year = dateObj.getUTCFullYear();
     var periodo: number = 2;
+    var periodoStr: string = "";
     if(month >= 1 && month <= 7){
       periodo = 1;
-    } 
-
-  this.grupoService.getReporteSemestral(this.miGrupo.id.toString(), periodo, year).subscribe(
+      periodoStr= "ENE-JUN ";
+    } else{
+      periodoStr="AGO-DIC "
+    }
+    periodoStr += year;
+  this.reporteService.getReporteSemestralGrupal(this.miGrupo.id.toString(), periodo, year).subscribe(
     r => {
       if (r.code == 200) {
-        temporal = r.data as Grupo;
-              
+        
+
+        
+
+
+        temporal = r.data as ReporteSemestralGrupo ;
+        
+        var doc = new jsPDF();
+        
+        
+       
+
+        
+        var estudiantesLista = [];
+        temporal.estudiantes.forEach((e) => {
+          var estado: string = "";
+          if(e.estado == "A"){
+            estado = "Activo";
+            }else if(e.estado == "T"){
+              estado = "Liberado"
+            }
+            else if(e.estado == "E"){
+              estado = "Egresado"
+            }
+            else if(e.estado == "B"){
+              estado = "Baja"
+            }
+            else if(e.estado == "V"){
+              estado = "Baja temporal"
+            }
+            
+            var areasStr = "";
+            var x:number = 0;
+            e.canalizacionesLista.forEach(c => {
+              if(x == 0){
+                areasStr+=c.area+" ";
+              }else{
+                areasStr+=", "+ c.area;
+              }
+              x++;
+            });
+
+          var n = [
+            e.numeroDeControl,
+            e.usuario.nombreCompleto.toUpperCase(),
+            e.semestre,
+            e.sesiones,
+            e.sesionesIndividuales,
+            e.sesionesIniciales,
+            e.canalizacionesLista.length,
+            areasStr.toUpperCase()
+          ];
+ 
+
+
+          estudiantesLista.push(n);
+        });
+
+
+
+
+         var doc =new jsPDF('landscape');
+         doc.setFontSize(12);
+         doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
+         doc.text("REPORTE DEL SEMESTRAL DEL TUTOR",doc.internal.pageSize.width/2, 28, null, null, 'center');
+         doc.text(("DEPARTAMENTO DE " +temporal.personal.departamento.titulo.toUpperCase()), 70, 36, null, null, 'center');
+         doc.text("PERIODO: "+periodoStr, 228, 36);
+         doc.text(("NOMBRE DEL TUTOR: " +temporal.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
+         doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
+         doc.text(("PROGRAMA ACADÉMICO: " +temporal.personal.departamento.titulo.toUpperCase()), 20, 54);
+         doc.text(("NÚMERO DE TUTORADOS:"  + temporal.estudiantes.length) ,218,54);
+         doc.autoTable({
+           head: [['Núm. Control', 'Nombre', 'Sem.',  'Ses.', 'Ses. Indiv.','Ses. Inicial','Can.','Áreas de canalización']],
+           body:  estudiantesLista,
+           theme: 'grid',
+           styles : {fillColor: [0, 79, 122]},
+           stylesDef : {fontSize : 8},
+           columnStyles:  {
+             0: { fillColor: [255, 255, 255]},
+             1: { fillColor: [255, 255, 255]},
+             2: { fillColor: [255, 255, 255]},
+             3: { fillColor: [255, 255, 255]},
+             4: { fillColor: [255, 255, 255]},
+             5: { fillColor: [255, 255, 255]},
+             6: { fillColor: [255, 255, 255]},
+             7: { fillColor: [255, 255, 255]},
+           },
+           startY: 57,
+       })
+         let finalY = doc.lastAutoTable.finalY;
+         if (finalY >= (doc.internal.pageSize.height/2)) {
+          doc.addPage();
+          doc.text("Observaciones:   1er y 2do semestre: "+ (temporal.estudiantesM1 + temporal.estudiantesH1) + " Mujeres: "+ temporal.estudiantesM1+ " Hombres: "+ temporal.estudiantesM1 + "     3er semestre en adelante: "+ (temporal.estudiantesM + temporal.estudiantesH) +" Mujeres: "+temporal.estudiantesM +" Hombres: " + temporal.estudiantesH, 35,30);
+          doc.text("____________________________________", doc.internal.pageSize.width/3, 40);
+          doc.text("NOMBRE Y FIRMA DEL TUTOR",doc.internal.pageSize.width/3+15,45);
+          doc.text("____________________________________", 30, 50);
+          doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO",20,55);
+          doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 40, 60);
+          doc.text("____________________________________", 180, 50);
+          doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO",170,55);
+          doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 190, 60);
+       
+        }
+        else{
+         doc.text("Observaciones:   1er y 2do semestre: "+ (temporal.estudiantesM1 + temporal.estudiantesH1) + " Mujeres: "+ temporal.estudiantesM1+ " Hombres: "+ temporal.estudiantesM1 + "     3er semestre en adelante: "+ (temporal.estudiantesM + temporal.estudiantesH) +" Mujeres: "+temporal.estudiantesM +" Hombres: " + temporal.estudiantesH,35,finalY+10);
+         doc.text("____________________________________", doc.internal.pageSize.width/3+5, finalY+25);
+         doc.text("NOMBRE Y FIRMA DEL TUTOR", doc.internal.pageSize.width/3+15, finalY+30);
+         doc.text("____________________________________", 30, finalY+50);
+         doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO", 17, finalY+55);
+         doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 30, finalY+60);
+         doc.text("______________________________________", 190, finalY+50);
+         doc.text("FIRMA DEL JEFE DEL DEPARTAMENTO", 195, finalY+55);
+         doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 200, finalY+60);
+        }
+         doc.save('ReporteSemestralTutor.pdf')
+       
+/*
+
         var doc =new jsPDF('landscape');
+        
         doc.setFontSize(12);
+        
         doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
         doc.text(("DEPARTAMENTO DE " +this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 28, null, null, 'center');
         doc.text("REPORTE DEL TUTOR",doc.internal.pageSize.width/2, 36, null, null, 'center');
         doc.text(("NOMBRE DEL TUTOR: " +this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
         doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
         doc.text(("PROGRAMA ACADÉMICO: " +this.miGrupo.personal.departamento.titulo.toUpperCase()), 20, 54)
-        //como se consigue el total de tutorados? se que hay una entidad llamada miPersonal o algo asi y ahi esta pero
-        //no parece que pueda usarlo aquí O_o
-        // doc.text("TOTAL: " +(totalTutoradosxdd), 240,54)
+        
             
         var estudiantesLista = [];
         temporal.estudiantes.forEach(e => {
@@ -471,14 +593,12 @@ var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
             3: { fillColor: [255, 255, 255]},
             4: { fillColor: [255, 255, 255]},
             5: { fillColor: [255, 255, 255]},
-            6: { fillColor: [255, 255, 255]},//Cómo obtengo las areas de canalizacion??
+            6: { fillColor: [255, 255, 255]},
           },
           margin: {top: 60},
       })
       let finalY = doc.lastAutoTable.finalY + 20;
       var pageHeight= doc.internal.pageSize.height;
-        //no hay suficientes tutorados registrados como para comprobar el funcionamiento del 2do if 
-        //pero no debe haber problemo creo xdxd
         if (finalY >= pageHeight) {
           doc.addPage();
           finalY=30;
@@ -507,8 +627,19 @@ var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
           doc.text("___________________________________________", 170, finalY+30);
           doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
         }
-
+        finalY+50
+      doc.text(("Estudiantes: " + temporal.estudiantes), 20, finalY+30);
+      doc.text(("Estudiantes (H): " + temporal.estudiantesH), 20, finalY+30);
+      doc.text(("Estudiantes (M): " + temporal.estudiantesM), 20, finalY+30);
+      doc.text(("Estudiantes (H) 1er semestre: " + temporal.estudiantesH1), 20, finalY+30);
+      doc.text(("Estudiantes (M) 1er semestre: " + temporal.estudiantesM1), 20, finalY+30);
+      
       doc.save('Reporte.pdf');
+
+*/
+
+
+
       }
     }
   );

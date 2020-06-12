@@ -54,6 +54,15 @@ export class Personal {
     cve: string;
     tituloId: number;
     titulo: Titulo;
+    //Por parte de los reportes
+    canalizacionesLista: Array<Canalizacion> = new Array<Canalizacion>();
+    estudiantesAtendidos: number;
+    estudiantesAtendidosIndividual: number;
+    estudiantes: number;
+    estudiantesH1: number;
+    estudiantesM1: number;
+    estudiantesM: number;
+    estudiantesH: number;
 }
 export class Titulo {
     id: number;
@@ -224,10 +233,14 @@ export class Count{
 
 
 
+
+
+/*
+    -> Reportes
+*/
 export class ReporteSemestralGrupo{
     id: number;
     salon: string;
-    personalId: number;
     personal: Personal = new Personal();
     estudiantes: Array<Estudiante>;
     sesiones: Array<Sesion>;
@@ -240,7 +253,9 @@ export class ReporteSemestralGrupo{
 
 export class ReporteSemestralDepartamento{
     id: number;
-    jefeId: number;
-    jefe: Personal = new Personal();
-    personales: Array<Personal>;
+    titulo: string;
+    jefe:string;
+    tutores: Array<Personal>;
 }
+
+
