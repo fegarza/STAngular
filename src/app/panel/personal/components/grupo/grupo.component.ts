@@ -29,32 +29,32 @@ export class GrupoComponent implements OnInit {
   private sub: any;
   pageEvent: PageEvent;
   canalizacionesPageSize = 10;
-  canalizacionesPageSizeOptions: number[] = [10,20,30,40,50];
+  canalizacionesPageSizeOptions: number[] = [10, 20, 30, 40, 50];
   //Variables publicas
   public loading: boolean = false;
   public miGrupo: Grupo = new Grupo();
   public sesionesIndividuales: Array<SesionIndividual> = new Array<SesionIndividual>();
   public sesionIndividualSeleccionada: number = 0;
-  public asistenciaIndividual :Array<Estudiante> = new Array<Estudiante>();
+  public asistenciaIndividual: Array<Estudiante> = new Array<Estudiante>();
 
   public sesiones: Array<Sesion> = new Array<Sesion>();
   public seleccionado: boolean = false;
-  public asistencia :Array<Estudiante> = new Array<Estudiante>();
+  public asistencia: Array<Estudiante> = new Array<Estudiante>();
   public sesionSeleccionada: number = 0;
   public usuario: Usuario = new Usuario();
   public canalizaciones: Array<Canalizacion>;
   public formAlert: string = "";
   //Tabla de canalizaciones
   canalizacionesSource = new MatTableDataSource(this.canalizaciones);
-  canalizacionesColumns: string[] = ['fecha', 'estudiante', 'atencion','estatus', 'editar', 'eliminar', ];
+  canalizacionesColumns: string[] = ['fecha', 'estudiante', 'atencion', 'estatus', 'editar', 'eliminar',];
   //Tabla
   dataSource = new MatTableDataSource(this.miGrupo.estudiantes);
-  displayedColumns: string[] = ['nombre', 'numeroDeControl','semestre' ,'creditos', 'sesiones', 'sesionesIniciales', 'estatus'];
+  displayedColumns: string[] = ['nombre', 'numeroDeControl', 'semestre', 'creditos', 'sesiones', 'sesionesIniciales', 'estatus'];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   asistenciaSource = new MatTableDataSource(this.asistencia);
   asistenciaIndividualSource = new MatTableDataSource(this.asistencia);
-  asistenciaColumns : string[] = ['presente', 'nombre', 'numeroDeControl'];
-  asistenciaIndividualColumns : string[] = ['presente', 'nombre', 'numeroDeControl'];
+  asistenciaColumns: string[] = ['presente', 'nombre', 'numeroDeControl'];
+  asistenciaIndividualColumns: string[] = ['presente', 'nombre', 'numeroDeControl'];
 
   //Formularios
   sesionesForm: FormGroup;
@@ -62,10 +62,10 @@ export class GrupoComponent implements OnInit {
   canalizacionForm: FormGroup;
 
   canalizacionSeleccionada: Canalizacion;
-  establecerCanalizacion(id: number){
-    
+  establecerCanalizacion(id: number) {
+
     this.canalizaciones.forEach(f => {
-      if(f.id == id){
+      if (f.id == id) {
         this.canalizacionSeleccionada = f;
         this.canalizacionForm.controls.descripcion.setValue(f.descripcion);
         this.canalizacionForm.controls.estatus.setValue(f.estado);
@@ -79,12 +79,12 @@ export class GrupoComponent implements OnInit {
   constructor(
     private datePipe: DatePipe,
     private estudianteService: EstudianteService,
-    private canalizacionService:CanalizacionService,
-    private router: Router, 
+    private canalizacionService: CanalizacionService,
+    private router: Router,
     private authService: AuthService,
     private route: ActivatedRoute,
     private grupoService: GrupoService,
-    private personalService : PersonalService,
+    private personalService: PersonalService,
     private reporteService: ReporteService) {
     this.sesionesForm = new FormGroup({
       sesion: new FormControl('', [Validators.required]),
@@ -94,10 +94,10 @@ export class GrupoComponent implements OnInit {
     });
     this.canalizacionForm = new FormGroup({
       estatus: new FormControl('', [Validators.required]),
-       descripcion: new FormControl('' ),
+      descripcion: new FormControl(''),
       fecha: new FormControl('', [Validators.required]),
     });
-   
+
   }
   ngOnInit() {
     this.dataSource.sort = this.sort;
@@ -106,19 +106,19 @@ export class GrupoComponent implements OnInit {
     });
     this.usuario = this.authService.traerUsuario();
 
-    
-    if(this.usuario.personal.cargo == "T"){
-      if(this.usuario.personal.id != parseInt(this.id.toString())){
+
+    if (this.usuario.personal.cargo == "T") {
+      if (this.usuario.personal.id != parseInt(this.id.toString())) {
         this.router.navigate(['/panel']);
-      }else{
-        
+      } else {
+
         this.personalService.get(this.id.toString()).subscribe(
           r => {
-            if(r.code == 202){
+            if (r.code == 202) {
               this.personalService.showGrupo(this.id.toString()).subscribe(
                 r => {
                   this.miGrupo = r.data as Grupo;
-                   
+
                   this.dataSource = new MatTableDataSource(this.miGrupo.estudiantes);
                   this.grupoService.showSesiones(this.miGrupo.id.toString()).subscribe(r => {
                     if (r.code == 200) {
@@ -134,31 +134,31 @@ export class GrupoComponent implements OnInit {
                       console.log("error: ", r.data)
                     }
                   });
-                  this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
+                  this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r => {
                     console.log("Se ejecuta canalizacion");
-                    if(r.code == 200){
+                    if (r.code == 200) {
                       this.canalizaciones = r.data as Array<Canalizacion>;
                       this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
                     }
                   });
-              });
-            }else{
+                });
+            } else {
               this.router.navigate(['/404']);
             }
-           
+
           });
-         
+
       }
-      
-      
-    }else{
+
+
+    } else {
       this.personalService.get(this.id.toString()).subscribe(
         r => {
-          if(r.code == 202){
+          if (r.code == 202) {
             this.personalService.showGrupo(this.id.toString()).subscribe(
               r => {
                 this.miGrupo = r.data as Grupo;
-                 
+
                 this.dataSource = new MatTableDataSource(this.miGrupo.estudiantes);
                 this.grupoService.showSesiones(this.miGrupo.id.toString()).subscribe(r => {
                   if (r.code == 200) {
@@ -174,48 +174,48 @@ export class GrupoComponent implements OnInit {
                     console.log("error: ", r.data)
                   }
                 });
-                this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
-                  if(r.code == 200){
+                this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r => {
+                  if (r.code == 200) {
                     this.canalizaciones = r.data as Array<Canalizacion>;
                     this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
                   }
                 });
-                
-            });
-          }else{
+
+              });
+          } else {
             this.router.navigate(['/404']);
           }
-         
+
         });
     }
 
-   
 
-   
 
-    
+
+
+
   }
-  AsignarAsistencia(values:any, id: any){
-    if(values.checked){
+  AsignarAsistencia(values: any, id: any) {
+    if (values.checked) {
       console.log("-> se ha agregado asistencia a estudiante con el ID: " + id);
       this.asistencia.find(x => x.id == id).presente = true;
-    }else{
+    } else {
       console.log("-> se ha quitado asistencia a estudiante con el ID: " + id);
       this.asistencia.find(x => x.id == id).presente = false;
     }
   }
-  AsignarAsistenciaIndividual(values:any, id: any){
-    if(values.checked){
+  AsignarAsistenciaIndividual(values: any, id: any) {
+    if (values.checked) {
       console.log("-> se ha agregado asistencia a estudiante con el ID: " + id);
       this.asistenciaIndividual.find(x => x.id == id).presente = true;
-    }else{
+    } else {
       console.log("-> se ha quitado asistencia a estudiante con el ID: " + id);
       this.asistenciaIndividual.find(x => x.id == id).presente = false;
     }
   }
   cargarAsistencias(value) {
     this.sesionSeleccionada = value;
-     this.grupoService.showAsistencias(this.miGrupo.id.toString(), value).subscribe(
+    this.grupoService.showAsistencias(this.miGrupo.id.toString(), value).subscribe(
       r => {
         if (r.code == 200) {
           this.asistencia = r.data as Array<Estudiante>;
@@ -226,7 +226,7 @@ export class GrupoComponent implements OnInit {
   }
   cargarAsistenciasIndividuales(value) {
     this.sesionIndividualSeleccionada = value;
-     this.grupoService.showAsistenciasIndividuales(this.miGrupo.id.toString(), value).subscribe(
+    this.grupoService.showAsistenciasIndividuales(this.miGrupo.id.toString(), value).subscribe(
       r => {
         if (r.code == 200) {
           this.asistenciaIndividual = r.data as Array<Estudiante>;
@@ -237,417 +237,337 @@ export class GrupoComponent implements OnInit {
   }
 
 
- 
-  generarReporte(){
-    var doc = new jsPDF();   
-   
-   var estudiantesLista = [];
-   this.miGrupo.estudiantes.forEach(e => {
-     var n = [e.numeroDeControl, e.usuario.nombreCompleto, e.semestre, '________________', e.sesiones];
-     estudiantesLista.push(n);
-   });
+
+  generarReporte() {
+
+
+    var doc = new jsPDF();
+
+    var estudiantesLista = [];
+    this.miGrupo.estudiantes.forEach(e => {
+      var n = [e.numeroDeControl, e.usuario.nombreCompleto, e.semestre, '________________', e.sesiones];
+      estudiantesLista.push(n);
+    });
 
 
     doc.autoTable({
-       head: [['Numero de control', 'Nombre', 'Semestre', 'Firma', 'Sesiones']],
-       body:  estudiantesLista,
-       theme: 'grid'
-   })
-   
-   
-   
-   doc.save('a4.pdf');
- }
- generarLista(){
-  var doc = new jsPDF()
-  var s = this.sesiones.find(x => x.id == this.sesionSeleccionada);
-  var estudiantesLista = [];
-  this.miGrupo.estudiantes.forEach(e => {
-    var estado: string = "";
-    if(e.estado == "A"){
-     estado = "Activo";
-    }else if(e.estado == "T"){
-      estado = "Liberado"
+      head: [['Numero de control', 'Nombre', 'Semestre', 'Firma', 'Sesiones']],
+      body: estudiantesLista,
+      theme: 'grid'
+    })
+    doc.save('a4.pdf');
+  }
+  generarLista() {
+    var doc = new jsPDF()
+    var s = this.sesiones.find(x => x.id == this.sesionSeleccionada);
+    var estudiantesLista = [];
+    this.miGrupo.estudiantes.forEach(e => {
+      var estado: string = "";
+      if (e.estado == "A") {
+        estado = "Activo";
+      } else if (e.estado == "T") {
+        estado = "Liberado"
+      }
+      var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones, e.estado];
+      estudiantesLista.push(n);
+    });
+    var pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(18);
+    doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width / 2, 20, null, null, 'center');
+    doc.setFontSize(16);
+    doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width / 2, 30, null, null, 'center');
+    doc.setFontSize(12);
+    doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), doc.internal.pageSize.width / 2, 40, null, null, 'center');
+    doc.setFontSize(10);
+    doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: " + this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: " + this.miGrupo.salon);
+    doc.autoTable({
+      head: [['Núm. Control', 'Nombre', 'Sem.', 'Asis.', 'Est.', 'Firma']],
+      body: estudiantesLista,
+      theme: 'grid',
+      styles: { fillColor: [0, 79, 122] },
+      stylesDef: { fontSize: 8 },
+      columnStyles: {
+        0: { fillColor: [255, 255, 255], columnWidth: 27 },
+        1: { fillColor: [255, 255, 255], columnWidth: 80 },
+        2: { fillColor: [255, 255, 255], columnWidth: 12 },
+        3: { fillColor: [255, 255, 255], columnWidth: 12 },
+        4: { fillColor: [255, 255, 255], columnWidth: 12 },
+        5: { fillColor: [255, 255, 255] },
+      },
+      startY: 55,
+    })
+    let finalY = doc.lastAutoTable.finalY;
+    var dimen = doc.getTextDimensions(s.accionTutorial.contenido);
+
+    if (finalY >= (doc.internal.pageSize.height / 2)) {
+      doc.addPage();
+      doc.text(20, 35, "ACTIVIDADES DE LA SESIÓN: ");
+      var split = doc.splitTextToSize(s.accionTutorial.contenido, 180)
+      doc.text(20, 45, split);
+      var heightActividad = (doc.getTextDimensions(split).h) + 10;
+      console.log('holaxd', heightActividad);
+      doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width / 2, heightActividad + 35, null, null, 'center');
+      doc.text("________________________________________________", doc.internal.pageSize.width / 2, heightActividad + 40, null, null, 'center');
+      doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width / 2, heightActividad + 45, null, null, 'center');
     }
-    var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
-    estudiantesLista.push(n);
-  });
-  var pageHeight= doc.internal.pageSize.height;   
-  doc.setFontSize(18);
-  doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
-  doc.setFontSize(16);
-  doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
-  doc.setFontSize(12);
-  doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
-  doc.setFontSize(10);
-  doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "d/M/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
-  doc.autoTable({
-    head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
-    body:  estudiantesLista,
-    theme: 'grid',
-    styles : {fillColor: [0, 79, 122]},
-    stylesDef : {fontSize : 8},
-    columnStyles:  {
-       0: { fillColor: [255, 255, 255], columnWidth: 27},
-       1: { fillColor: [255, 255, 255], columnWidth: 80},
-       2: { fillColor: [255, 255, 255], columnWidth: 12},
-       3: { fillColor: [255, 255, 255], columnWidth: 12},
-       4: { fillColor: [255, 255, 255], columnWidth: 12},
-       5: { fillColor: [255, 255, 255]},
-     },
-     startY: 55,
-})
-let finalY = doc.lastAutoTable.finalY;
-var dimen = doc.getTextDimensions(s.accionTutorial.contenido);
+    else {
+      doc.text(20, finalY + 15, "ACTIVIDADES DE LA SESIÓN: ");
+      var split = doc.splitTextToSize(s.accionTutorial.contenido, 180)
+      doc.text(20, finalY + 20, split);
+      var heightActividad = finalY + (doc.getTextDimensions(split).h);
 
-if (finalY >= (doc.internal.pageSize.height/2)) {
-  doc.addPage();
-  doc.text(20, 35, "ACTIVIDADES DE LA SESIÓN: " );
-  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
-  doc.text(20, 45, split);
-  var heightActividad = (doc.getTextDimensions(split).h)+10;
- console.log('holaxd',heightActividad);
-  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+35, null, null, 'center');
-  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
-  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');
-}
-else{
-  doc.text(20, finalY+15, "ACTIVIDADES DE LA SESIÓN: " );
-  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
-  doc.text(20, finalY+20, split);
-  var heightActividad = finalY+(doc.getTextDimensions(split).h);
- 
-  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+25, null, null, 'center');
-  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
-  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');  
-}
-var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
-
-  doc.save('Lista.pdf');
-
- }
- generarListaIndividual(){
-  var doc = new jsPDF()
-   var s = this.sesionesIndividuales.find(x => x.id == this.sesionIndividualSeleccionada);
-  var estudiantesLista = [];
-  this.miGrupo.estudiantes.forEach(e => {
-    var estado: string = "";
-    if(e.estado == "A"){
-     estado = "Activo";
-    }else if(e.estado == "T"){
-      estado = "Liberado"
+      doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width / 2, heightActividad + 25, null, null, 'center');
+      doc.text("________________________________________________", doc.internal.pageSize.width / 2, heightActividad + 40, null, null, 'center');
+      doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width / 2, heightActividad + 45, null, null, 'center');
     }
-    var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre ,e.sesiones,e.estado];
-    estudiantesLista.push(n);
-  });
-  var pageHeight= doc.internal.pageSize.height;   
-  doc.setFontSize(18);
-  doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width/2, 20, null, null, 'center');
-  doc.setFontSize(16);
-  doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 30, null, null, 'center');
-  doc.setFontSize(12);
-  doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()),doc.internal.pageSize.width/2, 40, null, null, 'center');
-  doc.setFontSize(10);
-  doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "M/d/yyyy") + "  Hora: "+ this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: "+ this.miGrupo.salon);
-  doc.autoTable({
-    head: [['Núm. Control', 'Nombre', 'Sem.',  'Asis.', 'Est.','Firma']],
-    body:  estudiantesLista,
-    theme: 'grid',
-    styles : {fillColor: [0, 79, 122]},
-    stylesDef : {fontSize : 8},
-    columnStyles:  {
-       0: { fillColor: [255, 255, 255], columnWidth: 27},
-       1: { fillColor: [255, 255, 255], columnWidth: 80},
-       2: { fillColor: [255, 255, 255], columnWidth: 12},
-       3: { fillColor: [255, 255, 255], columnWidth: 12},
-       4: { fillColor: [255, 255, 255], columnWidth: 12},
-       5: { fillColor: [255, 255, 255]},
-     },
-     startY: 55,
-})
-let finalY = doc.lastAutoTable.finalY;
-var dimen = doc.getTextDimensions(s.accionTutorial.contenido);
+    var split = doc.splitTextToSize(s.accionTutorial.contenido, 180)
 
-if (finalY >= (doc.internal.pageSize.height/2)) {
-  doc.addPage();
-  doc.text(20, 35, "ACTIVIDADES DE LA SESIÓN: " );
-  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
-  doc.text(20, 45, split);
-  var heightActividad = (doc.getTextDimensions(split).h)+10;
- console.log('holaxd',heightActividad);
-  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+35, null, null, 'center');
-  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
-  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');
-}
-else{
-  doc.text(20, finalY+15, "ACTIVIDADES DE LA SESIÓN: " );
-  var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
-  doc.text(20, finalY+20, split);
-  var heightActividad = finalY+(doc.getTextDimensions(split).h);
- 
-  doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width/2, heightActividad+25, null, null, 'center');
-  doc.text("________________________________________________", doc.internal.pageSize.width/2, heightActividad+40, null, null, 'center');
-  doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width/2, heightActividad+45, null, null, 'center');  
-}
-var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
+    doc.save('Lista.pdf');
 
-  doc.save('Lista.pdf');
+  }
+  generarListaIndividual() {
+    var doc = new jsPDF()
+    var s = this.sesionesIndividuales.find(x => x.id == this.sesionIndividualSeleccionada);
+    var estudiantesLista = [];
+    this.miGrupo.estudiantes.forEach(e => {
+      var estado: string = "";
+      if (e.estado == "A") {
+        estado = "Activo";
+      } else if (e.estado == "T") {
+        estado = "Liberado"
+      }
+      var n = [e.numeroDeControl, e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones, e.estado];
+      estudiantesLista.push(n);
+    });
+    var pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(18);
+    doc.text('INSTITUTO TECNOLÓGICO DE NUEVO LAREDO', doc.internal.pageSize.width / 2, 20, null, null, 'center');
+    doc.setFontSize(16);
+    doc.text(('DEPARTAMENTO DE ' + this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width / 2, 30, null, null, 'center');
+    doc.setFontSize(12);
+    doc.text(('GRUPO DE TUTORÍAS: ' + this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), doc.internal.pageSize.width / 2, 40, null, null, 'center');
+    doc.setFontSize(10);
+    doc.text(20, 50, "Fecha: " + this.datePipe.transform(s.fecha, "M/d/yyyy") + "  Hora: " + this.datePipe.transform(s.fecha, "h:mm a") + "  Aula: " + this.miGrupo.salon);
+    doc.autoTable({
+      head: [['Núm. Control', 'Nombre', 'Sem.', 'Asis.', 'Est.', 'Firma']],
+      body: estudiantesLista,
+      theme: 'grid',
+      styles: { fillColor: [0, 79, 122] },
+      stylesDef: { fontSize: 8 },
+      columnStyles: {
+        0: { fillColor: [255, 255, 255], columnWidth: 27 },
+        1: { fillColor: [255, 255, 255], columnWidth: 80 },
+        2: { fillColor: [255, 255, 255], columnWidth: 12 },
+        3: { fillColor: [255, 255, 255], columnWidth: 12 },
+        4: { fillColor: [255, 255, 255], columnWidth: 12 },
+        5: { fillColor: [255, 255, 255] },
+      },
+      startY: 55,
+    })
+    let finalY = doc.lastAutoTable.finalY;
+    var dimen = doc.getTextDimensions(s.accionTutorial.contenido);
 
- }
- 
- generarReporteSemestral(){
-    var temporal : ReporteSemestralGrupo;
-  
+    if (finalY >= (doc.internal.pageSize.height / 2)) {
+      doc.addPage();
+      doc.text(20, 35, "ACTIVIDADES DE LA SESIÓN: ");
+      var split = doc.splitTextToSize(s.accionTutorial.contenido, 180)
+      doc.text(20, 45, split);
+      var heightActividad = (doc.getTextDimensions(split).h) + 10;
+      console.log('holaxd', heightActividad);
+      doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width / 2, heightActividad + 35, null, null, 'center');
+      doc.text("________________________________________________", doc.internal.pageSize.width / 2, heightActividad + 40, null, null, 'center');
+      doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width / 2, heightActividad + 45, null, null, 'center');
+    }
+    else {
+      doc.text(20, finalY + 15, "ACTIVIDADES DE LA SESIÓN: ");
+      var split = doc.splitTextToSize(s.accionTutorial.contenido, 180)
+      doc.text(20, finalY + 20, split);
+      var heightActividad = finalY + (doc.getTextDimensions(split).h);
+
+      doc.text("Si algún estudiante no aparece en la lista, repórtelo para revisar su situación", doc.internal.pageSize.width / 2, heightActividad + 25, null, null, 'center');
+      doc.text("________________________________________________", doc.internal.pageSize.width / 2, heightActividad + 40, null, null, 'center');
+      doc.text(this.miGrupo.personal.usuario.nombreCompleto.toUpperCase(), doc.internal.pageSize.width / 2, heightActividad + 45, null, null, 'center');
+    }
+    var split = doc.splitTextToSize(s.accionTutorial.contenido, 180)
+
+    doc.save('Lista.pdf');
+
+  }
+
+  generarReporteSemestral() {
+    var temporal: ReporteSemestralGrupo;
+
 
     var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; 
+    var month = dateObj.getUTCMonth() + 1;
     var year = dateObj.getUTCFullYear();
     var periodo: number = 2;
     var periodoStr: string = "";
-    if(month >= 1 && month <= 7){
+
+    if (month >= 1 && month <= 7) {
       periodo = 1;
-      periodoStr= "ENE-JUN ";
-    } else{
-      periodoStr="AGO-DIC "
+      periodoStr = "ENE-JUN ";
+    } else {
+      periodoStr = "AGO-DIC "
     }
     periodoStr += year;
-  this.reporteService.getReporteSemestralGrupal(this.miGrupo.id.toString(), periodo, year).subscribe(
-    r => {
-      if (r.code == 200) {
-        
+    this.reporteService.getReporteSemestralGrupal(this.miGrupo.id.toString(), periodo, year).subscribe(
+      r => {
+        if (r.code == 200) {
 
-        
+          temporal = r.data as ReporteSemestralGrupo;
 
+          var doc = new jsPDF('landscape');
+          var totalPagesExp = '{total_pages_count_string}';
+          
+          var ruleRight: number = (doc.internal.pageSize.width - 14);
+          var ruleLeft: number = 14;
+          var middle: number = doc.internal.pageSize.width / 2;
 
-        temporal = r.data as ReporteSemestralGrupo ;
-        
-        var doc = new jsPDF();
-        
-        
-       
-
-        
-        var estudiantesLista = [];
-        temporal.estudiantes.forEach((e) => {
-          var estado: string = "";
-          if(e.estado == "A"){
-            estado = "Activo";
-            }else if(e.estado == "T"){
+          var estudiantesLista = [];
+          temporal.estudiantes.forEach(e => {
+            var estado: string = "";
+            if (e.estado == "A") {
+              estado = "Activo";
+            } else if (e.estado == "T") {
               estado = "Liberado"
             }
-            else if(e.estado == "E"){
+            else if (e.estado == "E") {
               estado = "Egresado"
             }
-            else if(e.estado == "B"){
+            else if (e.estado == "B") {
               estado = "Baja"
             }
-            else if(e.estado == "V"){
+            else if (e.estado == "V") {
               estado = "Baja temporal"
             }
-            
+
             var areasStr = "";
-            var x:number = 0;
+            var x: number = 0;
             e.canalizacionesLista.forEach(c => {
-              if(x == 0){
-                areasStr+=c.area+" ";
-              }else{
-                areasStr+=", "+ c.area;
+              if (x == 0) {
+                areasStr += c.area + " ";
+              } else {
+                areasStr += ", " + c.area;
               }
               x++;
             });
 
-          var n = [
-            e.numeroDeControl,
-            e.usuario.nombreCompleto.toUpperCase(),
-            e.semestre,
-            e.sesiones,
-            e.sesionesIndividuales,
-            e.sesionesIniciales,
-            e.canalizacionesLista.length,
-            areasStr.toUpperCase()
-          ];
- 
-
-
-          estudiantesLista.push(n);
-        });
-
-
-
-
-         var doc =new jsPDF('landscape');
-         doc.setFontSize(12);
-         doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
-         doc.text("REPORTE DEL SEMESTRAL DEL TUTOR",doc.internal.pageSize.width/2, 28, null, null, 'center');
-         doc.text(("DEPARTAMENTO DE " +temporal.personal.departamento.titulo.toUpperCase()), 70, 36, null, null, 'center');
-         doc.text("PERIODO: "+periodoStr, 228, 36);
-         doc.text(("NOMBRE DEL TUTOR: " +temporal.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
-         doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
-         doc.text(("PROGRAMA ACADÉMICO: " +temporal.personal.departamento.titulo.toUpperCase()), 20, 54);
-         doc.text(("NÚMERO DE TUTORADOS:"  + temporal.estudiantes.length) ,218,54);
-         doc.autoTable({
-           head: [['Núm. Control', 'Nombre', 'Sem.',  'Ses.', 'Ses. Indiv.','Ses. Inicial','Can.','Áreas de canalización']],
-           body:  estudiantesLista,
-           theme: 'grid',
-           styles : {fillColor: [0, 79, 122]},
-           stylesDef : {fontSize : 8},
-           columnStyles:  {
-             0: { fillColor: [255, 255, 255]},
-             1: { fillColor: [255, 255, 255]},
-             2: { fillColor: [255, 255, 255]},
-             3: { fillColor: [255, 255, 255]},
-             4: { fillColor: [255, 255, 255]},
-             5: { fillColor: [255, 255, 255]},
-             6: { fillColor: [255, 255, 255]},
-             7: { fillColor: [255, 255, 255]},
-           },
-           startY: 57,
-       })
-         let finalY = doc.lastAutoTable.finalY;
-         if (finalY >= (doc.internal.pageSize.height/2)) {
-          doc.addPage();
-          doc.text("Observaciones:   1er y 2do semestre: "+ (temporal.estudiantesM1 + temporal.estudiantesH1) + " Mujeres: "+ temporal.estudiantesM1+ " Hombres: "+ temporal.estudiantesM1 + "     3er semestre en adelante: "+ (temporal.estudiantesM + temporal.estudiantesH) +" Mujeres: "+temporal.estudiantesM +" Hombres: " + temporal.estudiantesH, 35,30);
-          doc.text("____________________________________", doc.internal.pageSize.width/3, 40);
-          doc.text("NOMBRE Y FIRMA DEL TUTOR",doc.internal.pageSize.width/3+15,45);
-          doc.text("____________________________________", 30, 50);
-          doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO",20,55);
-          doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 40, 60);
-          doc.text("____________________________________", 180, 50);
-          doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO",170,55);
-          doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 190, 60);
-       
-        }
-        else{
-         doc.text("Observaciones:   1er y 2do semestre: "+ (temporal.estudiantesM1 + temporal.estudiantesH1) + " Mujeres: "+ temporal.estudiantesM1+ " Hombres: "+ temporal.estudiantesM1 + "     3er semestre en adelante: "+ (temporal.estudiantesM + temporal.estudiantesH) +" Mujeres: "+temporal.estudiantesM +" Hombres: " + temporal.estudiantesH,35,finalY+10);
-         doc.text("____________________________________", doc.internal.pageSize.width/3+5, finalY+25);
-         doc.text("NOMBRE Y FIRMA DEL TUTOR", doc.internal.pageSize.width/3+15, finalY+30);
-         doc.text("____________________________________", 30, finalY+50);
-         doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO", 17, finalY+55);
-         doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 30, finalY+60);
-         doc.text("______________________________________", 190, finalY+50);
-         doc.text("FIRMA DEL JEFE DEL DEPARTAMENTO", 195, finalY+55);
-         doc.text("DE: "+temporal.personal.departamento.titulo.toUpperCase(), 200, finalY+60);
-        }
-         doc.save('ReporteSemestralTutor.pdf')
-       
-/*
-
-        var doc =new jsPDF('landscape');
-        
-        doc.setFontSize(12);
-        
-        doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width/2, 20, null, null, 'center');
-        doc.text(("DEPARTAMENTO DE " +this.miGrupo.personal.departamento.titulo.toUpperCase()), doc.internal.pageSize.width/2, 28, null, null, 'center');
-        doc.text("REPORTE DEL TUTOR",doc.internal.pageSize.width/2, 36, null, null, 'center');
-        doc.text(("NOMBRE DEL TUTOR: " +this.miGrupo.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
-        doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
-        doc.text(("PROGRAMA ACADÉMICO: " +this.miGrupo.personal.departamento.titulo.toUpperCase()), 20, 54)
-        
+            var n = [
+              e.numeroDeControl,
+              e.usuario.nombreCompleto.toUpperCase(),
+              e.semestre,
+              e.sesiones,
+              e.sesionesIndividuales,
+              e.sesionesIniciales,
+              e.canalizaciones,
+              areasStr.toUpperCase()
+            ];
             
-        var estudiantesLista = [];
-        temporal.estudiantes.forEach(e => {
-          var estado: string = "";
-          if(e.estado == "A"){
-          estado = "Activo";
-          }else if(e.estado == "T"){
-            estado = "Liberado"
-          }
-          else if(e.estado == "E"){
-            estado = "Egresado"
-          }
-          else if(e.estado == "B"){
-            estado = "Baja"
-          }
-          else if(e.estado == "V"){
-            estado = "Baja temporal"
-          }
-          
-          var areasStr = "";
-          var x:number = 0;
-          e.canalizacionesLista.forEach(c => {
-            if(x == 0){
-              areasStr+=c.area+" ";
-            }else{
-              areasStr+=", "+ c.area;
-            }
-            x++;
+              estudiantesLista.push(n);
+         
           });
 
-          var n = [e.usuario.nombreCompleto.toUpperCase(), e.semestre, e.sesiones, e.sesionesIndividuales,e.sesionesIniciales,e.canalizacionesLista.length, areasStr];
 
-          estudiantesLista.push(n);
-        });
 
-        
+          doc.autoTable({
+            head: [['Núm. Control', 'Nombre', 'Sem.', 'Ses.', 'Ses. Indiv.', 'Ses. Inicial', 'Can.', 'Áreas de canalización']],
+            theme: 'grid',
+            body: estudiantesLista,
+            styles: {
+              halign: 'left',
+              fillColor: [0, 79, 122],
+            },
+            stylesDef: { fontSize: 7 },
+            columnStyles: {
+              0: { fillColor: [255, 255, 255],  fontSize: 8 },
+              1: { fillColor: [255, 255, 255], fontSize: 8  },
+              2: { fillColor: [255, 255, 255], fontSize: 8  },
+              3: { fillColor: [255, 255, 255],fontSize: 8  },
+              4: { fillColor: [255, 255, 255],fontSize: 8  },
+              5: { fillColor: [255, 255, 255] ,fontSize: 8 },
+              6: { fillColor: [255, 255, 255] ,fontSize: 8 },
+              7: { fillColor: [255, 255, 255], cellWidth: 90, fontSize: 8  },
+            },
+            didDrawPage: function (data) {
+              //header
 
-        doc.autoTable({
-          head: [[ 'Nombre', 'Sem.',  'Ses.', 'Ses. Indiv.','Ses. Inicial','Can.','Áreas de canalización']],
-          body:  estudiantesLista,
-          theme: 'grid',
-          styles : {fillColor: [0, 79, 122]},
-          stylesDef : {fontSize : 8},
-          columnStyles:  {
-            0: { fillColor: [255, 255, 255], columnWidth: 80},
-            1: { fillColor: [255, 255, 255]},
-            2: { fillColor: [255, 255, 255]},
-            3: { fillColor: [255, 255, 255]},
-            4: { fillColor: [255, 255, 255]},
-            5: { fillColor: [255, 255, 255]},
-            6: { fillColor: [255, 255, 255]},
-          },
-          margin: {top: 60},
-      })
-      let finalY = doc.lastAutoTable.finalY + 20;
-      var pageHeight= doc.internal.pageSize.height;
-        if (finalY >= pageHeight) {
-          doc.addPage();
-          finalY=30;
-          doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
-          doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
-          doc.text("___________________________________________", 20, finalY+30);
-          doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
-          doc.text("___________________________________________", 170, finalY+30);
-          doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
-        } 
-        if (finalY+50 >= pageHeight) {
-          doc.addPage();
-          finalY=30;
-          doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
-          doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
-          doc.text("___________________________________________", 20, finalY+30);
-          doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
-          doc.text("___________________________________________", 170, finalY+30);
-          doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
+
+
+              
+
+
+              doc.setFontSize(14);
+              doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO",middle, 18, null, null, 'center');
+              doc.text("REPORTE DEL SEMESTRAL DEL TUTOR", middle, 26, null, null, 'center');
+              doc.line(ruleLeft, 28, ruleRight, 28);
+              doc.setFontSize(9);
+              doc.text("DEPARTAMENTO DE " + temporal.nombreDepartamento.toUpperCase(), ruleLeft, 38);
+              doc.text("PERIODO: " + periodoStr, ruleRight, 38, null, null, 'right');
+              doc.text("NOMBRE DEL TUTOR: " + temporal.tutorNombre.toUpperCase(), ruleLeft, 48);
+              doc.text("FECHA: " + (formatDate(new Date(), 'dd/MM/yyyy', 'en')), ruleRight, 48,  null, null, 'right');
+              doc.text("PROGRAMA ACADÉMICO: " + temporal.nombreDepartamento.toUpperCase(), ruleLeft, 58);
+             
+              //footer
+              var str = 'Página ' + doc.internal.getNumberOfPages() + ' de ' + totalPagesExp //esto dibuja la página actual + el total de páginas
+              var pageSize = doc.internal.pageSize
+              var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
+              doc.setFontSize(10)
+              doc.text(str, data.settings.margin.left, pageHeight - 10)
+            },
+            margin: { top: 66 },
+            rowPageBreak: 'avoid',
+          })
+          doc.setFontSize(12)
+          let finalY = doc.lastAutoTable.finalY;
+          if (finalY >= (doc.internal.pageSize.height - 40)) {
+            doc.addPage()
+            doc.putTotalPages(totalPagesExp)
+            doc.text("__________________________________", (middle / 2), 30, null, null, 'center')
+            doc.text("Firma del Tutor", (middle / 2), 35, null, null, 'center')
+            doc.text("__________________________________", ((middle / 2) * 3), 30, null, null, 'center')
+            doc.text("Firma del Jefe de Tutorías", ((middle / 2) * 3), 35, null, null, 'center')
+           
+            doc.text("__________________________________", middle, 50, null, null, 'center')
+            doc.text("Firma del Jefe del departamento académico", middle, 55, null, null, 'center')
+            
+            doc.setFontSize(7)
+            doc.text("Total de tutorados: " + temporal.estudiantes.length, ruleLeft,  doc.internal.pageSize.height - 45, null, null, 'left');
+            doc.text("1er y 2do semestre (M) " + temporal.estudiantesM1, ruleLeft,  doc.internal.pageSize.height - 40, null, null, 'left');
+            doc.text("1er y 2do semestre (H) " + temporal.estudiantesH1, ruleLeft,  doc.internal.pageSize.height - 35, null, null, 'left');
+            doc.text("3ro en adelante (M) " + temporal.estudiantesM, ruleLeft,  doc.internal.pageSize.height - 30, null, null, 'left');
+            doc.text("3ro en adelante (H) " + temporal.estudiantesH, ruleLeft,  doc.internal.pageSize.height - 25, null, null, 'left');
+            doc.setFontSize(12)
+
+            var str = 'Página ' + doc.internal.getNumberOfPages()
+            doc.text(str, 30, doc.internal.pageSize.height - 10)
+          }
+          else {
+            doc.text("__________________________________", (middle / 2), finalY + 15, null, null, 'center')
+            doc.text("Firma del Tutor", (middle / 2), finalY + 22, null, null, 'center')
+            doc.text("__________________________________", ((middle / 2) * 3), finalY + 15, null, null, 'center')
+            doc.text("Firma del Jefe de Tutorías", ((middle / 2) * 3), finalY + 22, null, null, 'center')
+            doc.text("__________________________________", middle, finalY + 40, null, null, 'center')
+            doc.text("Firma del Jefe del departamento", middle , finalY + 47, null, null, 'center')
+            doc.setFontSize(7)
+            doc.text("Total de tutorados: " + temporal.estudiantes.length, ruleLeft,  doc.internal.pageSize.height - 45, null, null, 'left');
+            doc.text("1er y 2do semestre (M): " + temporal.estudiantesM1, ruleLeft,  doc.internal.pageSize.height - 40, null, null, 'left');
+            doc.text("1er y 2do semestre (H): " + temporal.estudiantesH1, ruleLeft,  doc.internal.pageSize.height - 35, null, null, 'left');
+            doc.text("3ro en adelante (M): " + temporal.estudiantesM, ruleLeft,  doc.internal.pageSize.height - 30, null, null, 'left');
+            doc.text("3ro en adelante (H): " + temporal.estudiantesH, ruleLeft,  doc.internal.pageSize.height - 25, null, null, 'left');
+            doc.setFontSize(12)
+            doc.putTotalPages(totalPagesExp)
+          }
+          doc.save('ReporteSemestralTutor.pdf')
+
+
         }
-        else {
-          doc.text("___________________________________________", doc.internal.pageSize.width/2, finalY, null, null, 'center');
-          doc.text("Nombre y firma del tutor", doc.internal.pageSize.width/2, finalY+5,null,null,'center');
-          doc.text("___________________________________________", 20, finalY+30);
-          doc.text("Nombre y firma del Jefe de Departamento Académico", 20, finalY+40);
-          doc.text("___________________________________________", 170, finalY+30);
-          doc.text("Nombre y firma del Coordinador de Tutorías", 180, finalY+40);
-        }
-        finalY+50
-      doc.text(("Estudiantes: " + temporal.estudiantes), 20, finalY+30);
-      doc.text(("Estudiantes (H): " + temporal.estudiantesH), 20, finalY+30);
-      doc.text(("Estudiantes (M): " + temporal.estudiantesM), 20, finalY+30);
-      doc.text(("Estudiantes (H) 1er semestre: " + temporal.estudiantesH1), 20, finalY+30);
-      doc.text(("Estudiantes (M) 1er semestre: " + temporal.estudiantesM1), 20, finalY+30);
-      
-      doc.save('Reporte.pdf');
-
-*/
-
-
-
       }
-    }
-  );
+    );
 
+    
 
-
-
-}
+  }
 
   Canalizar() {
     Swal.fire({
@@ -657,97 +577,97 @@ var split = doc.splitTextToSize(s.accionTutorial.contenido,180)
         '<input id="swal-input2" class="swal2-input">',
     });
   }
-  Guardar(){
+  Guardar() {
     var nuevaAsistencia: Array<Estudiante> = new Array<Estudiante>();
     this.asistencia.forEach(e => {
-      if(e.presente){
+      if (e.presente) {
         nuevaAsistencia.push(e)
       }
     });
-    if(this.sesionSeleccionada != 0 ){
+    if (this.sesionSeleccionada != 0) {
       this.grupoService.AgregarAsistencias(this.miGrupo.id.toString(), this.sesionSeleccionada.toString(), nuevaAsistencia)
-      .subscribe(s=>{
-        if(s.code == 200){
-          Swal.fire(
-            'Se ha pasado lista correctamente',
-            'la lista de esta sesion ha sido actualizada' ,
-            'success'
-          );
-        }else{
+        .subscribe(s => {
+          if (s.code == 200) {
+            Swal.fire(
+              'Se ha pasado lista correctamente',
+              'la lista de esta sesion ha sido actualizada',
+              'success'
+            );
+          } else {
 
-        }
-      });
-    }
-
-  }
-  GuardarIndividual(){
-    var nuevaAsistencia: Array<Estudiante> = new Array<Estudiante>();
-    this.asistenciaIndividual.forEach(e => {
-      if(e.presente){
-        nuevaAsistencia.push(e)
-      }
-    });
-    if(this.sesionIndividualSeleccionada != 0 ){
-      this.grupoService.AgregarAsistenciasIndividuales(this.miGrupo.id.toString(), this.sesionIndividualSeleccionada.toString(), nuevaAsistencia)
-      .subscribe(s=>{
-        if(s.code == 200){
-          Swal.fire(
-            'Se ha pasado lista correctamente',
-            'la lista de esta sesion ha sido actualizada' ,
-            'success'
-          );
-        }else{
-
-        }
-      });
-    }
-
-  }
-  editarCanalizacion(){
-    if(this.canalizacionForm.valid){
-    this.canalizacionSeleccionada.descripcion = this.canalizacionForm.controls.descripcion.value;
-    this.canalizacionSeleccionada.estado = this.canalizacionForm.controls.estatus.value;
-    this.canalizacionSeleccionada.fecha = this.canalizacionForm.controls.fecha.value;
-    
-    this.canalizacionService.editar(this.canalizacionSeleccionada).subscribe(r=>{
-      if(r.code == 200){
-        Swal.fire("Exito","Se ha editado la canalizacion con exito", "success");
-        this.formAlert = 'none';
-        this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
-         // console.log("Se ejecuta canalizacion");
-          if(r.code == 200){
-            this.canalizaciones = r.data as Array<Canalizacion>;
-            this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
-          }else{
-            Swal.fire("Error","No se han completado todos los datos", "error");
           }
         });
-      }else{
-        Swal.fire("Error","No se han completado todos los datos o se ha puesto una fecha que aún no existe", "error");
+    }
+
+  }
+  GuardarIndividual() {
+    var nuevaAsistencia: Array<Estudiante> = new Array<Estudiante>();
+    this.asistenciaIndividual.forEach(e => {
+      if (e.presente) {
+        nuevaAsistencia.push(e)
       }
     });
-  }else{
-    Swal.fire("Error","No se han completado todos los datos", "error");
+    if (this.sesionIndividualSeleccionada != 0) {
+      this.grupoService.AgregarAsistenciasIndividuales(this.miGrupo.id.toString(), this.sesionIndividualSeleccionada.toString(), nuevaAsistencia)
+        .subscribe(s => {
+          if (s.code == 200) {
+            Swal.fire(
+              'Se ha pasado lista correctamente',
+              'la lista de esta sesion ha sido actualizada',
+              'success'
+            );
+          } else {
+
+          }
+        });
+    }
+
   }
+  editarCanalizacion() {
+    if (this.canalizacionForm.valid) {
+      this.canalizacionSeleccionada.descripcion = this.canalizacionForm.controls.descripcion.value;
+      this.canalizacionSeleccionada.estado = this.canalizacionForm.controls.estatus.value;
+      this.canalizacionSeleccionada.fecha = this.canalizacionForm.controls.fecha.value;
+
+      this.canalizacionService.editar(this.canalizacionSeleccionada).subscribe(r => {
+        if (r.code == 200) {
+          Swal.fire("Exito", "Se ha editado la canalizacion con exito", "success");
+          this.formAlert = 'none';
+          this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r => {
+            // console.log("Se ejecuta canalizacion");
+            if (r.code == 200) {
+              this.canalizaciones = r.data as Array<Canalizacion>;
+              this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
+            } else {
+              Swal.fire("Error", "No se han completado todos los datos", "error");
+            }
+          });
+        } else {
+          Swal.fire("Error", "No se han completado todos los datos o se ha puesto una fecha que aún no existe", "error");
+        }
+      });
+    } else {
+      Swal.fire("Error", "No se han completado todos los datos", "error");
+    }
   }
-  eliminarCanalizacion(id: number){
-this.canalizaciones = new Array<Canalizacion>();
-this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
+  eliminarCanalizacion(id: number) {
+    this.canalizaciones = new Array<Canalizacion>();
+    this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
     console.log(id);
-    this.canalizacionService.eliminar(id).subscribe(r=>{
-      if(r.code == 200){
-        Swal.fire("Exito","Se ha eliminado la canalizacion con exito", "success");
-        this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r=>{
-          if(r.code == 200){
+    this.canalizacionService.eliminar(id).subscribe(r => {
+      if (r.code == 200) {
+        Swal.fire("Exito", "Se ha eliminado la canalizacion con exito", "success");
+        this.grupoService.showCanalizaciones(this.miGrupo.id.toString()).subscribe(r => {
+          if (r.code == 200) {
             this.canalizaciones = r.data as Array<Canalizacion>;
             this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
-          } 
+          }
         });
-      } 
+      }
     }
     );
   }
-  mostrarCanalizaciones( x){}
+  mostrarCanalizaciones(x) { }
 
 
 
@@ -771,7 +691,7 @@ this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
           if (r.code == 200) {
             Swal.fire(
               "Se ha logrado cambiar las sesiones iniciales",
-               "Exito",
+              "Exito",
               "success"
             );
             this.miGrupo.estudiantes.find(f => f.numeroDeControl == numeroDeControl).sesionesIniciales = sesiones;
@@ -784,12 +704,12 @@ this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
   public async asignarEstatus(numeroDeControl: string) {
     console.log("alo");
     var opciones: Map<string, string> = new Map();
-     opciones.set("A", "Activo");
-     opciones.set("E", "Egresado");
-     opciones.set("T", "Terminado");
-     opciones.set("B", "Baja");
-     opciones.set("V", "Baja temporal");
-     
+    opciones.set("A", "Activo");
+    opciones.set("E", "Egresado");
+    opciones.set("T", "Terminado");
+    opciones.set("B", "Baja");
+    opciones.set("V", "Baja temporal");
+
     const { value: estado } = await Swal.fire({
       title: 'Selecciona el nuevo estado',
       input: 'select',
@@ -797,24 +717,99 @@ this.canalizacionesSource = new MatTableDataSource(this.canalizaciones);
       inputPlaceholder: 'Estados',
       showCancelButton: true
     });
- 
-     if(estado != null && estado != undefined){
-       this.estudianteService.asignarEstado(numeroDeControl, estado).subscribe(r=>{
+
+    if (estado != null && estado != undefined) {
+      this.estudianteService.asignarEstado(numeroDeControl, estado).subscribe(r => {
         if (r.code == 200) {
           Swal.fire(
             "Se ha logrado cambiar el estado del alumno",
-             "Exito",
+            "Exito",
             "success"
           );
           this.miGrupo.estudiantes.find(f => f.numeroDeControl == numeroDeControl).estado = estado;
         } else {
           Swal.fire("Ha ocurrido un error", r.mensaje, "error");
         }
-       });
-     }
+      });
+    }
   }
 
 
 
-  
+
 }
+
+
+/*
+          temporal = r.data as ReporteSemestralGrupo;
+
+          var doc = new jsPDF();
+
+
+
+
+
+
+
+
+
+
+
+
+          var doc = new jsPDF('landscape');
+          doc.setFontSize(12);
+          doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width / 2, 20, null, null, 'center');
+          doc.text("REPORTE DEL SEMESTRAL DEL TUTOR", doc.internal.pageSize.width / 2, 28, null, null, 'center');
+          doc.text(("DEPARTAMENTO DE " + temporal.personal.departamento.titulo.toUpperCase()), 70, 36, null, null, 'center');
+          doc.text("PERIODO: " + periodoStr, 228, 36);
+          doc.text(("NOMBRE DEL TUTOR: " + temporal.personal.usuario.nombreCompleto.toUpperCase()), 20, 46);
+          doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
+          doc.text(("PROGRAMA ACADÉMICO: " + temporal.personal.departamento.titulo.toUpperCase()), 20, 54);
+          doc.text(("NÚMERO DE TUTORADOS:" + temporal.estudiantes.length), 218, 54);
+          doc.autoTable({
+            head: [['Núm. Control', 'Nombre', 'Sem.', 'Ses.', 'Ses. Indiv.', 'Ses. Inicial', 'Can.', 'Áreas de canalización']],
+            body: estudiantesLista,
+            theme: 'grid',
+            styles: { fillColor: [0, 79, 122] },
+            stylesDef: { fontSize: 8 },
+            columnStyles: {
+              0: { fillColor: [255, 255, 255] },
+              1: { fillColor: [255, 255, 255] },
+              2: { fillColor: [255, 255, 255] },
+              3: { fillColor: [255, 255, 255] },
+              4: { fillColor: [255, 255, 255] },
+              5: { fillColor: [255, 255, 255] },
+              6: { fillColor: [255, 255, 255] },
+              7: { fillColor: [255, 255, 255] },
+            },
+            startY: 57,
+          })
+          let finalY = doc.lastAutoTable.finalY;
+          if (finalY >= (doc.internal.pageSize.height / 2)) {
+            doc.addPage();
+            doc.text("Observaciones:   1er y 2do semestre: " + (temporal.estudiantesM1 + temporal.estudiantesH1) + " Mujeres: " + temporal.estudiantesM1 + " Hombres: " + temporal.estudiantesM1 + "     3er semestre en adelante: " + (temporal.estudiantesM + temporal.estudiantesH) + " Mujeres: " + temporal.estudiantesM + " Hombres: " + temporal.estudiantesH, 35, 30);
+            doc.text("____________________________________", doc.internal.pageSize.width / 3, 40);
+            doc.text("NOMBRE Y FIRMA DEL TUTOR", doc.internal.pageSize.width / 3 + 15, 45);
+            doc.text("____________________________________", 30, 50);
+            doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO", 20, 55);
+            doc.text("DE: " + temporal.personal.departamento.titulo.toUpperCase(), 40, 60);
+            doc.text("____________________________________", 180, 50);
+            doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO", 170, 55);
+            doc.text("DE: " + temporal.personal.departamento.titulo.toUpperCase(), 190, 60);
+
+          }
+          else {
+            doc.text("Observaciones:   1er y 2do semestre: " + (temporal.estudiantesM1 + temporal.estudiantesH1) + " Mujeres: " + temporal.estudiantesM1 + " Hombres: " + temporal.estudiantesM1 + "     3er semestre en adelante: " + (temporal.estudiantesM + temporal.estudiantesH) + " Mujeres: " + temporal.estudiantesM + " Hombres: " + temporal.estudiantesH, 35, finalY + 10);
+            doc.text("____________________________________", doc.internal.pageSize.width / 3 + 5, finalY + 25);
+            doc.text("NOMBRE Y FIRMA DEL TUTOR", doc.internal.pageSize.width / 3 + 15, finalY + 30);
+            doc.text("____________________________________", 30, finalY + 50);
+            doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO", 17, finalY + 55);
+            doc.text("DE: " + temporal.personal.departamento.titulo.toUpperCase(), 30, finalY + 60);
+            doc.text("______________________________________", 190, finalY + 50);
+            doc.text("FIRMA DEL JEFE DEL DEPARTAMENTO", 195, finalY + 55);
+            doc.text("DE: " + temporal.personal.departamento.titulo.toUpperCase(), 200, finalY + 60);
+          }
+          doc.save('ReporteSemestralTutor.pdf')
+
+
+*/

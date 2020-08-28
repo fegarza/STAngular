@@ -1,3 +1,8 @@
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring">
+      <div class="img"></div>
+    </div>
+  </div>
 <section class='departamentos'>
     <div class="cont">
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
@@ -31,6 +36,12 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+        </table><br><br>
+        <button class="btn float-dark" (click)="generarReporteSemestral()"  style="margin-top:20px; width:100%"> 
+            <i class="fas fa-flag"></i>
+            <p>GENERAR REPORTE SEMESTRAL</p>
+          </button>
     </div>
+   
 </section>
+ 

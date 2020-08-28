@@ -635,55 +635,191 @@ export class DepartamentoComponent implements OnInit {
 
 
   generarReporteSemestral() {
+
+    var temporal: ReporteSemestralDepartamento;
     
-    var temporal : ReporteSemestralDepartamento;
-    
-  
+
 
     var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; 
+    var month = dateObj.getUTCMonth() + 1;
     var year = dateObj.getUTCFullYear();
     var periodo: number = 2;
     var periodoStr: string = "";
-    if(month >= 1 && month <= 7){
+    if (month >= 1 && month <= 7) {
       periodo = 1;
-      periodoStr= "ENE-JUN ";
-    } else{
-      periodoStr="AGO-DIC "
+      periodoStr = "ENE-JUN ";
+    } else {
+      periodoStr = "AGO-DIC "
     }
     periodoStr += year;
+    this.loading = true;
+
+    this.reporteService.getReporteSemestralDepartamental(this.id.toString(), periodo, year).subscribe(r => {
 
 
-    this.reporteService.getReporteSemestralDepartamental(this.id.toString(), periodo, year ).subscribe(r =>{
+
 
       temporal = r.data as ReporteSemestralDepartamento;
 
-      console.log(temporal);
+      if(temporal.jefeTutor == null || temporal.jefeTutor == undefined){
+        temporal.jefeTutor ="";
+      }
+      if(temporal.jefeDepartamento == null || temporal.jefeDepartamento == undefined){
+        temporal.jefeDepartamento = "";
+      }
+
+
+      var doc = new jsPDF('landscape');
+      var totalPagesExp = '{total_pages_count_string}';
+
+
+
+      var ruleRight: number = (doc.internal.pageSize.width - 14);
+      var ruleLeft: number = 14;
+      var middle: number = doc.internal.pageSize.width / 2;
+
+
+      var tutoresLista = [];
+    
+
+
+
+      temporal.tutores.forEach((t) => {
+
+
+        var areasStr = "";
+        var x: number = 0;
+        t.canalizacionesLista.forEach(c => {
+          if (x == 0) {
+            areasStr += c.area + "(" + c.count+") ";
+          } else {
+            areasStr += ", " + c.area + "(" + c.count+") ";
+          }
+          x++;
+        });
+         
+
+
+        var n = [
+          t.usuario.nombreCompleto.toUpperCase(),
+          t.estudiantesAtendidos,
+          t.estudiantesAtendidosIndividual,
+          t.estudiantes,
+          t.estudiantesM1,
+          t.estudiantesH1,
+          t.estudiantesM,
+          t.estudiantesH,
+          areasStr.toUpperCase()
+        ];
+        tutoresLista.push(n);
+
+       
+      });
+
+
+      doc.autoTable({
+        head: [['Nombre del Tutor', 'Tutoría Ind.', 'Tutoría Grup.', 'Total', '1ro y 2do semestre M', '1ro y 2do semestre H', '+3er semestre M', '+3er semestre H', 'Áreas de canalización']],
+        theme: 'grid',
+        body: tutoresLista,
+        styles: {
+          halign: 'left',
+          fillColor: [0, 79, 122]
+        },
+        stylesDef: { fontSize: 8 },
+        columnStyles: {
+          0: { fillColor: [255, 255, 255], cellWidth: 40 , fontSize: 8}, //columna de nombre del tutor
+          1: { fillColor: [255, 255, 255], cellWidth: 15, fontSize: 8 }, //columna de Tutoría Ind
+          2: { fillColor: [255, 255, 255], cellWidth: 15, fontSize: 8 }, //columna de Tutoría Grup
+          3: { fillColor: [255, 255, 255], cellWidth: 15, fontSize: 8 }, //columna de Total
+          4: { fillColor: [255, 255, 255], cellWidth: 15, fontSize: 8 }, //columna de 1ro y 2do semestre M
+          5: { fillColor: [255, 255, 255], cellWidth: 20, fontSize: 8 }, //columna de 1ro y 2do semestre H
+          6: { fillColor: [255, 255, 255], cellWidth: 20, fontSize: 8 }, //columna de +3er semestre M
+          7: { fillColor: [255, 255, 255], cellWidth: 20, fontSize: 8 }, //columna de +3er semestre H
+          8: { fillColor: [255, 255, 255], fontSize: 8 }, //columna de Áreas de canalización
+        },
+        didDrawPage: function (data) {
+          //header
+          doc.setFontSize(14);
+          doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO",middle, 18, null, null, 'center');
+          doc.text("REPORTE SEMESTRAL DEL DEPARTAMENTO DE: " + temporal.titulo.toUpperCase(), middle, 26, null, null, 'center');
+          doc.line(ruleLeft, 28, ruleRight, 28);
+          doc.setFontSize(9);
+          doc.text("PROGRAMA ACADÉMICO: " + temporal.titulo.toUpperCase(), middle, 35, null, null, 'center')
+          doc.text("PERIODO:" + periodoStr, ruleLeft, 40);
+          doc.text("FECHA: " + (formatDate(new Date(), 'dd/MM/yyyy', 'en')), ruleRight, 40, null, null, 'right');
+          //footer
+          var str = 'Página ' + doc.internal.getNumberOfPages() + ' de ' + totalPagesExp //esto dibuja la página actual + el total de páginas
+          var pageSize = doc.internal.pageSize
+          var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
+          doc.setFontSize(10)
+          doc.text(str, data.settings.margin.left, pageHeight - 10)
+        },
+        margin: { top: 50 },
+        rowPageBreak: 'avoid',
+
+      });
+      doc.setFontSize(12);
+      let finalY = doc.lastAutoTable.finalY;
+      if (finalY >= (doc.internal.pageSize.height - 40)) {
+        doc.addPage()
+        doc.putTotalPages(totalPagesExp)
+        doc.text("__________________________________", middle / 2, 30, null, null, 'center')
+        doc.text("Firma del Jefe de Tutorías", middle / 2, 35, null, null, 'center')
+        doc.text(temporal.jefeTutor.toUpperCase(), middle/2, 40, null, null, 'center')
+        doc.text("__________________________________", ((middle / 2) * 3), 30, null, null, 'center')
+        doc.text("Firma del Jefe del Departamento", ((middle / 2) * 3), 35, null, null, 'center')
+        doc.text(temporal.jefeDepartamento.toUpperCase(), ((middle / 2) * 3), 40, null, null, 'center')
+        var str = 'Página ' + doc.internal.getNumberOfPages()
+        doc.text(str, 30, doc.internal.pageSize.height - 10)
+      }
+      else {
+        doc.text("__________________________________", middle / 2, finalY + 15, null, null, 'center')
+        doc.text("Firma del Jefe de Tutorías", middle / 2, finalY + 22, null, null, 'center')
+        doc.text(temporal.jefeTutor.toUpperCase(), middle / 2, finalY + 28, null, null, 'center')
+        doc.text("__________________________________", ((middle / 2) * 3), finalY + 15, null, null, 'center')
+        doc.text("Firma del Jefe del Departamento", ((middle / 2) * 3), finalY + 22, null, null, 'center')
+        doc.text(temporal.jefeDepartamento.toUpperCase(), ((middle / 2) * 3), finalY + 28, null, null, 'center')
+        doc.putTotalPages(totalPagesExp)
+      }
+      this.loading = false;
+      doc.save('ReporteDepartamentoSemestral');
+
+
+
+    });
+
+
+
+
+  }
+}
+/*
+
 
       var doc = new jsPDF();
-       var tutoresLista = [];
+      var tutoresLista = [];
       var jefeStr = "";
-      if( temporal.jefe != null && temporal.jefe != ""){
+      if (temporal.jefe != null && temporal.jefe != "") {
         jefeStr = temporal.jefe;
       }
 
-     
+
 
       temporal.tutores.forEach((t) => {
 
 
         var areas = "";
-        var x : number = 0;
+        var x: number = 0;
         t.canalizacionesLista.forEach(c => {
-          if(x == 0){
-            areas += (c.atencion + " "); 
-          }else{
-            areas += (", " +c.atencion + " "); 
+          if (x == 0) {
+            areas += (c.atencion + " ");
+          } else {
+            areas += (", " + c.atencion + " ");
           }
-           x ++;
+          x++;
         });
 
-        
+
         var n = [
           t.usuario.nombreCompleto.toUpperCase(),
           t.estudiantesAtendidos,
@@ -701,7 +837,7 @@ export class DepartamentoComponent implements OnInit {
       doc.setFontSize(12);
       doc.text("INSTITUTO TECNOLÓGICO DE NUEVO LAREDO", doc.internal.pageSize.width / 2, 20, null, null, 'center');
       doc.text("REPORTE DEL SEMESTRAL DEL TUTOR", doc.internal.pageSize.width / 2, 28, null, null, 'center');
-      doc.text(("DEPARTAMENTO DE " +temporal.titulo.toUpperCase()), 70, 36, null, null, 'center');
+      doc.text(("DEPARTAMENTO DE " + temporal.titulo.toUpperCase()), 70, 36, null, null, 'center');
       doc.text("PERIODO: " + periodoStr, 228, 36);
       doc.text(("NOMBRE DEL JEFE DEL DEPARTAMENTO: " + jefeStr).toUpperCase(), 20, 46);
       doc.text(("FECHA: " + (formatDate(new Date(), 'yyyy/MM/dd', 'en'))), 240, 46);
@@ -735,8 +871,8 @@ export class DepartamentoComponent implements OnInit {
         doc.text("____________________________________", 180, 40);
         doc.text("FIRMA DEL JEFE DE TUTORÍAS DEL DEPARTAMENTO", 170, 45);
         doc.text("DE: " + temporal.titulo.toUpperCase(), 190, 50);
-  
-  
+
+
       }
       else {
         doc.text("____________________________________", 30, finalY + 25);
@@ -747,11 +883,4 @@ export class DepartamentoComponent implements OnInit {
         doc.text("DE: " + temporal.titulo.toUpperCase(), 200, finalY + 60);
       }
       doc.save('ReporteSemestralDepartamento.pdf');
-
-    });
-
-
-   
-
-  }
-}
+*/

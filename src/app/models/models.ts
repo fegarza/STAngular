@@ -62,7 +62,7 @@ export class Personal {
     estudiantesH1: number;
     estudiantesM1: number;
     estudiantesM: number;
-    estudiantesH: number;
+    estudiantesH: number;    
 }
 export class Titulo {
     id: number;
@@ -71,6 +71,13 @@ export class Titulo {
 export class Departamento {
     id: number;
     titulo: string;
+    jefeTutorias: Personal;
+    jefeTutoriasStr: string;
+    jefeDepartamento: Personal;
+    jefeDepartamentoStr: string;
+    personales : Array<Personal>;
+    canalizacionesLista: Array<CanalizacionDepertamento> = new Array<CanalizacionDepertamento>();
+    
 }
 export class Cargo {
     tipo: string;
@@ -143,6 +150,7 @@ export class Canalizacion {
     personal: Personal;
     atencion: Atencion;
     estudiante: Estudiante;
+    count: number;
 }
 /*
     CREDITOS
@@ -238,24 +246,40 @@ export class Count{
 /*
     -> Reportes
 */
+
+ 
+class CanalizacionDepertamento{
+    canalizaciones : Array<Canalizacion> = new Array<Canalizacion>(); 
+}
+
 export class ReporteSemestralGrupo{
-    id: number;
-    salon: string;
-    personal: Personal = new Personal();
-    estudiantes: Array<Estudiante>;
-    sesiones: Array<Sesion>;
-    estudiantesH1: number;
-    estudiantesM1: number;
-    estudiantesM: number;
-    estudiantesH: number;
+    nombreDepartamento: string = "";
+    jefeDepartamento: string = "";
+    jefeTutor: string = "";
+    tutorNombre: string = "";
+    estudiantesH1: number = 0;
+    estudiantesM1: number = 0;
+    estudiantesM: number = 0;
+    estudiantesH: number = 0;
+    estudiantes: Array<Estudiante> = new Array<Estudiante>(); 
 }
 
 
 export class ReporteSemestralDepartamento{
-    id: number;
-    titulo: string;
-    jefe:string;
-    tutores: Array<Personal>;
+    id: number = 0;
+    titulo: string = "";
+    jefeTutor:string = "";
+    jefeDepartamento:string = "";
+
+    tutores: Array<Personal> = new Array<Personal>();
 }
 
+ 
 
+export class ReporteSemestralCoordinacion{
+    departamentos: Array<Departamento> = new Array<Departamento>();
+
+    coordinador: Personal =  new Personal();
+    nombreSubdirector: string = "";
+   
+}
