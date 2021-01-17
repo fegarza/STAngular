@@ -101,12 +101,12 @@
             <div class="logro">
               <i class="fas fa-clipboard-check"></i>
               <p>Sesiones individuales: </p>
-              <h1>{{ miEstudiante.sesionesEspeciales }}</h1>
+              <h1>{{ miEstudiante.sesionesIndividuales }}</h1>
             </div>
             <div class="logro">
               <i class="fas fa-clipboard-check"></i>
-              <p>Sesiones: </p>
-              <h1>{{ miEstudiante.sesiones + miEstudiante.sesionesIndividuales }}</h1>
+              <p>Sesiones grupales: </p>
+              <h1>{{ miEstudiante.sesiones }}</h1>
             </div>
             <div class="logro">
               <i class="fas fa-clipboard-check"></i>
@@ -216,9 +216,9 @@
           <br />
           <b>Sesiones iniciales: </b>{{miEstudiante.sesionesIniciales}}
           <br />
-          <b>Sesiones individuales: </b>{{miEstudiante.sesionesEspeciales}}
+          <b>Sesiones individuales: </b>{{miEstudiante.sesionesIndividuales}}
           <br />
-          <b>Sesiones: </b>{{miEstudiante.sesiones + miEstudiante.sesionesIndividuales}}
+          <b>Sesiones grupales: </b>{{miEstudiante.sesiones}}
           <br />
           <b>Número de seguro social: </b>{{miEstudiante.estudianteDatos.nss}}
         </p>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource, PageEvent } from '@angular/material';
+import { MatSort, MatTableDataSource, PageEvent, Sort } from '@angular/material';
 import { Personal, Count } from 'src/app/models/models';
 import { PersonalService } from 'src/app/services/personal.service';
 
@@ -38,7 +38,10 @@ export class PersonalesComponent implements OnInit {
       r => { 
         if(r.code == 200){
           this.personales  = r.data as Array<Personal>;
+          
           this.dataSource = new MatTableDataSource(this.personales);
+          this.dataSource.sort = this.sort
+
          
         }else{
           console.log("Error: \n");
@@ -52,8 +55,13 @@ export class PersonalesComponent implements OnInit {
       if(r.code == 200){
         this.personales = r.data as Array<Personal>;
         this.dataSource = new MatTableDataSource(this.personales);
+        this.dataSource.sort = this.sort;
       }
     });
     return event;
   }
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

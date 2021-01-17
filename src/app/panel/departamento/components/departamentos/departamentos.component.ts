@@ -34,6 +34,7 @@ export class DepartamentosComponent implements OnInit {
       if (r.code == 200) {
         this.departamentos = r.data as Array<Departamento>;
         this.dataSource = new MatTableDataSource(this.departamentos);
+        this.dataSource.sort = this.sort;
       }
     });
     this.miUsuario = this.authService.traerUsuario();

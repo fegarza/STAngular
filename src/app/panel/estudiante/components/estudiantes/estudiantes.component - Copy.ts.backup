@@ -1,10 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import {
-  PageEvent,
-  MatTableDataSource,
-  MatSort,
-  MatPaginator,
-} from "@angular/material";
+import { PageEvent, MatTableDataSource, MatSort } from "@angular/material";
 import { Estudiante, Count } from "src/app/models/models";
 import { EstudianteService } from "src/app/services/estudiante.service";
 import { Respuesta } from "src/app/models/respuesta";
@@ -43,21 +38,15 @@ export class EstudiantesComponent implements OnInit {
   }
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   ngOnInit() {
-   this.estudianteService.getPage(20, 1).subscribe((r) => {
-     if (r.code == 200) {
-       this.estudiantes = r.data as Array<Estudiante>;
-       this.dataSource = new MatTableDataSource(this.estudiantes);
-       this.dataSource.sort = this.sort;
-     }
-   });
-    
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.estudianteService.getPage(20, 1).subscribe((r) => {
+      if (r.code == 200) {
+        this.estudiantes = r.data as Array<Estudiante>;
+        this.dataSource = new MatTableDataSource(this.estudiantes);
+        this.dataSource.sort = this.sort;
+      }
+    });
   }
 
   mostrarEstudiantes(event?: PageEvent) {
@@ -66,8 +55,7 @@ export class EstudiantesComponent implements OnInit {
       .subscribe((r) => {
         if (r.code == 200) {
           this.estudiantes = r.data as Array<Estudiante>;
-
-        this.dataSource = new MatTableDataSource(this.estudiantes);
+          this.dataSource = new MatTableDataSource(this.estudiantes);
           this.dataSource.sort = this.sort;
         }
       });

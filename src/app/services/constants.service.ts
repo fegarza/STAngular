@@ -14,5 +14,5 @@ export class ConstantsService {
   //public readonly apiUrl: string = "http://tecnld.ddns.net:5000/";
 }
 
-//build --prod --base-href=/tutorias/
+//ng build --prod --base-href=/tutorias/
 

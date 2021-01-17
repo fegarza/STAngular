@@ -7,6 +7,7 @@ import { EstudianteComponent } from './components/estudiante/estudiante.componen
 import { AjustesComponent } from './components/ajustes/ajustes.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [EstudiantesComponent, EstudianteComponent, AjustesComponent],
@@ -14,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     EstudianteRoutingModule,
     MaterialModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule, MatSortModule
   ]
 })
 export class EstudianteModule { }

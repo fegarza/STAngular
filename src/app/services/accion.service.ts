@@ -8,8 +8,6 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 
-Hola
-
 export class AccionService {
 
   constructor(private constants: ConstantsService, private http: HttpClient) {}
