@@ -2,20 +2,21 @@
   Local Modules
 */
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
  import { GestureConfig } from '@angular/material';
- import { DatePipe } from '@angular/common';
+ import { DatePipe, registerLocaleData } from '@angular/common';
 /*
   External Modules
 */
 import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimateOnScrollModule } from 'ng2-animate-on-scroll';
+import localeMX from '@angular/common/locales/es-MX';
 
-
+registerLocaleData(localeMX, 'es-MX');
 /*
   Components
 */
@@ -73,6 +74,7 @@ import { CanalizacionService } from './services/canalizacion.service';
   ],
   providers: [
     DatePipe,
+    {provide: LOCALE_ID, useValue: 'es-MX'},
     //AuthService,
     /*EstudianteService,
     PersonalService,

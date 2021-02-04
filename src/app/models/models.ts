@@ -56,6 +56,7 @@ export class Personal {
     titulo: Titulo;
     //Por parte de los reportes
     canalizacionesLista: Array<Canalizacion> = new Array<Canalizacion>();
+    areasDeCanalizacion: Array<Canalizacion> = new Array<Canalizacion>();
     estudiantesAtendidos: number;
     estudiantesAtendidosIndividual: number;
     estudiantes: number;
@@ -63,6 +64,13 @@ export class Personal {
     estudiantesM1: number;
     estudiantesM: number;
     estudiantesH: number;    
+    tutor: string;
+    sesionesGrupales: number;
+    sesionesIndividuales: number;
+    estudiantesPrimeroYSegundoHombres: number;
+    estudiantesPrimeroYSegundoMujeres: number;
+    estudiantesMayoresHombres: number;
+    estudiantesMayoresMujeres: number;    
 }
 export class Titulo {
     id: number;

@@ -214,6 +214,51 @@
     </form>
   </div>
 </div>
+<!-- 
+<div class="formAlert" *ngIf="formAlert == 'reporteSemestral'">
+  <div class="cont x2">
+      <div class="title leftBlue">
+        <h1><i class="far fa-edit"></i> Ingrese los datos del semestre</h1>
+      </div>
+    <form [formGroup]="reporteSemestralForm" (ngSubmit)="onSubmitGenerarReporteSemestral()">
+      <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="myPicker1"
+          placeholder="Seleccione la fecha inicial"
+          formControlName="fechaInicial"
+        />
+        <mat-datepicker-toggle
+          [for]="myPicker1"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #myPicker1></mat-datepicker>
+        <input
+        matInput
+        [matDatepicker]="myPicker2"
+        placeholder="Seleccione la fecha final"
+        formControlName="fechaFinal"
+      />
+      <mat-datepicker-toggle
+        [for]="myPicker2"
+        matSuffix
+      ></mat-datepicker-toggle>
+      <mat-datepicker #myPicker2></mat-datepicker>
+      
+      </mat-form-field>
+
+      <button class="btn float">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>GENERAR</p>
+      </button>
+      <button class="btn float-white" (click)="formAlert = 'none'">
+        <i class="fas fa-sign-in-alt"></i>
+        <p>SALIR</p>
+      </button>
+    </form>
+  </div>
+</div> -->
+
 
 <section class="titulo">
   <div class="cont">
@@ -589,20 +634,35 @@
 
 
 
-<section class="sesionesIndividuales">
+<section class="reporteSemestral">
   <div class="cont">
     <div class="box simple shadow">
       <div class="title solidBlue ">
         <i class="fas fa-clipboard"></i>
-        <h1>Reportes</h1>
+        <h1>Reporte semestral</h1>
       </div>
       <div class="boxCont">
-        <button class="btn float-dark" (click)="generarReporteSemestral()">
-      
-            <p>Generar reporte semestral</p>
+        <form [formGroup]="reporteSemestralForm" (ngSubmit)="onSubmitGenerarReporteSemestral()">
+        <mat-form-field appearance="fill">
+          <mat-label>Elija la fecha inicial</mat-label>
+          <input matInput [matDatepicker]="fechaInicial" formControlName="fechaInicial">
+          <mat-datepicker-toggle matSuffix [for]="fechaInicial"></mat-datepicker-toggle>
+          <mat-datepicker #fechaInicial></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Elija la fecha final</mat-label>
+          <input matInput [matDatepicker]="fechaFinal" formControlName="fechaFinal">
+          <mat-datepicker-toggle matSuffix [for]="fechaFinal"></mat-datepicker-toggle>
+          <mat-datepicker #fechaFinal></mat-datepicker>
+        </mat-form-field>
+        <button class="btn float-dark">     
+            <p>Generar</p>
           </button>
+        </form>
       </div>
     </div>
   </div>
   </section>
+
+  
 
