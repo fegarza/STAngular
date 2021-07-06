@@ -18,7 +18,7 @@
             <i class="fas fa-user"></i><input type="text" formControlName="user" placeholder="Correo electrónico" />
          </div>
          <div class="input normal">
-            <i class="fas fa-lock"></i><input type="password" formControlName="password" placeholder="Contraseña" />
+            <i class="fas fa-lock"></i><input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Contraseña" /><i [ngClass]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'" (click)="SeePW()"></i>
          </div>
 
          <div class="buttons">

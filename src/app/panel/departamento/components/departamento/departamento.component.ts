@@ -522,14 +522,14 @@ export class DepartamentoComponent implements OnInit {
         }
 
         var n = [
-          t.tutor.toUpperCase(),
+          t.tutor.toUpperCase(), //0
           t.sesionesIndividuales,
           t.sesionesGrupales,
           t.estudiantes,
-          t.estudiantesPrimeroYSegundoMujeres,
-          t.estudiantesPrimeroYSegundoHombres,
-          t.estudiantesMayoresMujeres,
-          t.estudiantesMayoresHombres,
+          t.estudiantesPrimeroYSegundoMujeres, //4
+          t.estudiantesPrimeroYSegundoHombres,//5
+          t.estudiantesMayoresMujeres,//6
+          t.estudiantesMayoresHombres, //7
           t.areasDeCanalizacion
         ];
         tutoresLista.push(n);
@@ -537,14 +537,32 @@ export class DepartamentoComponent implements OnInit {
        
       });
 
+      var primerYSegundoHombres = tutoresLista.reduce((a,b)=> a+b[5],0);
+      var primerYSegundoMujeres = tutoresLista.reduce((a,b)=> a+b[4],0);
+      var plusTercerHombres = tutoresLista.reduce((a,b)=> a+b[7],0);
+      var plusTercerMujeres = tutoresLista.reduce((a,b)=> a+b[6],0);
+
+
+      var countFinalTable = [
+        "Total","","","", primerYSegundoMujeres, primerYSegundoHombres,  plusTercerMujeres, plusTercerHombres, ""
+      ];
+
+      var finalBody = [...tutoresLista, countFinalTable];
 
       doc.autoTable({
         head: [['Nombre del Tutor', 'Asis. Tutoría Ind.', 'Asis. Tutoría Grup.', 'Total   estudiantes', '1ro y 2do semestre M', '1ro y 2do semestre H', '+3er semestre M', '+3er semestre H', 'Áreas de canalización']],
         theme: 'grid',
-        body: tutoresLista,
+        body: finalBody,
         styles: {
           halign: 'left',
           fillColor: [0, 79, 122]
+        },
+        willDrawCell: (data) => {
+          var rows = data.table.body;
+          if (data.row.index === rows.length - 1) {
+            doc.setFontStyle("bold");
+            doc.setFontSize(10);
+        }
         },
         stylesDef: { fontSize: 8 },
         columnStyles: {
@@ -575,8 +593,16 @@ export class DepartamentoComponent implements OnInit {
           doc.text("REPORTE SEMESTRAL DEL DEPARTAMENTO DE: " + temporal.titulo.toUpperCase(), middle, 35, null, null, 'center');
           doc.setFontSize(9);
           doc.text("PROGRAMA ACADÉMICO: " + temporal.titulo.toUpperCase(), middle, 40, null, null, 'center')
-          doc.text("PERIODO:" + periodo.toUpperCase(), ruleLeft, 40);
-          //doc.text("FECHA: " + (formatDate(new Date(), 'dd/MM/yyyy', 'en')), ruleRight, 40, null, null, 'right');
+          doc.text("PERIODO:" + periodo.toUpperCase(), ruleLeft, 45);
+
+          var matriculaAlumnos = tutoresLista.reduce((a,curr) => a+curr[3],0);
+          var matriculaHombres = primerYSegundoHombres + plusTercerHombres;
+          var matriculaMujeres = primerYSegundoMujeres + plusTercerMujeres;
+
+          doc.text("MATRICULA: "+matriculaAlumnos + " ALUMNOS", ruleLeft, 50);
+          doc.text("CANTIDAD DE ALUMNOS HOMBRES: " + matriculaHombres,ruleLeft, 55);
+          doc.text("CANTIDAD DE ALUMNOS MUJERES: "+ matriculaMujeres, ruleLeft, 60);
+          doc.text("FECHA: " + (formatDate(new Date(), 'dd/MM/yyyy', 'en')), ruleRight, 40, null, null, 'right');
           //footer
           var str = 'Página ' + doc.internal.getNumberOfPages() + ' de ' + totalPagesExp //esto dibuja la página actual + el total de páginas
           var pageSize = doc.internal.pageSize
@@ -584,7 +610,7 @@ export class DepartamentoComponent implements OnInit {
           doc.setFontSize(10)
           doc.text(str, data.settings.margin.left, pageHeight - 10)
         },
-        margin: { top: 50 },
+        margin: { top: 65 },
         rowPageBreak: 'avoid',
 
       });
@@ -593,6 +619,9 @@ export class DepartamentoComponent implements OnInit {
       if (finalY >= (doc.internal.pageSize.height - 40)) {
         doc.addPage()
         doc.putTotalPages(totalPagesExp)
+
+
+
         doc.text("__________________________________", middle / 2, 30, null, null, 'center')
         doc.text("Firma del Jefe de Tutorías", middle / 2, 35, null, null, 'center')
         doc.text(temporal.jefeTutor.toUpperCase(), middle/2, 40, null, null, 'center')

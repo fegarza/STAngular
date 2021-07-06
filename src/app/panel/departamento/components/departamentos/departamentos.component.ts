@@ -72,7 +72,7 @@ export class DepartamentosComponent implements OnInit {
     }
     periodoStr += year;
 
-
+    alert(periodo + ' - '+year);
 
 
 
@@ -87,7 +87,8 @@ export class DepartamentosComponent implements OnInit {
       var totalPagesExp = '{total_pages_count_string}'
       var areasStr = "";
 
-      var departamentosLista = [];
+
+       var departamentosLista = [];
        temporal.departamentos.forEach(e => {
         
         var totalIndividual: number = 0;

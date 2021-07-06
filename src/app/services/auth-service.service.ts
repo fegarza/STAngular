@@ -68,7 +68,11 @@ export class AuthService {
   entrar(user: string, pw: string) {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+      .set('Accept', 'application/json')
+      .set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+      .set('Access-control-allow-methods', 'GET, POST, PUT, DELETE, OPTIONS')
+      .set('Access-control-allow-origin','*')
+      ;
     var miUser = new Usuario();
     miUser.email = user;
     miUser.clave = pw;

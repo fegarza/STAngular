@@ -467,7 +467,7 @@ export class GrupoComponent implements OnInit {
               e.usuario.nombreCompleto.toUpperCase(),
               e.semestre,
               e.sesiones,
-              e.sesionesIndividuales,
+              e.sesionesIndividuales + e.sesionesEspeciales,
               e.sesionesIniciales,
               e.canalizaciones,
               areasStr.toUpperCase()
@@ -477,10 +477,17 @@ export class GrupoComponent implements OnInit {
          
           });
 
+          
+          
 
+          var observacionesStr = 
+          `1er y 2do semestre: ${temporal.estudiantesM1} mujeres y ${temporal.estudiantesH1} hombres.   3er semestre en adelante: ${temporal.estudiantesM} mujeres y ${temporal.estudiantesH} hombres`;
+
+         doc.setFontSize(8)
+         doc.text(observacionesStr, ruleLeft, 64,  null, null, 'left');
 
           doc.autoTable({
-            head: [['Núm. Control', 'Nombre', 'Sem.', 'Ses.', 'Ses. Indiv.', 'Ses. Inicial', 'Can.', 'Áreas de canalización']],
+            head: [['Núm. Control', 'Nombre', 'Sem.', 'Ses. grup.', 'Ses. ind. (incluye esp.)', 'Ses. Inicial', 'Can.', 'Áreas de canalización']],
             theme: 'grid',
             body: estudiantesLista,
             styles: {
@@ -519,6 +526,10 @@ export class GrupoComponent implements OnInit {
               doc.text("PERIODO: " + periodoStr, ruleRight, 38, null, null, 'right');
               doc.text("NOMBRE DEL TUTOR: " + temporal.tutorNombre.toUpperCase(), ruleLeft, 48);
               doc.text("FECHA: " + (formatDate(new Date(), 'dd/MM/yyyy', 'en')), ruleRight, 48,  null, null, 'right');
+
+
+
+              doc.text("CANTIDAD DE TUTORADOS: "+temporal.estudiantes.length, ruleRight, 58, null, null , 'right');
               doc.text("PROGRAMA ACADÉMICO: " + temporal.nombreDepartamento.toUpperCase(), ruleLeft, 58);
              
               //footer
@@ -528,28 +539,34 @@ export class GrupoComponent implements OnInit {
               doc.setFontSize(10)
               doc.text(str, data.settings.margin.left, pageHeight - 10)
             },
-            margin: { top: 66 },
+            margin: { top: 66, bottom: 10},
             rowPageBreak: 'avoid',
           })
+
+
+                 
+         
+         let finalY = doc.lastAutoTable.finalY;
           doc.setFontSize(12)
-          let finalY = doc.lastAutoTable.finalY;
           if (finalY >= (doc.internal.pageSize.height - 40)) {
             doc.addPage()
             doc.putTotalPages(totalPagesExp)
             doc.text("__________________________________", (middle / 2), 30, null, null, 'center')
             doc.text("Firma del Tutor", (middle / 2), 35, null, null, 'center')
+            doc.text(temporal.tutorNombre.toUpperCase(),  (middle / 2), 40, null, null, 'center')
             doc.text("__________________________________", ((middle / 2) * 3), 30, null, null, 'center')
             doc.text("Firma del Jefe de Tutorías", ((middle / 2) * 3), 35, null, null, 'center')
-           
+            doc.text(temporal.jefeTutor.toUpperCase(),  ((middle / 2) * 3), 40, null, null, 'center')
             doc.text("__________________________________", middle, 50, null, null, 'center')
             doc.text("Firma del Jefe del departamento académico", middle, 55, null, null, 'center')
-            
+            doc.text(temporal.jefeDepartamento.toUpperCase(), middle, 60, null, null, 'center')
+            /*
             doc.setFontSize(7)
             doc.text("Total de tutorados: " + temporal.estudiantes.length, ruleLeft,  doc.internal.pageSize.height - 45, null, null, 'left');
             doc.text("1er y 2do semestre (M) " + temporal.estudiantesM1, ruleLeft,  doc.internal.pageSize.height - 40, null, null, 'left');
             doc.text("1er y 2do semestre (H) " + temporal.estudiantesH1, ruleLeft,  doc.internal.pageSize.height - 35, null, null, 'left');
             doc.text("3ro en adelante (M) " + temporal.estudiantesM, ruleLeft,  doc.internal.pageSize.height - 30, null, null, 'left');
-            doc.text("3ro en adelante (H) " + temporal.estudiantesH, ruleLeft,  doc.internal.pageSize.height - 25, null, null, 'left');
+            doc.text("3ro en adelante (H) " + temporal.estudiantesH, ruleLeft,  doc.internal.pageSize.height - 25, null, null, 'left');*/
             doc.setFontSize(12)
 
             var str = 'Página ' + doc.internal.getNumberOfPages()
@@ -566,16 +583,22 @@ export class GrupoComponent implements OnInit {
             doc.text("Firma del Jefe del Departamento", middle , finalY + 47, null, null, 'center')
             doc.text(temporal.jefeDepartamento.toUpperCase(), middle , finalY + 52, null, null, 'center')
 
-            doc.setFontSize(7)
-            doc.text("Total de tutorados: " + temporal.estudiantes.length, ruleLeft,  doc.internal.pageSize.height - 45, null, null, 'left');
+            /*
             doc.text("1er y 2do semestre (M): " + temporal.estudiantesM1, ruleLeft,  doc.internal.pageSize.height - 40, null, null, 'left');
             doc.text("1er y 2do semestre (H): " + temporal.estudiantesH1, ruleLeft,  doc.internal.pageSize.height - 35, null, null, 'left');
             doc.text("3ro en adelante (M): " + temporal.estudiantesM, ruleLeft,  doc.internal.pageSize.height - 30, null, null, 'left');
-            doc.text("3ro en adelante (H): " + temporal.estudiantesH, ruleLeft,  doc.internal.pageSize.height - 25, null, null, 'left');
+            doc.text("3ro en adelante (H): " + temporal.estudiantesH, ruleLeft,  doc.internal.pageSize.height - 25, null, null, 'left');*/
+
+
             doc.setFontSize(12)
             doc.putTotalPages(totalPagesExp)
           }
-          doc.save('ReporteSemestralTutor.pdf')
+
+
+        
+         
+
+          doc.save(`ReporteSemestral-${periodoStr}-${temporal.tutorNombre.toUpperCase()}.pdf`);
 
 
         }

@@ -17,10 +17,11 @@ export class LoginComponent  {
 
   public loading: boolean = false;
   loginForm: FormGroup;
-
+  showPassword: boolean;
   @Output() public CloseEvent = new EventEmitter();
  
   constructor(private authService: AuthService, private router: Router) { 
+    this.showPassword = false;
     this.loginForm = new FormGroup({
       user: new FormControl(),
       password: new FormControl()
@@ -31,6 +32,9 @@ export class LoginComponent  {
     this.CloseEvent.emit(false);
   }
  
+  SeePW(){
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit(){
     this.loading = true;
